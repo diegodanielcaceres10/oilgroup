@@ -1,0 +1,31 @@
+{
+  "name": "oilgroup-ws",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build-prod": "forever --uid 06-ws-prod start server.js",
+    "build-dev": "forever --uid 06-ws-dev start server.js",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xenecoding/oilgroup-ws.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xenecoding/oilgroup-ws/issues"
+  },
+  "homepage": "https://github.com/xenecoding/oilgroup-ws#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-rate-limit": "^5.1.3",
+    "html-pdf": "^2.2.0",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.1",
+    "mysql": "^2.18.1",
+    "pdf-creator-node": "^2.2.2"
+  }
+}
