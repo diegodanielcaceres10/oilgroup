@@ -1,0 +1,21 @@
+
+.title {
+    align-items: stretch;
+    border: .1rem solid var(--darkgrey);
+    border-left: .5rem solid var(--secondary);
+    border-radius: .5rem;
+    box-shadow: .1rem .1rem .5rem var(--lightgrey);
+    display: flex;
+    flex-shrink: 0;
+    height: 7rem;
+    margin: 1rem;
+    padding: .5rem;
+
+    &__info {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        justify-content: center;
+        padding-left: .5rem;
+    }
+}

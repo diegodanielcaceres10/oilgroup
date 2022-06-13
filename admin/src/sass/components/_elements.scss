@@ -1,0 +1,174 @@
+
+h1 {
+    padding: 1rem;
+    text-transform: uppercase;
+}
+
+h2 {
+    letter-spacing: .2rem;
+    text-transform: uppercase;
+}
+
+input,textarea,select {
+    background: transparent;
+    border: .1rem solid var(--darkgrey);
+    border-radius: .5rem;
+    color: var(--primary);
+    height: 5rem;
+    padding: 1rem 2rem;
+    width: 100%;
+    z-index: 10;
+
+    &:focus {
+        border: .1rem solid var(--focus);
+    }
+
+    &:disabled:not(input[type="select"]) {
+        background: var(--lightgrey);
+        color: var(--black);
+    }
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+}
+
+input[type="checkbox"] {
+	cursor: pointer;
+    height: 100%;
+    left: 0;
+	opacity: 0;
+    position: absolute;
+    top: 0;
+	z-index: 10;
+
+    & + label {
+        width: 5rem;
+        height: 3rem;
+        border-radius: 3rem;
+        border: .1rem solid lightgrey;
+        margin-right: 1rem;
+        transition: all .5s ease;
+    }
+
+    &:focus + label {
+        border: .1rem solid var(--focus);
+    }
+
+    & + label::before {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 3rem;
+        background: white;
+        content: "";
+        transition: all .5s ease;
+        border: .1rem solid lightgrey;
+        position: absolute;
+        top: 50%;
+        left: 2.5rem;
+        transform: translate(-50%, -50%);
+    }
+
+    &:checked + label {
+        background: var(--secondary);
+    }
+
+    &:checked + label::before {
+        margin-left: 2.1rem;
+    }
+}
+
+input[type="radio"] {
+	cursor: pointer;
+    height: 100%;
+    left: 0;
+	opacity: 0;
+    position: absolute;
+    top: 0;
+	z-index: 10;
+
+    & + label {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 3rem;
+        border: .1rem solid lightgrey;
+        margin-right: 1rem;
+        transition: all .5s ease;
+    }
+
+    &:focus + label {
+        border: .1rem solid var(--focus);
+    }
+
+    & + label::before {
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 3rem;
+        background: transparent;
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 2.5rem;
+        transform: translate(-50%, -50%);
+    }
+
+    &:checked + label::before {
+        background: var(--secondary);
+        border: .1rem solid var(--secondary);
+    }
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    margin: -1rem;
+    opacity: 0;
+}
+
+input[type="button"] {
+    text-align: left;
+}
+
+textarea {
+    height: 14rem;
+    resize: none;
+    padding-top: 1.4rem;
+}
+
+button {
+    background: var(--lightgrey);
+    border: .1rem solid var(--darkgrey);
+    border-radius: .5rem;
+    color: var(--primary);
+    font-weight: 600;
+    height: 5rem;
+    padding: 1rem 0;
+    text-transform: uppercase;
+    transition: all .1s ease;
+    white-space: nowrap;
+    width: 100%;
+
+	&:hover:not(:disabled) {
+        opacity: .8;
+        cursor: pointer;
+    }
+
+    &:active:not(:disabled) {
+        transform: translateY(.2rem);
+    }
+
+    &:disabled {
+        opacity: .4;
+    }
+
+    & span {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+    }
+
+    &:focus {
+        border: .1rem solid var(--focus);
+    }
+}

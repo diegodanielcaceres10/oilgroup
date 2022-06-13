@@ -1,0 +1,354 @@
+<div class="title">
+    <div class="title__info">
+        <h2>Venta</h2>
+    </div>
+    <div *ngIf="createMode && path < 4" class="group">
+        <div class="group__box group__box-icon">
+            <div *ngIf="!showCart" (click)="showCart = true" class="group__tool group__tool-toogle"><i class="fas fa-shopping-basket"></i></div>
+            <div *ngIf="showCart" (click)="showCart = false" class="group__tool group__tool-toogle"><i class="fas fa-times"></i></div>
+        </div>
+    </div>
+    <div *ngIf="!editMode && !createMode && sale.status != 'Cancelada'" class="group">
+        <div *ngIf="['Super Administrador', 'Administrador'].indexOf(access.role) > -1 && sale.status == 'Pendiente'" class="group__box group__box-icon">
+            <div (click)="editMode = true" class="group__tool"><i class="fas fa-tasks"></i><span>Revisar</span></div>
+        </div>
+        <div *ngIf="['Super Administrador', 'Administrador'].indexOf(access.role) > -1 && sale.status == 'Lista'" class="group__box group__box-icon">
+            <div (click)="deliverSaleDialogConfirm()" class="group__tool"><i class="fas fa-paper-plane"></i><span>Entregar</span></div>
+        </div>
+        <div *ngIf="['Super Administrador', 'Administrador'].indexOf(access.role) > -1 && sale.billing && !sale.billing_date" class="group__box group__box-icon">
+            <div (click)="billingSaleDialogConfirm()" class="group__tool"><i class="fas fa-stamp"></i><span>Facturar</span></div>
+        </div>
+        <div *ngIf="['Super Administrador', 'Administrador'].indexOf(access.role) > -1 && sale.status != 'Cancelada'" class="group__box group__box-icon">
+            <div (click)="printTicketDialogConfirm()" class="group__tool"><i class="fas fa-receipt"></i><span>Remito</span></div>
+        </div>
+        <div *ngIf="['Super Administrador', 'Administrador'].indexOf(access.role) > -1" class="group__box group__box-icon">
+            <div (click)="cancelSaleDialogConfirm()" class="group__tool group__tool-cancel"><i class="fas fa-trash"></i><span>Cancelar</span></div>
+        </div>
+    </div>
+    <div *ngIf="editMode" class="group">
+        <div class="group__box group__box-icon">
+            <div (click)="editMode = false" class="group__tool"><i class="fas fa-times"></i><span>Volver</span></div>
+        </div>
+    </div>
+</div>
+<div *ngIf="!editMode && !createMode" class="section__info">
+    <div class="section__box">
+        <div class="card">
+            <div class="card__content">
+                <div class="card__item">
+                    <div class="card__box card__box-primary">
+                        <div class="card__info">
+                            <div class="card__label">Venta:</div>
+                            <div class="card__title"><strong>{{ sale.customer.fantasy_name }}</strong></div>
+                            <div class="card__title"><strong>{{ sale.total | currency:"CAD":"symbol-narrow":"1.2" }}</strong></div>
+                        </div>
+                        <div class="card__info">
+                            <div class="card__label">Estado:</div>
+                            <div class="card__subtitle">
+                                <i *ngIf="sale.status == 'Aprobada'" class="fas fa-check"></i>
+                                <i *ngIf="sale.status == 'Lista'" class="fas fa-bell"></i>
+                                <i *ngIf="sale.status == 'Pendiente'" class="fas fa-thumbtack"></i>
+                                <i *ngIf="sale.status == 'Cancelada'" class="fas fa-times"></i>
+                                {{ sale.status }}
+                            </div>
+                            <div class="card__label">Fecha:</div>
+                            <div class="card__subtitle"><i class="fas fa-calendar-alt"></i>{{ sale.datetime | date:"dd/MM/yyyy, HH:mm" }}</div>
+                        </div>
+                    </div>
+                    <div class="card__box card__box-full">
+                        <div class="card__info">
+                            <div class="card__legend">
+                                <span>Vendedor</span>
+                                <span><strong>{{ sale.user.lastname }}</strong> {{ sale.user.firstname }}</span>
+                            </div>
+                            <div class="card__legend">
+                                <span>N° de factura</span>
+                                <span>{{ sale.ticket }}</span>
+                            </div>
+                            <div class="card__legend">
+                                <span>Tipo de factura</span>
+                                <span>{{ sale.document }}</span>
+                            </div>
+                            <div class="card__legend">
+                                <span>AFIP</span>
+                                <span *ngIf="sale.billing && !sale.billing_date">Pendiente</span>
+                                <span *ngIf="sale.billing && sale.billing_date">Facturada</span>
+                                <span *ngIf="!sale.billing">N/A</span>
+                            </div>
+                            <div class="card__legend">
+                                <span>Fecha de facturación</span>
+                                <span>{{ sale.billing_date | date:"dd/MM/yyyy, HH:mm" }}</span>
+                            </div>
+                            <div class="card__legend">
+                                <span>Descripción</span>
+                                <span>{{ sale.description }}</span>
+                            </div>
+                        </div>
+                        <div class="card__info">
+                            <div class="list">
+                                <div class="list__row">
+                                    <div class="list__cell list__cell-full muted">Detalle</div>
+                                    <div class="list__cell list__cell-right muted">Subtotal</div>
+                                </div>
+                                <div *ngFor="let item of sale.items" class="list__row list__row-detail">
+                                    <div *ngIf="item.article" class="list__cell list__cell-full">
+                                        <div class="list__title">{{ item.brand }} {{ item.name }}</div>
+                                        <div class="list__subtitle"><span>{{ item.price | currency:"CAD":"symbol-narrow":"1.2" }} x {{ item.quantity }} - {{ item.measure }}</span></div>
+                                    </div>
+                                    <div *ngIf="!item.article" class="list__cell list__cell-full">
+                                        <div class="list__title">{{ item.concept }}</div>
+                                    </div>
+                                    <div class="list__cell list__cell-right">
+                                        <div class="list__title">{{ item.subtotal | currency:"CAD":"symbol-narrow":"1.2" }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="createMode" class="path">
+    <div class="path__item">
+        <div class="path__icon path__icon-primary"><i class="fas fa-user-tie"></i></div>
+        <div *ngIf="path == 0" class="path__icon path__icon-dot path__icon-current"><i class="far fa-circle"></i></div>
+        <div *ngIf="path > 0" class="path__icon path__icon-dot path__icon-check"><i class="fas fa-check-circle"></i></div>
+        <div class="path__line path__line-right"></div>
+    </div>
+    <div class="path__item">
+        <div class="path__icon path__icon-primary"><i class="fas fa-box"></i></div>
+        <div *ngIf="path < 1" class="path__icon path__icon-dot"><i class="fas fa-circle"></i></div>
+        <div *ngIf="path == 1" class="path__icon path__icon-dot path__icon-current"><i class="far fa-circle"></i></div>
+        <div *ngIf="path > 1" class="path__icon path__icon-dot path__icon-check"><i class="fas fa-check-circle"></i></div>
+        <div class="path__line path__line-left"></div>
+        <div class="path__line path__line-right"></div>
+    </div>
+    <div class="path__item">
+        <div class="path__icon path__icon-primary"><i class="fas fa-tasks"></i></div>
+        <div *ngIf="path < 2" class="path__icon path__icon-dot"><i class="fas fa-circle"></i></div>
+        <div *ngIf="path == 2" class="path__icon path__icon-dot path__icon-current"><i class="far fa-circle"></i></div>
+        <div *ngIf="path > 2 && sale.status != 'Pendiente' && sale.articles.length > 0" class="path__icon path__icon-dot path__icon-check"><i class="fas fa-check-circle"></i></div>
+        <div *ngIf="path > 2 && (sale.status == 'Pendiente' || sale.articles.length == 0)" class="path__icon path__icon-dot"><i class="far fa-circle"></i></div>
+        <div class="path__line path__line-left"></div>
+        <div class="path__line path__line-right"></div>
+    </div>
+    <div class="path__item">
+        <div class="path__icon path__icon-primary"><i class="fas fa-dollar-sign"></i></div>
+        <div *ngIf="path < 3" class="path__icon path__icon-dot"><i class="fas fa-circle"></i></div>
+        <div *ngIf="path == 3" class="path__icon path__icon-dot path__icon-current"><i class="far fa-circle"></i></div>
+        <div *ngIf="path > 3 && sale.payment.status" class="path__icon path__icon-dot path__icon-check"><i class="fas fa-check-circle"></i></div>
+        <div *ngIf="path > 3 && !sale.payment.status" class="path__icon path__icon-dot"><i class="far fa-circle"></i></div>
+        <div class="path__line path__line-left"></div>
+        <div class="path__line path__line-right"></div>
+    </div>
+    <div class="path__item">
+        <div class="path__icon path__icon-primary"><i class="fas fa-check-circle"></i></div>
+        <div *ngIf="path < 4" class="path__icon path__icon-dot"><i class="fas fa-circle"></i></div>
+        <div *ngIf="path == 4" class="path__icon path__icon-dot path__icon-current"><i class="far fa-circle"></i></div>
+        <div *ngIf="path > 4" class="path__icon path__icon-dot path__icon-check"><i class="fas fa-check-circle"></i></div>
+        <div class="path__line path__line-left"></div>
+    </div>
+</div>
+<div *ngIf="createMode" class="section__info">
+    <div *ngIf="path == 0" [ngClass]="{ 'section__box-hide' : showCart }" class="section__box section__box-small">
+        <app-form *ngIf="form && form.buttons" [form]="form" (submitData)="sendForm($event)"></app-form>
+    </div>
+    <div *ngIf="path == 1" [ngClass]="{ 'section__box-hide' : showCart }" class="section__box section__box-small">
+        <div class="list">
+            <div class="list__row list__row-cells">
+                <div class="list__cell list__cell-full">
+                    <div class="list__title"><strong>Articulos registrados</strong></div>
+                </div>
+                <div (click)="error = '';searchArticleDialogList()" class="list__cell list__cell-button">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+            <div class="list__row list__row-cells">
+                <div class="list__cell list__cell-full">
+                    <div class="list__title"><strong>Detalles adicionales</strong></div>
+                </div>
+                <div (click)="error = '';addDetailDialogForm()" class="list__cell list__cell-button">
+                    <i class="fas fa-plus"></i>
+                </div>
+            </div>
+            <div class="list__row list__row-cells">
+                <div class="list__cell list__cell-full">
+                    <div class="list__title"><strong>Descuento relativo</strong></div>
+                </div>
+                <div (click)="error = '';addDiscountDialogForm()" class="list__cell list__cell-button">
+                    <i class="fas fa-minus"></i>
+                </div>
+            </div>
+        </div>
+        <app-form *ngIf="form && form.buttons" [form]="form" (submitData)="sendForm($event)"></app-form>
+        <div class="group">
+            <div class="group__box group__box-full">
+                <span *ngIf="error" class="group__alert"><i class="fas fa-exclamation-circle"></i>{{ error }}</span>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="path == 2 && sale.status == 'Pendiente'" [ngClass]="{ 'section__box-hide' : showCart }" class="section__box section__box-small">
+        <app-form *ngIf="form && form.buttons" [form]="form" (submitData)="sendForm($event)"></app-form>
+    </div>
+    <div *ngIf="path == 2 && sale.status != 'Pendiente'" [ngClass]="{ 'section__box-hide' : showCart }" class="section__box section__box-small">
+        <div *ngFor="let item of sale.articles;let i = index" class="list__row list__row-cells">
+            <div class="list__cell list__cell-full">
+                <div class="list__quote">{{ item.brand }}</div>
+                <div class="list__title">{{ item.name }}</div>
+                <div class="list__subtitle"><span>Cantidad: <strong>{{ item.stock }}</strong> - Disponible: <strong>{{ item.available }}</strong></span></div>
+                <div *ngIf="item.replaces && item.replaces.length > 0" class="list__subtitle"><span>Remplazos</span></div>
+                <div *ngIf="item.replaces && item.replaces.length > 0" class="list__box">
+                    <span *ngFor="let replace of item.replaces" class="list__attach"><span *ngIf="!item.review" (click)="removeReplace(item, replace)" class="click"><i class="fas fa-times"></i></span>{{ replace.brand }} {{ replace.name }}: <strong>{{ replace.stock }}</strong></span>
+                </div>
+            </div>
+            <div *ngIf="!item.review && item.stock > 0" (click)="error = '';searchReplaceDialogList({ article: item, index: i })" class="list__cell list__cell-button">
+                <i class="fas fa-search"></i>
+            </div>
+            <div *ngIf="item.available >= item.stock || item.stock == 0" (click)="error = '';item.review = !item.review" [ngClass]="{ 'list__cell-pressed' : item.review }" class="list__cell list__cell-button">
+                <i class="fas fa-check"></i>
+            </div>
+            <div *ngIf="item.available < item.stock && item.stock > 0" class="list__cell list__cell-alert">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+        </div>
+        <app-form *ngIf="form && form.buttons" [form]="form" (submitData)="sendForm($event)"></app-form>
+        <div class="group">
+            <div class="group__box group__box-full">
+                <span *ngIf="error" class="group__alert"><i class="fas fa-exclamation-circle"></i>{{ error }}</span>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="path == 3" [ngClass]="{ 'section__box-hide' : showCart }" class="section__box section__box-small">
+        <app-form *ngIf="form && form.buttons" [form]="form" (submitData)="sendForm($event)"></app-form>
+    </div>
+    <div [ngClass]="{ 'section__box-hide' : !showCart }" class="section__box section__box-large scrollbar-custom">
+        <div class="list">
+            <div class="sectiontitle">Descripción de la venta, seleccionar articulos disponibles y adicionar detalles adicionales. Confirmar detalles del cobro realizado si corresponde</div>
+            <div *ngIf="path > 0" class="list__row list__row-info">
+                <div class="list__cell list__cell-full">
+                    <div class="list__title"><strong>{{ sale.customer.fantasy_name.toUpperCase() }}</strong></div>
+                    <div class="list__subtitle"><span>Cliente</span></div>
+                    <div class="list__subtitle"><span>N° de factura: {{ sale.ticket }}</span></div>
+                    <div class="list__subtitle"><span>{{ sale.description }}</span></div>
+                </div>
+            </div>
+            <div *ngIf="sale.articles.length == 0 && sale.details.length == 0" class="list__row list__row-info">
+                <div class="list__cell list__cell-full"><i class="fas fa-exclamation-circle"></i>No hay detalles agregados</div>
+            </div>
+            <div *ngFor="let item of sale.articles" class="list__row list__row-info">
+                <div (click)="removeArticle(item)" class="list__cell list__cell-button">
+                    <i class="fas fa-times"></i>
+                </div>
+                <div class="list__cell list__cell-full">
+                    <div class="list__subtitle"><span>{{ item.brand }}</span></div>
+                    <div class="list__title">{{ item.name }}</div>
+                    <div class="list__subtitle"><span>{{ item.price | currency:"CAD":"symbol-narrow":"1.2" }}</span></div>
+                    <div class="list__subtitle"><span>{{ item.measure }} x {{ item.quantity }}</span></div>
+                    <div class="list__subtitle"><span>Stock: {{ item.units }}</span></div>
+                </div>
+                <div class="list__cell list__cell-right">
+                    <div class="list__title">{{ item.subtotal | currency:"CAD":"symbol-narrow":"1.2" }}</div>
+                </div>
+            </div>
+            <div *ngFor="let item of sale.details" class="list__row list__row-info">
+                <div (click)="removeDetail(item)" class="list__cell list__cell-button">
+                    <i class="fas fa-times"></i>
+                </div>
+                <div class="list__cell list__cell-full">
+                    <div class="list__subtitle"><span>{{ item.concept }}</span></div>
+                </div>
+                <div class="list__cell list__cell-right">
+                    <div class="list__title">{{ item.subtotal | currency:"CAD":"symbol-narrow":"1.2" }}</div>
+                </div>
+            </div>
+            <div *ngIf="sale.articles.length > 0 || sale.details.length > 0" class="list__row list__row-info">
+                <div class="list__cell list__cell-full">
+                    <div class="list__title">Total</div>
+                </div>
+                <div class="list__cell list__cell-right">
+                    <div class="list__title"><strong>{{ sale.total | currency:"CAD":"symbol-narrow":"1.2" }}</strong></div>
+                </div>
+            </div>
+            <div *ngIf="path > 3 && sale.payment.status" class="list__row list__row-info">
+                <div class="list__cell list__cell-full">
+                    <div class="list__title">Pago</div>
+                    <div class="list__subtitle"><span>Forma de pago: {{ sale.payment.method }}</span></div>
+                    <div class="list__subtitle"><span>{{ sale.payment.ticket }}</span></div>
+                </div>
+                <div class="list__cell list__cell-right">
+                    <div class="list__title">-{{ sale.payment.import | currency:"CAD":"symbol-narrow":"1.2" }}</div>
+                </div>
+            </div>
+            <div *ngIf="path > 3 && !sale.payment.status" class="list__row list__row-info">
+                <div class="list__cell list__cell-full"><i class="fas fa-exclamation-circle"></i>No registra cobro</div>
+            </div>
+        </div>
+        <div *ngIf="path > 3" class="warning">Revisar los datos ingresados antes de confirmar el registro de la venta</div>
+        <app-form *ngIf="path > 3 && form && form.buttons" [form]="form" (submitData)="sendForm($event)"></app-form>
+    </div>
+</div>
+<div *ngIf="editMode" class="section__info">
+    <div class="section__box">
+        <div *ngFor="let item of sale.articles;let i = index" [ngClass]="{ 'list__row-blocked' : item.deleted }" class="list__row list__row-cells">
+            <div class="list__cell list__cell-full">
+                <div class="list__quote">{{ item.brand }}</div>
+                <div class="list__title">{{ item.name }}</div>
+                <div class="list__subtitle"><span>Cantidad: <strong>{{ item.stock }}</strong> - Disponible: <strong>{{ item.available }}</strong></span></div>
+                <div *ngIf="!item.edit" class="list__title">{{ item.subtotal | currency:"CAD":"symbol-narrow":"1.2" }}</div>
+                <div *ngIf="item.edit" class="list__title"><s>{{ (item.price * item.quantity) | currency:"CAD":"symbol-narrow":"1.2" }}</s> / {{ item.subtotal | currency:"CAD":"symbol-narrow":"1.2" }}</div>
+                <div *ngIf="item.replaces && item.replaces.length > 0" class="list__subtitle"><span>Remplazos</span></div>
+                <div *ngIf="item.replaces && item.replaces.length > 0" class="list__box">
+                    <span *ngFor="let replace of item.replaces" class="list__attach"><span *ngIf="!item.review" (click)="removeReplace(item, replace)" class="click"><i class="fas fa-times"></i></span>{{ replace.brand }} {{ replace.name }}: <strong>{{ replace.stock }}</strong></span>
+                </div>
+            </div>
+            <div *ngIf="!item.review && !item.deleted && item.stock > 0" (click)="error = '';searchReplaceDialogList({ article: item, index: i })" class="list__cell list__cell-button">
+                <i class="fas fa-search"></i>
+            </div>
+            <div *ngIf="!item.review && !item.deleted" (click)="error = '';updateCountForm({ article: item, index: i })" class="list__cell list__cell-button">
+                <i class="fas fa-pen"></i>
+            </div>
+            <div *ngIf="!item.review && !item.deleted && (item.available >= item.stock || item.stock == 0)" (click)="error = '';item.review = true" class="list__cell list__cell-button">
+                <i class="fas fa-check"></i>
+            </div>
+            <div *ngIf="!item.deleted && item.available < item.stock && item.stock > 0" class="list__cell list__cell-alert">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div *ngIf="!item.review && !item.deleted" (click)="error = '';item.deleted = true" class="list__cell list__cell-button list__cell-alt">
+                <i class="fas fa-trash"></i>
+            </div>
+            <div *ngIf="item.review" (click)="item.review = false" class="list__cell list__cell-button list__cell-pressed">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div *ngIf="item.deleted" (click)="item.deleted = false" class="list__cell list__cell-button">
+                <i class="fas fa-undo-alt"></i>
+            </div>
+        </div>
+        <div *ngFor="let item of sale.details;let i = index" [ngClass]="{ 'list__row-blocked' : item.deleted }" class="list__row list__row-cells">
+            <div class="list__cell list__cell-full">
+                <div class="list__title">{{ item.concept }}</div>
+                <div class="list__title">{{ item.subtotal | currency:"CAD":"symbol-narrow":"1.2" }}</div>
+            </div>
+            <div *ngIf="!item.review && !item.deleted" (click)="error = '';item.review = true" class="list__cell list__cell-button">
+                <i class="fas fa-check"></i>
+            </div>
+            <div *ngIf="!item.review && !item.deleted" (click)="error = '';item.deleted = true" class="list__cell list__cell-button list__cell-alt">
+                <i class="fas fa-trash"></i>
+            </div>
+            <div *ngIf="item.review" (click)="item.review = false" class="list__cell list__cell-button list__cell-pressed">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div *ngIf="item.deleted" (click)="item.deleted = false" class="list__cell list__cell-button">
+                <i class="fas fa-undo-alt"></i>
+            </div>
+        </div>
+        <app-form *ngIf="form && form.buttons" [form]="form" (submitData)="sendForm($event)"></app-form>
+        <div class="group">
+            <div class="group__box group__box-full">
+                <span *ngIf="error" class="group__alert"><i class="fas fa-exclamation-circle"></i>{{ error }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+<app-dialog-modal *ngFor="let dialog of dialogs" [dialog]="dialog" (responseDialogModal)="responseDialog($event)"></app-dialog-modal>

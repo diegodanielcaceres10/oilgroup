@@ -1,0 +1,234 @@
+
+.list {
+    padding: 1rem;
+    width: 100%;
+
+    &-collapse {
+        flex: 1;
+        overflow-y: scroll;
+    }
+
+    &__row {
+        align-items: center;
+        display: flex;
+        margin: 1rem;
+
+        @include respond(phone) {
+            margin: .5rem;
+        }
+
+        &-wrap {
+            flex-wrap: wrap;
+        }
+
+        &-info {
+            background: var(--lightgrey);
+            border-bottom: .1rem solid var(--darkgrey);
+            margin: 0;
+        }
+
+        &-detail {
+            border-top: .1rem solid var(--lightgrey);
+            margin: 0;
+        }
+
+        &-cells {
+            border: .1rem solid var(--darkgrey);
+            border-radius: 1rem;
+            box-shadow: .1rem .1rem .5rem var(--darkgrey);
+            padding: 1rem;
+
+            @include respond(phone) {
+                padding: .5rem;
+            }
+        }
+
+        &-selected {
+            background: linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.15) 100%), radial-gradient(at top center, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.40) 120%) #989898;
+            background-blend-mode: multiply,multiply;
+            border: .1rem solid var(--darkgrey);
+            border-radius: 1rem;
+            box-shadow: .1rem .1rem 1rem var(--darkgrey);
+            color: white;
+        }
+
+        &-cancel {
+            color: var(--error);
+        }
+
+        &-blocked {
+            background: var(--lightgrey);
+            opacity: .7;
+        }
+    }
+
+    &__cell {
+        padding: 1rem;
+
+        @include respond(phone) {
+            padding: .5rem;
+        }
+
+        &-load {
+            font-size: 3rem;
+            padding: 2rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        &-date {
+            display: flex;
+            flex-direction: column;
+            width: 10rem;
+        }
+
+        &-hidden {
+            padding: 0;
+        }
+
+        &-input {
+            display: flex;
+            flex-direction: column;
+            width: 25rem;
+        }
+
+        &-right {
+            align-items: flex-end;
+            display: flex;
+            flex-direction: column;
+        }
+
+        &-full {
+            flex: 1;
+            overflow: hidden;
+            word-break: break-all;
+        }
+
+        &-pressed i {
+            color: var(--success);
+            transform: scale(1.5);
+            transition: all .1s ease;
+    
+            &:hover {
+                color: var(--terciary);
+                transform: scale(2);
+            }
+        }
+
+        &-button {
+            color: var(--terciary);
+            cursor: pointer;
+
+            & i {
+                transition: all .1s ease;
+        
+                &:hover {
+                    color: var(--secondary);
+                    transform: scale(2);
+                }
+            }
+        }
+
+        &-alert {
+            color: var(--focus);
+            padding: .5rem;
+        }
+    }
+
+    &__filter {
+        align-items: baseline;
+        background: var(--primary);
+        border-radius: 3rem;
+        color: white;
+        display: flex;
+        font-size: 1.3rem;
+        margin: .5rem;
+        padding: 1rem;
+
+        & strong {
+            padding-left: .5rem;
+        }
+
+        & i {
+            padding-left: 1rem;
+        }
+    }
+
+    &__quote {
+        color: var(--terciary);
+        font-size: 1.3rem;
+        font-weight: bold;
+        padding: .2rem 0;
+        white-space: nowrap;
+    }
+
+    &__title {
+        font-size: 1.8rem;
+        padding: .2rem 0;
+        white-space: nowrap;
+    }
+
+    &__subtitle {
+        font-size: 1.3rem;
+        padding: .2rem 0;
+        white-space: nowrap;
+    }
+
+    &__message {
+        align-items: center;
+        display: flex;
+        font-size: 1.3rem;
+        padding: .2rem 0;
+    }
+
+    &__box {
+        align-items: flex-start;
+        display: flex;
+        flex-direction: column;
+        font-size: 1.3rem;
+    }
+
+    &__attach {
+        background: var(--primary);
+        border-radius: .5rem;
+        color: white;
+        margin: .5rem;
+        padding: .5rem;
+
+        & strong {
+            padding-left: .5rem;
+        }
+    }
+
+    &__tag {
+        align-items: center;
+        border-radius: .5rem;
+        box-shadow: .1rem .1rem .5rem var(--darkgrey);
+        display: flex;
+        justify-content: center;
+        margin-left: 1rem;
+        padding: .5rem;
+        width: 10rem;
+
+        @include respond(phone) {
+            margin: 0;
+            margin-top: 1rem;
+        }
+
+        &-done {
+            background: var(--lightgrey);
+        }
+
+        &-success {
+            background: var(--success);
+        }
+
+        &-pending {
+            background: var(--focus);
+        }
+
+        &-cancel {
+            background: var(--error);
+        }
+    }
+}

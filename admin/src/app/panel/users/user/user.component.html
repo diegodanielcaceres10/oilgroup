@@ -1,0 +1,136 @@
+<div class="title">
+    <div class="title__info">
+        <h2>Usuario</h2>
+    </div>
+    <div *ngIf="!editMode && !createMode" class="group">
+        <div class="group__box group__box-icon">
+            <div (click)="printSummaryDialogConfirm()" class="group__tool"><i class="fas fa-file-pdf"></i><span>Resumen</span></div>
+        </div>
+        <div class="group__box group__box-icon">
+            <div (click)="editMode = true" class="group__tool"><i class="fas fa-pen"></i><span>Editar</span></div>
+        </div>
+        <div class="group__box group__box-icon">
+            <div (click)="resetUserDialogConfirm()" class="group__tool"><i class="fas fa-key"></i><span>Resetear</span></div>
+        </div>
+    </div>
+    <div *ngIf="editMode" class="group">
+        <div class="group__box group__box-icon">
+            <div (click)="editMode = false" class="group__tool"><i class="fas fa-times"></i><span>Volver</span></div>
+        </div>
+    </div>
+</div>
+<div *ngIf="!editMode && !createMode" class="section__info">
+    <div class="section__box">
+        <div class="card">
+            <div class="card__content">
+                <div class="card__item">
+                    <div class="card__box card__box-primary">
+                        <div class="card__info">
+                            <div class="card__label">Apellido:</div>
+                            <div class="card__title"><strong>{{ user.lastname }}</strong></div>
+                            <div class="card__label">Nombre:</div>
+                            <div class="card__subtitle">{{ user.firstname }}</div>
+                            <div class="card__label">Usuario:</div>
+                            <div class="card__subtitle">{{ user.username }}</div>
+                        </div>
+                    </div>
+                    <div class="card__box card__box-full">
+                        <div class="card__info">
+                            <div class="card__legend">
+                                <span><i class="fas fa-phone"></i>Teléfono</span>
+                                <span>{{ user.phone }}</span>
+                            </div>
+                            <div class="card__legend">
+                                <span><i class="fas fa-at"></i>Correo electrónico</span>
+                                <span>{{ user.email }}</span>
+                            </div>
+                            <div class="card__legend">
+                                <span>Permiso</span>
+                                <span>{{ user.role }}</span>
+                            </div>
+                        </div>
+                        <div class="card__info">
+                            <div class="card__legend">
+                                <span>Estado</span>
+                                <span>{{ user.active ? "Activo" : "Inactivo" }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="!editMode && !createMode" class="section__info">
+    <div class="section__box">
+        <div class="list">
+            <div class="sectiontitle">Listado de ventas ordenadas por fecha descendiente</div>
+            <div *ngIf="paging" class="list__row">
+                <div class="list__cell list__cell-load"><i class="fas fa-spinner spin"></i></div>
+            </div>
+            <div *ngIf="!paging && salesView.length == 0" class="list__row">
+                <div class="list__cell list__cell-full"><i class="fas fa-exclamation-circle"></i>No se encontraron registros</div>
+            </div>
+            <div *ngIf="!paging && salesView.length > 0" class="list__row">
+                <div class="list__cell list__cell-full muted">Mostrando {{ (page - 1) * maxitems + 1 }} - {{ (page - 1) * maxitems + salesView.length }} de {{ salesFiltered.length }}</div>
+            </div>
+            <div *ngFor="let item of salesView" [ngClass]="{ 'list__row-cancel' : item.status == 'Cancelada' || item.status == 'Cancelado' }" class="list__row list__row-cells">
+                <div class="list__cell list__cell-date">
+                    <div class="list__subtitle"><span><strong>{{ item.datetime | date:"dd/MM/yyyy" }}</strong></span></div>
+                    <div class="list__subtitle"><span>{{ item.datetime | date:"HH:mm" }}</span></div>
+                </div>
+                <div class="list__cell list__cell-full">
+                    <div class="list__title">{{ item.fantasy_name }}</div>
+                    <div class="list__subtitle">
+                        <span>
+                            <i *ngIf="item.status == 'Aprobada' || item.status == 'Aprobado'" class="fas fa-check"></i>
+                            <i *ngIf="item.status == 'Cancelada' || item.status == 'Cancelado'" class="fas fa-times"></i>
+                            <i *ngIf="item.status == 'Pendiente'" class="fas fa-thumbtack"></i>
+                            <i *ngIf="item.status == 'Lista'" class="fas fa-bell"></i>
+                            <strong>{{ item.status }}</strong>
+                        </span>
+                    </div>
+                </div>
+                <div class="list__cell list__cell-right">
+                    <div class="list__title"><strong>{{ item.total | currency:"CAD":"symbol-narrow":"1.2" }}</strong></div>
+                </div>
+                <div [routerLink]="['/panel/clientes/venta/' + item.id]" class="list__cell list__cell-button">
+                    <i class="fas fa-chevron-circle-right"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="!editMode && !createMode" class="section__info">
+    <div class="section__box">
+        <div *ngIf="pages > 1" class="pagination">
+            <div *ngIf="page > 3" (click)="changePage(1)" class="pagination__page">
+                <div class="pagination__number"><i class="fas fa-chevron-left"></i></div>
+            </div>
+            <div *ngIf="page > 2" (click)="changePage(page - 2)" class="pagination__page">
+                <div class="pagination__number">{{ page - 2 }}</div>
+            </div>
+            <div *ngIf="page > 1" (click)="changePage(page - 1)" class="pagination__page">
+                <div class="pagination__number">{{ page - 1 }}</div>
+            </div>
+            <div class="pagination__current">
+                <div class="pagination__number">{{ page }}</div>
+            </div>
+            <div *ngIf="pages > page" (click)="changePage(page + 1)" class="pagination__page">
+                <div class="pagination__number">{{ page + 1 }}</div>
+            </div>
+            <div *ngIf="pages > page + 1" (click)="changePage(page + 2)" class="pagination__page">
+                <div class="pagination__number">{{ page + 2 }}</div>
+            </div>
+            <div *ngIf="pages > page + 2" (click)="changePage(pages)" class="pagination__page">
+                <div class="pagination__number"><i class="fas fa-chevron-right"></i></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="editMode || createMode" class="section__info">
+    <div class="section__box">
+        <app-form *ngIf="form && form.buttons" [form]="form" (submitData)="sendForm($event)"></app-form>
+    </div>
+</div>
+<app-dialog-modal *ngFor="let dialog of dialogs" [dialog]="dialog" (responseDialogModal)="responseDialog($event)"></app-dialog-modal>

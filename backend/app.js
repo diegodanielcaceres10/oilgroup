@@ -25,10 +25,10 @@ const script = require("./routes/script");
 const app = express();
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true }));
-const environment = process.env.ROOT_ENV || "";
-app.use(`/${environment}api/oilgroup`, (req, res, next) => {
+const environment = `${process.env.ENV ? ("/" + process.env.ENV) : ""}/api/oilgroup`;
+app.use(`${environment}`, (req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin,X-Requested-With,Content-Type,Accept,x-access-token");
+    res.header("Access-Control-Allow-Headers", "Origin,X-Requested-With,Content-Type,enctype,Accept,x-access-token,Authorization");
     res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
     next();
 });
@@ -41,18 +41,18 @@ const limiter = rateLimit({
 app.use("/", limiter);
 
 // Define routes
-app.use(`/${environment}api/oilgroup/user/`, user);
-app.use(`/${environment}api/oilgroup/article/`, article);
-app.use(`/${environment}api/oilgroup/brand/`, brand);
-app.use(`/${environment}api/oilgroup/category/`, category);
-app.use(`/${environment}api/oilgroup/provider/`, provider);
-app.use(`/${environment}api/oilgroup/buy/`, buy);
-app.use(`/${environment}api/oilgroup/customer/`, customer);
-app.use(`/${environment}api/oilgroup/sale/`, sale);
-app.use(`/${environment}api/oilgroup/provider_payment/`, provider_payment);
-app.use(`/${environment}api/oilgroup/customer_payment/`, customer_payment);
-app.use(`/${environment}api/oilgroup/report/`, report);
-app.use(`/${environment}api/oilgroup/metric/`, metric);
-app.use(`/${environment}api/oilgroup/script/`, script);
+app.use(`${environment}/user/`, user);
+app.use(`${environment}/article/`, article);
+app.use(`${environment}/brand/`, brand);
+app.use(`${environment}/category/`, category);
+app.use(`${environment}/provider/`, provider);
+app.use(`${environment}/buy/`, buy);
+app.use(`${environment}/customer/`, customer);
+app.use(`${environment}/sale/`, sale);
+app.use(`${environment}/provider_payment/`, provider_payment);
+app.use(`${environment}/customer_payment/`, customer_payment);
+app.use(`${environment}/report/`, report);
+app.use(`${environment}/metric/`, metric);
+app.use(`${environment}/script/`, script);
 
 module.exports = app;

@@ -1,0 +1,50 @@
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+    width: 100%;
+
+    &__page {
+        align-items: center;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        height: 4rem;
+        justify-content: center;
+        margin: .2rem;
+        position: relative;
+        transition: all .1s ease;
+        width: 4rem;
+
+        &:hover {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+
+            @include respond(phone) {
+                background: transparent;
+                color: var(--primary);
+                font-weight: 300;
+            }
+        }
+   }
+
+    &__number {
+        position: absolute;
+    }
+
+    &__current {
+        align-items: center;
+        background: var(--secondary);
+        border-radius: 50%;
+        color: white;
+        display: flex;
+        font-weight: 600;
+        height: 4rem;
+        justify-content: center;
+        margin: .2rem;
+        position: relative;
+        width: 4rem;
+    }
+}

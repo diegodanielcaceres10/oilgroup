@@ -1,0 +1,63 @@
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
+
+@Injectable({
+    providedIn: 'root'
+})
+export class ApiService {
+
+    /**
+     * Base URL for all requests made through this
+     * service.
+     */
+    public apiUrl: string = environment.apiUrl
+
+    /**
+     * Creates a new HttpApiService instance and initializes it.
+     */
+    constructor(
+        public httpClient: HttpClient,
+    ) { }
+
+    /**
+     *
+     * @param url The endpoint URL.
+     * @param body The content to replace with.
+     *
+     * @return An `Observable` of the response, with the response body as a JSON object.
+     */
+    public post(path: string, body?: any): Observable<Object> {
+        const auth = JSON.parse(sessionStorage.getItem("oilgroup-auth")) || {}
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${auth.token}`)
+        if (!body) {
+            body = {
+                username: auth.username
+            }
+        } else if (!body.username) {
+            body.username = auth.username
+        }
+        return this.httpClient.post(this.apiUrl + path, body, { headers: headers })
+    }
+
+    /**
+     *
+     * @param url The endpoint URL.
+     * @param body The content to replace with.
+     *
+     * @return An `Observable` of the response, with the response body as a JSON object.
+     */
+    public download(path: string, body?: any): Observable<Object> {
+        const auth = JSON.parse(sessionStorage.getItem("oilgroup-auth")) || {}
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${auth.token}`)
+        if (!body) {
+            body = {
+                username: auth.username
+            }
+        } else if (!body.username) {
+            body.username = auth.username
+        }
+        return this.httpClient.post(this.apiUrl + path, body, { responseType: "blob", reportProgress: true, observe: "events", headers: headers });
+    }
+}

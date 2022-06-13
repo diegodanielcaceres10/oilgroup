@@ -1,0 +1,192 @@
+<div class="title">
+    <div class="title__info">
+        <h2>INICIO</h2>
+    </div>
+    <div class="group">
+        <div class="group__box group__box-icon">
+            <div routerLink="/panel/clientes/venta/nueva" class="group__tool"><i class="fas fa-shopping-basket"></i><span>Nueva Venta</span></div>
+        </div>
+        <div *ngIf="['Super Administrador', 'Administrador'].indexOf(access.role) > -1" class="group__box group__box-icon">
+            <div routerLink="/panel/proveedores/compra/nueva" class="group__tool"><i class="fas fa-shopping-cart"></i><span>Nueva Compra</span></div>
+        </div>
+    </div>
+</div>
+<div *ngIf="['Super Administrador', 'Administrador'].indexOf(access.role) > -1" class="section__info">
+    <div class="section__box">
+        <div class="card">
+            <div class="card__content">
+                <div class="card__item card__item-metric">
+                    <div routerLink="/panel/clientes/ventas/pendientes/1" class="card__box card__box-full click">
+                        <div class="card__info">
+                            <div class="card__value">
+                                <strong>{{ metrics.pending || 0 }}</strong>
+                                <span>Ventas pendientes</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card__item card__item-metric">
+                    <div routerLink="/panel/clientes/ventas/listas/1" class="card__box card__box-full click">
+                        <div class="card__info">
+                            <div class="card__value">
+                                <strong>{{ metrics.ready || 0 }}</strong>
+                                <span>Ventas listas</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card__item card__item-metric">
+                    <div routerLink="/panel/clientes/ventas/facturacion/1" class="card__box card__box-full click">
+                        <div class="card__info">
+                            <div class="card__value">
+                                <strong>{{ metrics.billing || 0 }}</strong>
+                                <span>Ventas para facturar</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card__content">
+                <div class="card__item card__item-alert">
+                    <div routerLink="/panel/articulos/precios/1" class="card__box card__box-full click">
+                        <div class="card__info">
+                            <div class="card__value">
+                                <strong>{{ metrics.prices || 0 }}</strong>
+                                <span>Articulos sin precio de lista</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card__item card__item-alert">
+                    <div routerLink="/panel/articulos/stock/1" class="card__box card__box-full click">
+                        <div class="card__info">
+                            <div class="card__value">
+                                <strong>{{ metrics.stock || 0 }}</strong>
+                                <span>Articulos sin stock</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="section__info">
+    <div class="section__box">
+        <div class="chart">
+            <div class="chart__box">
+                <div class="chart__title">Ventas de los últimos 3 meses</div>
+                <div *ngIf="!charts.sales || charts.sales.length == 0" class="list">
+                    <div class="list__row">
+                        <div class="list__cell list__cell-full"><i class="fas fa-exclamation-circle"></i>No se encontraron metricas actuales</div>
+                    </div>
+                </div>
+                <div *ngIf="charts.sales && charts.sales.length > 0" class="chart__item">
+                    <article id="sales-chart"></article>
+                </div>
+                <a *ngIf="['Super Administrador', 'Administrador'].indexOf(access.role) > -1" routerLink="/panel/reporte/actividades/1">Ver mas</a>
+            </div>
+            <div class="chart__box">
+                <div class="chart__title">Cobros de los últimos 3 meses</div>
+                <div *ngIf="!charts.payments || charts.payments.length == 0" class="list">
+                    <div class="list__row">
+                        <div class="list__cell list__cell-full"><i class="fas fa-exclamation-circle"></i>No se encontraron metricas actuales</div>
+                    </div>
+                </div>
+                <div *ngIf="charts.payments && charts.payments.length > 0" class="chart__item">
+                    <article id="payments-chart"></article>
+                </div>
+                <a *ngIf="['Super Administrador', 'Administrador'].indexOf(access.role) > -1" routerLink="/panel/reporte/pagos/1">Ver mas</a>
+            </div>
+        </div>
+        <div *ngIf="['Super Administrador', 'Administrador'].indexOf(access.role) > -1" class="chart">
+            <div class="chart__box">
+                <div class="chart__title">Tipo de documentos del mes</div>
+                <div *ngIf="!charts.documents || charts.documents.length == 0" class="list">
+                    <div class="list__row">
+                        <div class="list__cell list__cell-full"><i class="fas fa-exclamation-circle"></i>No se encontraron metricas actuales</div>
+                    </div>
+                </div>
+                <div *ngIf="charts.documents && charts.documents.length > 0" class="chart__item">
+                    <article id="documents-chart"></article>
+                </div>
+            </div>
+            <div class="chart__box">
+                <div class="chart__title">Forma de pago del mes</div>
+                <div *ngIf="!charts.methods || charts.methods.length == 0" class="list">
+                    <div class="list__row">
+                        <div class="list__cell list__cell-full"><i class="fas fa-exclamation-circle"></i>No se encontraron metricas actuales</div>
+                    </div>
+                </div>
+                <div *ngIf="charts.methods && charts.methods.length > 0" class="chart__item">
+                    <article id="methods-chart"></article>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="['Super Administrador', 'Administrador'].indexOf(access.role) > -1" class="section__info">
+    <div class="section__box">
+        <div class="chart">
+            <div class="chart__box">
+                <div class="chart__title">Articulos mas vendidos de los últimos 3 meses</div>
+                <div *ngIf="!metrics.articles || metrics.articles.length == 0" class="list">
+                    <div class="list__row">
+                        <div class="list__cell list__cell-full"><i class="fas fa-exclamation-circle"></i>No se encontraron metricas actuales</div>
+                    </div>
+                </div>
+                <div *ngIf="metrics.articles && metrics.articles.length > 0" class="chart__item">
+                    <article id="articles-chart"></article>
+                </div>
+            </div>
+        </div>
+        <div class="chart">
+            <div class="chart__box">
+                <div class="chart__title">Marcas mas vendidas de los últimos 3 meses</div>
+                <div *ngIf="!metrics.brands || metrics.brands.length == 0" class="list">
+                    <div class="list__row">
+                        <div class="list__cell list__cell-full"><i class="fas fa-exclamation-circle"></i>No se encontraron metricas actuales</div>
+                    </div>
+                </div>
+                <div *ngIf="metrics.brands && metrics.brands.length > 0" class="chart__item">
+                    <article id="brands-chart"></article>
+                </div>
+            </div>
+            <div class="chart__box">
+                <div class="chart__title">Categorias mas vendidas de los últimos 3 meses</div>
+                <div *ngIf="!metrics.categories || metrics.categories.length == 0" class="list">
+                    <div class="list__row">
+                        <div class="list__cell list__cell-full"><i class="fas fa-exclamation-circle"></i>No se encontraron metricas actuales</div>
+                    </div>
+                </div>
+                <div *ngIf="metrics.categories && metrics.categories.length > 0" class="chart__item">
+                    <article id="categories-chart"></article>
+                </div>
+            </div>
+        </div>
+        <div class="chart">
+            <div class="chart__box">
+                <div class="chart__title">Clientes mas compradores de los últimos 3 meses</div>
+                <div *ngIf="!metrics.customers || metrics.customers.length == 0" class="list">
+                    <div class="list__row">
+                        <div class="list__cell list__cell-full"><i class="fas fa-exclamation-circle"></i>No se encontraron metricas actuales</div>
+                    </div>
+                </div>
+                <div *ngIf="metrics.customers && metrics.customers.length > 0" class="chart__item">
+                    <article id="customers-chart"></article>
+                </div>
+            </div>
+            <div class="chart__box">
+                <div class="chart__title">Proveedores mas vendedores de los últimos 3 meses</div>
+                <div *ngIf="!metrics.providers || metrics.providers.length == 0" class="list">
+                    <div class="list__row">
+                        <div class="list__cell list__cell-full"><i class="fas fa-exclamation-circle"></i>No se encontraron metricas actuales</div>
+                    </div>
+                </div>
+                <div *ngIf="metrics.providers && metrics.providers.length > 0" class="chart__item">
+                    <article id="providers-chart"></article>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

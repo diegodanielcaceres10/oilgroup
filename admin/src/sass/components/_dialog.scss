@@ -1,0 +1,100 @@
+
+app-dialog-modal:not(:last-child) {
+    display: none;
+}
+
+.dialog {
+    background: rgba(black, .5);
+    height: 100%;left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 200;
+
+    &__container {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        justify-content: center;
+        left: 0;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 250;
+    }
+
+    &__box {
+        background: white;
+        border: .1rem solid var(--darkgrey);
+        border-radius: 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        max-height: 85%;
+        overflow-y: scroll;
+        padding: 1rem;
+        position: relative;
+        width: 40%;
+
+        @include respond(phone) {
+            max-height: 100%;
+            width: 80%;
+        }
+
+        &-list {
+            height: 80%;
+            width: 80%;
+
+            @include respond(phone) {
+                border-radius: 0;
+                height: 100%;
+                width: 100%;
+            }
+        }
+
+        &-form {
+            width: 50%;
+
+            @include respond(phone) {
+                border-radius: 0;
+                height: 100%;
+                width: 100%;
+            }
+        }
+
+        &-confirm {
+            width: 40%;
+
+            @include respond(phone) {
+                width: 90%;
+            }
+        }
+    }
+
+    &__title {
+        border-bottom: .1rem solid var(--lightgrey);
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 2rem;
+        padding: 1rem;
+    }
+
+    &__message {
+        font-size: 1.4rem;
+    }
+
+    &__span {
+        font-size: 1.2rem;
+    }
+
+    &__close {
+        position: absolute;
+        right: 2rem;
+        top: 2rem;
+
+        & i {
+            font-size: 3rem;
+        }
+    }
+}

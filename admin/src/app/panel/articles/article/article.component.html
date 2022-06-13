@@ -1,0 +1,181 @@
+<div class="title">
+    <div class="title__info">
+        <h2>Articulo</h2>
+    </div>
+    <div *ngIf="!createMode && !editMode" class="group">
+        <div class="group__box group__box-icon">
+            <div (click)="addMeasureDialogForm()" class="group__tool"><i class="fas fa-plus"></i><span>Medida</span></div>
+        </div>
+        <div class="group__box group__box-icon">
+            <div (click)="editMode = true" class="group__tool"><i class="fas fa-pen"></i><span>Editar</span></div>
+        </div>
+    </div>
+    <div *ngIf="!createMode && editMode" class="group">
+        <div class="group__box group__box-icon">
+            <div (click)="editMode = false" class="group__tool"><i class="fas fa-times"></i><span>Volver</span></div>
+        </div>
+    </div>
+</div>
+<div *ngIf="!editMode && !createMode" class="section__info">
+    <div class="section__box">
+        <div class="card">
+            <div class="card__content">
+                <div class="card__item">
+                    <div class="card__box card__box-primary">
+                        <div class="card__info">
+                            <div class="card__label">Articulo:</div>
+                            <div class="card__title"><strong>{{ article.brand }}</strong></div>
+                            <div class="card__subtitle">{{ article.provider.fantasy_name }}</div>
+                            <div class="card__label">Código:</div>
+                            <div class="card__subtitle">{{ article.code }}</div>
+                            <div class="card__label">Nombre:</div>
+                            <div class="card__subtitle">{{ article.name }}</div>
+                        </div>
+                    </div>
+                    <div class="card__box card__box-full">
+                        <div class="card__info">
+                            <div class="card__legend">
+                                <span>Categoria</span>
+                                <span>{{ article.category }}</span>
+                            </div>
+                            <div class="card__legend">
+                                <span>Código de stock</span>
+                                <span>{{ article.stock_code }}</span>
+                            </div>
+                            <div class="card__legend">
+                                <span>Tamaño</span>
+                                <span>{{ article.size }}</span>
+                            </div>
+                            <div class="card__legend">
+                                <span>Variedad</span>
+                                <span>{{ article.variety }}</span>
+                            </div>
+                            <div class="card__legend">
+                                <span>Descripción</span>
+                                <span>{{ article.description }}</span>
+                            </div>
+                        </div>
+                        <div class="card__info">
+                            <div class="card__legend">
+                                <span>Stock</span>
+                                <span>{{ article.stock }}</span>
+                            </div>
+                            <div class="card__legend">
+                                <span>Remplazado</span>
+                                <span>{{ article.stock - article.required }}</span>
+                            </div>
+                        </div>
+                        <div class="card__info">
+                            <div class="card__legend">
+                                <span>Estado</span>
+                                <span>{{ article.active ? "Activo" : "Inactivo" }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="!editMode && !createMode" class="section__info">
+    <div class="tab">
+        <div (click)="setList('medidas')" [ngClass]="{ 'tab__option-current' : tab == 'medidas' }" class="tab__option">Medidas</div>
+        <div (click)="setList('stock')" [ngClass]="{ 'tab__option-current' : tab == 'stock' }" class="tab__option">Stock</div>
+    </div>
+</div>
+<div *ngIf="!editMode && !createMode" class="section__info">
+    <div class="section__box">
+        <div *ngIf="tab == 'medidas'" class="list">
+            <div class="sectiontitle">Listado de precios y medidas</div>
+            <div *ngIf="paging" class="list__row">
+                <div class="list__cell list__cell-load"><i class="fas fa-spinner spin"></i></div>
+            </div>
+            <div *ngIf="!paging && view.length == 0" class="list__row">
+                <div class="list__cell list__cell-full"><i class="fas fa-exclamation-circle"></i>No se encontraron registros</div>
+            </div>
+            <div *ngIf="!paging && view.length > 0" class="list__row">
+                <div class="list__cell list__cell-full muted">Mostrando {{ (page - 1) * maxitems + 1 }} - {{ (page - 1) * maxitems + view.length }} de {{ filtered.length }}</div>
+            </div>
+            <div *ngFor="let item of view" class="list__row list__row-cells">
+                <div class="list__cell list__cell-full">
+                    <div class="list__title"><strong>{{ item.measure }}</strong></div>
+                    <div class="list__subtitle">{{ (item.price_list | currency:"CAD":"symbol-narrow":"1.2") || "$-" }} - {{ (item.price_offer | currency:"CAD":"symbol-narrow":"1.2") || "$-" }}</div>
+                </div>
+                <div class="list__cell list__cell-right">
+                    <div class="list__title"><strong>{{ item.units }}</strong></div>
+                    <div class="list__subtitle"><span>Unidades</span></div>
+                </div>
+                <div *ngIf="item.measure != 'Unidad'" (click)="updateMeasureDialogForm(item)" class="list__cell list__cell-button">
+                    <i class="fas fa-pen"></i>
+                </div>
+                <div *ngIf="item.measure != 'Unidad'" (click)="deleteMeasureDialogConfirm(item)" class="list__cell list__cell-button">
+                    <i class="fas fa-trash"></i>
+                </div>
+                <div *ngIf="item.measure == 'Unidad'" class="list__cell list__cell-button">
+                    <i class="fas fa-question-circle"></i>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="tab == 'stock'" class="list">
+            <div class="sectiontitle">Historico de movimientos de stock</div>
+            <div *ngIf="paging" class="list__row">
+                <div class="list__cell list__cell-load"><i class="fas fa-spinner spin"></i></div>
+            </div>
+            <div *ngIf="!paging && view.length == 0" class="list__row">
+                <div class="list__cell list__cell-full"><i class="fas fa-exclamation-circle"></i>No se encontraron registros</div>
+            </div>
+            <div *ngIf="!paging && view.length > 0" class="list__row">
+                <div class="list__cell list__cell-full muted">Mostrando {{ (page - 1) * maxitems + 1 }} - {{ (page - 1) * maxitems + view.length }} de {{ filtered.length }}</div>
+            </div>
+            <div *ngFor="let item of view" class="list__row list__row-cells">
+                <div class="list__cell list__cell-date">
+                    <div class="list__subtitle"><span><strong>{{ item.datetime | date:"dd/MM/yyyy" }}</strong></span></div>
+                    <div class="list__subtitle"><span>{{ item.datetime | date:"HH:mm" }}</span></div>
+                </div>
+                <div class="list__cell list__cell-full">
+                    <div *ngIf="!item.description && item.units > 0" class="list__title">Compra</div>
+                    <div *ngIf="!item.description && item.units < 0" class="list__title">Venta</div>
+                    <div *ngIf="item.description" class="list__title">Ajuste</div>
+                    <div *ngIf="item.description" class="list__subtitle"><span>{{ item.description }}</span></div>
+                </div>
+                <div class="list__cell list__cell-right">
+                    <div class="list__title"><strong>{{ item.units }}</strong></div>
+                    <div class="list__subtitle"><span>Unidades</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="!editMode && !createMode" class="section__info">
+    <div class="section__box">
+        <div *ngIf="pages > 1" class="pagination">
+            <div *ngIf="page > 3" (click)="changePage(1)" class="pagination__page">
+                <div class="pagination__number"><i class="fas fa-chevron-left"></i></div>
+            </div>
+            <div *ngIf="page > 2" (click)="changePage(page - 2)" class="pagination__page">
+                <div class="pagination__number">{{ page - 2 }}</div>
+            </div>
+            <div *ngIf="page > 1" (click)="changePage(page - 1)" class="pagination__page">
+                <div class="pagination__number">{{ page - 1 }}</div>
+            </div>
+            <div class="pagination__current">
+                <div class="pagination__number">{{ page }}</div>
+            </div>
+            <div *ngIf="pages > page" (click)="changePage(page + 1)" class="pagination__page">
+                <div class="pagination__number">{{ page + 1 }}</div>
+            </div>
+            <div *ngIf="pages > page + 1" (click)="changePage(page + 2)" class="pagination__page">
+                <div class="pagination__number">{{ page + 2 }}</div>
+            </div>
+            <div *ngIf="pages > page + 2" (click)="changePage(pages)" class="pagination__page">
+                <div class="pagination__number"><i class="fas fa-chevron-right"></i></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="editMode || createMode" class="section__info">
+    <div class="section__box">
+        <app-form *ngIf="form && form.buttons" [form]="form" (submitData)="sendForm($event)"></app-form>
+    </div>
+</div>
+<app-dialog-modal *ngFor="let dialog of dialogs" [dialog]="dialog" (responseDialogModal)="responseDialog($event)"></app-dialog-modal>

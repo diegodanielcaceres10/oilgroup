@@ -1,0 +1,89 @@
+<div (click)="sendResponse(false)" class="dialog">
+</div>
+<div class="dialog__container">
+    <div class="dialog__box dialog__box-{{dialog.type}} scrollbar-custom">
+        <div (click)="sendResponse(false)" class="dialog__close"><i class="fas fa-times click"></i></div>
+        <div class="dialog__title">
+            <h2>{{ dialog.title }}</h2>
+            <span class="dialog__message">{{ dialog.message }}</span>
+            <span class="dialog__span">{{ dialog.span }}</span>
+        </div>
+
+        <!-- Dialog modal list type -->
+        <div *ngIf="dialog.type == 'list'" class="group">
+            <div class="group__box group__box-full">
+                <input [(ngModel)]="search" (ngModelChange)="updateFound()" type="text" maxlength="100" spellcheck="false">
+                <label class="group__label">Buscar por nombre</label>
+            </div>
+        </div>
+        <div *ngIf="dialog.type == 'list'" class="list">
+            <div *ngIf="paging" class="list__row">
+                <div class="list__cell list__cell-load"><i class="fas fa-spinner spin"></i></div>
+            </div>
+            <div *ngIf="!paging && dataView.length == 0" class="list__row">
+                <div class="list__cell list__cell-full"><i class="fas fa-exclamation-circle"></i>No se encontraron registros</div>
+            </div>
+            <div *ngIf="!paging && dataView.length > 0" class="list__row">
+                <div class="list__cell list__cell-full muted">Mostrando {{ (page - 1) * maxitems + 1 }} - {{ (page - 1) * maxitems + dataView.length }} de {{ dataFiltered.length }}</div>
+            </div>
+            <div *ngFor="let item of dataView" class="list__row list__row-cells">
+                <div *ngFor="let column of columns" class="list__cell list__cell-{{ column.type }}">
+                    <div *ngFor="let value of column.values" class="list__{{ value.style }}">
+                        <span *ngIf="value.names && value.names.length > 0">
+                            <span *ngFor="let name of value.names;let i = index">
+                                <strong *ngIf="item[name] && value.bold">{{ item[name] }}<span *ngIf="value.divisor && i < value.names.length - 1">{{ value.divisor }}</span></strong>
+                                <span *ngIf="item[name] && !value.bold">{{ item[name] }}<span *ngIf="value.divisor && i < value.names.length - 1">{{ value.divisor }}</span></span>
+                            </span>
+                        </span>
+                        <span *ngIf="value.label">{{ value.label }}: </span>
+                        <strong *ngIf="value.name && value.bold && value.format && value.format == 'decimal'">{{ item[value.name] | currency:"CAD":"symbol-narrow":"1.2" }}</strong>
+                        <span *ngIf="value.name && !value.bold && value.format && value.format == 'decimal'">{{ item[value.name] | currency:"CAD":"symbol-narrow":"1.2" }}</span>
+                        <strong *ngIf="value.name && value.bold && !value.format">{{ item[value.name] }}</strong>
+                        <span *ngIf="value.name && !value.bold && !value.format">{{ item[value.name] }}</span>
+                        <div *ngIf="value.span && value.muted" class="list__subtitle muted"><span>{{ value.span }}</span></div>
+                        <div *ngIf="value.span && !value.muted" class="list__subtitle"><span>{{ value.span }}</span></div>
+                    </div>
+                </div>
+                <div (click)="sendResponse({ values: item, event: dialog.event, item: dialog.item })" class="list__cell list__cell-button">
+                    <i class="fas fa-plus"></i>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="dialog.type == 'list' && pages > 1" class="pagination">
+            <div *ngIf="page > 3" (click)="changePage(1)" class="pagination__page">
+                <div class="pagination__number"><i class="fas fa-chevron-left"></i></div>
+            </div>
+            <div *ngIf="page > 2" (click)="changePage(page - 2)" class="pagination__page">
+                <div class="pagination__number">{{ page - 2 }}</div>
+            </div>
+            <div *ngIf="page > 1" (click)="changePage(page - 1)" class="pagination__page">
+                <div class="pagination__number">{{ page - 1 }}</div>
+            </div>
+            <div class="pagination__current">
+                <div class="pagination__number">{{ page }}</div>
+            </div>
+            <div *ngIf="pages > page" (click)="changePage(page + 1)" class="pagination__page">
+                <div class="pagination__number">{{ page + 1 }}</div>
+            </div>
+            <div *ngIf="pages > page + 1" (click)="changePage(page + 2)" class="pagination__page">
+                <div class="pagination__number">{{ page + 2 }}</div>
+            </div>
+            <div *ngIf="pages > page + 2" (click)="changePage(pages)" class="pagination__page">
+                <div class="pagination__number"><i class="fas fa-chevron-right"></i></div>
+            </div>
+        </div>
+
+        <!-- Dialog modal form type -->
+        <app-form *ngIf="dialog.type == 'form'" [form]="dialog.form" (submitData)="sendResponse($event)"></app-form>
+
+        <!-- Dialog modal confirm type -->
+        <div *ngIf="dialog.type == 'confirm'" class="group">
+            <div class="group__box group__box-s">
+                <button (click)="sendResponse(false)" [disabled]="saving"><i class="fas fa-times"></i>NO</button>
+            </div>
+            <div class="group__box group__box-s">
+                <button (click)="saving=true;sendResponse({ values: dialog.values, event: dialog.event })" [ngClass]="{ 'group__save' : saving }" [disabled]="saving" class="group__primary"><i *ngIf="saving" class="fas fa-spinner spin"></i><span *ngIf="!saving"><i class="fas fa-check"></i>SI</span></button>
+            </div>
+        </div>
+    </div>
+</div>

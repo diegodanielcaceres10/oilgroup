@@ -1,0 +1,246 @@
+
+.group {
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+
+    &__box {
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+        position: relative;
+        margin: .5rem 0;
+
+        &:focus-within .form__options {
+            display: flex;
+        }
+
+        &-check {
+            align-items: center;
+            flex-direction: row;
+        }
+
+        &-radio {
+            align-items: center;
+            flex-direction: row;
+        }
+
+        &-full {
+            width: 100%;
+        }
+
+        &-icon {
+            justify-content: center;
+            margin: 0;
+            padding: 0 .5rem;
+        }
+
+        &-m {
+            width: 50%;
+
+            @include respond(phone) {
+                width: 100%;
+            }
+        }
+
+        &-s {
+            width: 50%;
+        }
+
+        &-xs {
+            width: 25%;
+
+            @include respond(phone) {
+                width: 50%;
+            }
+        }
+
+        &-focus {
+            z-index: 45;
+        }
+
+        &-hidden {
+            margin: 0;
+            padding: 0;
+        }
+
+        &-select {
+            cursor: pointer;
+            left: 0;
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            z-index: 15;
+        }
+    }
+
+    &__primary {
+        background: var(--secondary);
+        border: .1rem solid var(--secondary);
+        color: white;
+    }
+
+    &__secondary {
+        background: var(--primary);
+        border: .1rem solid var(--primary);
+        color: white;
+    }
+
+    &__edit {
+        border-color: transparent;
+
+        &-on {
+            border-color: var(--darkgrey);
+        }
+
+        &-diff {
+            color: var(--success);
+        }
+    }
+
+    &__tool {
+        align-items: baseline;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        font-weight: 600;
+        justify-content: center;
+        padding: 0;
+
+        @include respond(phone) {
+            align-items: center;
+            border: .1rem solid var(--darkgrey);
+            border-radius: 50%;
+            height: 4rem;
+            width: 4rem;
+        }
+
+        & span {
+
+            @include respond(phone) {
+                display: none;
+            }
+        }
+
+        &-toogle {
+            display: none;
+
+            @include respond(phone) {
+                display: flex;
+            }
+        }
+
+        &:hover {
+            opacity: .8;
+        }
+
+        &-cancel i {
+            color: var(--error);
+        }
+
+        &-success i {
+            color: var(--success);
+        }
+    }
+
+    &__save {
+        cursor: wait;
+    
+        & i {
+            font-size: 2.5rem;
+        }
+    }
+
+    &__label {
+        color: var(--black);
+        font-size: 1.4rem;
+        left: 3rem;
+        transition: all .2s ease;
+        position: absolute;
+        top: -1rem;
+    }
+
+    &__icon {
+        top: 2.6rem;
+        color: var(--darkgrey);
+        position: absolute;
+        transition: all .2s ease;
+
+        &-symbol {
+            left: 2rem;
+            z-index: 20;
+
+            & ~ input,& ~ select {
+                padding-left: 4rem;
+            }
+        }
+
+        &-action {
+            cursor: pointer;
+            right: 2rem;
+            z-index: 20;
+
+            & ~ input,& ~ select {
+                padding-right: 4rem;
+            }
+        }
+
+        &-off {
+            cursor: pointer;
+            right: 2rem;
+        }
+
+        &-required {
+            font-size: 3rem;
+            right: 0.5rem;
+            top: 0.2rem;
+        }
+
+        &-rotate {
+            transform: rotate(180deg);
+        }
+    }
+
+    &__back {
+        height: 100%;
+        left: 0;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 40;
+    }
+
+    &__options {
+        position: relative;
+        width: 100%;
+    }
+
+    &__list {
+        background-color: white;
+        border: .1rem solid var(--darkgrey);
+        box-shadow: .2rem .2rem .5rem var(--darkgrey);
+        max-height: 50vh;
+        overflow-y: auto;
+        position: absolute;
+        width: 100%;
+        z-index: 50;
+    }
+
+    &__option {
+        cursor: pointer;
+        padding: 1rem;
+
+        &:hover {
+            background: var(--primary);
+            color: white;
+        }
+    }
+
+    &__alert {
+        color: var(--error);
+        font-size: 1.4rem;
+        position: absolute;
+        top: 0;
+    }
+}

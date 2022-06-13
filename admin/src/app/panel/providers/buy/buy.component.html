@@ -1,0 +1,207 @@
+<div class="title">
+    <div class="title__info">
+        <h2>Compra</h2>
+    </div>
+    <div *ngIf="createMode && path < 3" class="group">
+        <div class="group__box group__box-icon">
+            <div *ngIf="!showCart" (click)="showCart = true" class="group__tool group__tool-toogle"><i class="fas fa-shopping-cart"></i></div>
+            <div *ngIf="showCart" (click)="showCart = false" class="group__tool group__tool-toogle"><i class="fas fa-times"></i></div>
+        </div>
+    </div>
+    <div *ngIf="!createMode && buy.status != 'Cancelada'" class="group">
+        <div class="group__box group__box-icon">
+            <div (click)="cancelBuyDialogConfirm()" class="group__tool group__tool-cancel"><i class="fas fa-trash"></i><span>Cancelar</span></div>
+        </div>
+    </div>
+</div>
+<div *ngIf="!createMode" class="section__info">
+    <div class="section__box">
+        <div class="card">
+            <div class="card__content">
+                <div class="card__item">
+                    <div class="card__box card__box-primary">
+                        <div class="card__info">
+                            <div class="card__label">Compra:</div>
+                            <div class="card__title"><strong>{{ buy.provider.fantasy_name }}</strong></div>
+                            <div class="card__title"><strong>{{ buy.total | currency:"CAD":"symbol-narrow":"1.2" }}</strong></div>
+                        </div>
+                        <div class="card__info">
+                            <div class="card__label">Estado:</div>
+                            <div class="card__subtitle">
+                                <i *ngIf="buy.status == 'Aprobada'" class="fas fa-check"></i>
+                                <i *ngIf="buy.status == 'Cancelada'" class="fas fa-times"></i>
+                                {{ buy.status }}
+                            </div>
+                            <div class="card__label">Fecha:</div>
+                            <div class="card__subtitle"><i class="fas fa-calendar-alt"></i>{{ buy.datetime | date:"dd/MM/yyyy, HH:mm" }}</div>
+                        </div>
+                    </div>
+                    <div class="card__box card__box-full">
+                        <div class="card__info">
+                            <div class="card__legend">
+                                <span>N° de factura</span>
+                                <span>{{ buy.ticket }}</span>
+                            </div>
+                            <div class="card__legend">
+                                <span>Descripción</span>
+                                <span>{{ buy.description }}</span>
+                            </div>
+                        </div>
+                        <div class="card__info">
+                            <div class="list">
+                                <div class="list__row">
+                                    <div class="list__cell list__cell-full muted">Detalle</div>
+                                    <div class="list__cell list__cell-right muted">Subtotal</div>
+                                </div>
+                                <div *ngFor="let item of buy.items" class="list__row list__row-detail">
+                                    <div *ngIf="!item.concept" class="list__cell list__cell-full">
+                                        <div class="list__title">{{ item.brand }} {{ item.name }}</div>
+                                        <div class="list__subtitle"><span>{{ item.cost | currency:"CAD":"symbol-narrow":"1.2" }} x {{ item.quantity }}</span></div>
+                                    </div>
+                                    <div *ngIf="item.concept" class="list__cell list__cell-full">
+                                        <div class="list__title">{{ item.concept }}</div>
+                                    </div>
+                                    <div class="list__cell list__cell-right">
+                                        <div class="list__title">{{ item.subtotal | currency:"CAD":"symbol-narrow":"1.2" }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="createMode" class="path">
+    <div class="path__item">
+        <div class="path__icon path__icon-primary"><i class="fas fa-truck"></i></div>
+        <div *ngIf="path == 0" class="path__icon path__icon-dot path__icon-current"><i class="far fa-circle"></i></div>
+        <div *ngIf="path > 0" class="path__icon path__icon-dot path__icon-check"><i class="fas fa-check-circle"></i></div>
+        <div class="path__line path__line-right"></div>
+    </div>
+    <div class="path__item">
+        <div class="path__icon path__icon-primary"><i class="fas fa-box"></i></div>
+        <div *ngIf="path < 1" class="path__icon path__icon-dot"><i class="fas fa-circle"></i></div>
+        <div *ngIf="path == 1" class="path__icon path__icon-dot path__icon-current"><i class="far fa-circle"></i></div>
+        <div *ngIf="path > 1" class="path__icon path__icon-dot path__icon-check"><i class="fas fa-check-circle"></i></div>
+        <div class="path__line path__line-left"></div>
+        <div class="path__line path__line-right"></div>
+    </div>
+    <div class="path__item">
+        <div class="path__icon path__icon-primary"><i class="fas fa-dollar-sign"></i></div>
+        <div *ngIf="path < 2" class="path__icon path__icon-dot"><i class="fas fa-circle"></i></div>
+        <div *ngIf="path == 2" class="path__icon path__icon-dot path__icon-current"><i class="far fa-circle"></i></div>
+        <div *ngIf="path > 2 && buy.payment.status" class="path__icon path__icon-dot path__icon-check"><i class="fas fa-check-circle"></i></div>
+        <div *ngIf="path > 2 && !buy.payment.status" class="path__icon path__icon-dot"><i class="far fa-circle"></i></div>
+        <div class="path__line path__line-left"></div>
+        <div class="path__line path__line-right"></div>
+    </div>
+    <div class="path__item">
+        <div class="path__icon path__icon-primary"><i class="fas fa-check-circle"></i></div>
+        <div *ngIf="path < 3" class="path__icon path__icon-dot"><i class="fas fa-circle"></i></div>
+        <div *ngIf="path == 3" class="path__icon path__icon-dot path__icon-current"><i class="far fa-circle"></i></div>
+        <div *ngIf="path > 3" class="path__icon path__icon-dot path__icon-check"><i class="fas fa-check-circle"></i></div>
+        <div class="path__line path__line-left"></div>
+    </div>
+</div>
+<div *ngIf="createMode" class="section__info">
+    <div *ngIf="path == 0" [ngClass]="{ 'section__box-hide' : showCart }" class="section__box section__box-small">
+        <app-form *ngIf="form && form.buttons" [form]="form" (submitData)="sendForm($event)"></app-form>
+    </div>
+    <div *ngIf="path == 1" [ngClass]="{ 'section__box-hide' : showCart }" class="section__box section__box-small">
+        <div class="list">
+            <div class="list__row list__row-cells">
+                <div class="list__cell list__cell-full">
+                    <div class="list__title"><strong>Articulos registrados</strong></div>
+                </div>
+                <div (click)="error = '';searchArticleDialogList()" class="list__cell list__cell-button">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+            <div class="list__row list__row-cells">
+                <div class="list__cell list__cell-full">
+                    <div class="list__title"><strong>Detalles adicionales</strong></div>
+                </div>
+                <div (click)="error = '';addDetailDialogForm()" class="list__cell list__cell-button">
+                    <i class="fas fa-plus"></i>
+                </div>
+            </div>
+        </div>
+        <app-form *ngIf="form && form.buttons" [form]="form" (submitData)="sendForm($event)"></app-form>
+        <div class="group">
+            <div class="group__box group__box-full">
+                <span *ngIf="error" class="group__alert"><i class="fas fa-exclamation-circle"></i>{{ error }}</span>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="path == 2" [ngClass]="{ 'section__box-hide' : showCart }" class="section__box section__box-small">
+        <app-form *ngIf="form && form.buttons" [form]="form" (submitData)="sendForm($event)"></app-form>
+    </div>
+    <div [ngClass]="{ 'section__box-hide' : !showCart }" class="section__box section__box-large scrollbar-custom">
+        <div class="list">
+            <div class="sectiontitle">Descripción de la compra, adjuntar detalles obtenidos de la factura emitida por el proveedor, seleccionar articulos previamente registrados y adicionar detalles adicionales. Confirmar detalles del pago realizado si corresponde</div>
+            <div class="list__row list__row-info">
+                <div class="list__cell list__cell-full">
+                    <div class="list__title"><strong>{{ buy.provider.fantasy_name ? buy.provider.fantasy_name.toUpperCase() : "" }}</strong></div>
+                    <div class="list__subtitle"><span>Proveedor</span></div>
+                    <div class="list__subtitle"><span>N° de factura: {{ buy.ticket }}</span></div>
+                    <div class="list__subtitle"><span>{{ buy.description }}</span></div>
+                </div>
+            </div>
+            <div *ngIf="buy.articles.length == 0 && buy.details.length == 0" class="list__row list__row-info">
+                <div class="list__cell list__cell-full"><i class="fas fa-exclamation-circle"></i>No hay detalles agregados</div>
+            </div>
+            <div *ngFor="let item of buy.articles" class="list__row list__row-info">
+                <div (click)="removeArticle(item)" class="list__cell list__cell-button">
+                    <i class="fas fa-times"></i>
+                </div>
+                <div class="list__cell list__cell-full">
+                    <div class="list__subtitle"><span>{{ item.brand }}</span></div>
+                    <div class="list__title">{{ item.name }}</div>
+                    <div class="list__subtitle"><span>{{ item.cost | currency:"CAD":"symbol-narrow":"1.2" }}</span></div>
+                    <div class="list__subtitle"><span>Unidad x {{ item.quantity }}</span></div>
+                    <div class="list__subtitle"><span>Stock: {{ item.units }}</span></div>
+                </div>
+                <div class="list__cell list__cell-right">
+                    <div class="list__title">{{ item.subtotal | currency:"CAD":"symbol-narrow":"1.2" }}</div>
+                </div>
+            </div>
+            <div *ngFor="let item of buy.details" class="list__row list__row-info">
+                <div (click)="removeDetail(item)" class="list__cell list__cell-button">
+                    <i class="fas fa-times"></i>
+                </div>
+                <div class="list__cell list__cell-full">
+                    <div class="list__subtitle"><span>{{ item.concept }}</span></div>
+                </div>
+                <div class="list__cell list__cell-right">
+                    <div class="list__title">{{ item.subtotal | currency:"CAD":"symbol-narrow":"1.2" }}</div>
+                </div>
+            </div>
+            <div *ngIf="buy.articles.length > 0 || buy.details.length > 0" class="list__row list__row-info">
+                <div class="list__cell list__cell-full">
+                    <div class="list__title">Total</div>
+                </div>
+                <div class="list__cell list__cell-right">
+                    <div class="list__title"><strong>{{ buy.total | currency:"CAD":"symbol-narrow":"1.2" }}</strong></div>
+                </div>
+            </div>
+            <div *ngIf="path > 2 && buy.payment.status" class="list__row list__row-info">
+                <div class="list__cell list__cell-full">
+                    <div class="list__title">Pago</div>
+                    <div class="list__subtitle"><span>Forma de pago: {{ buy.payment.method }}</span></div>
+                    <div class="list__subtitle"><span>{{ buy.payment.ticket }}</span></div>
+                </div>
+                <div class="list__cell list__cell-right">
+                    <div class="list__title">-{{ buy.payment.import | currency:"CAD":"symbol-narrow":"1.2" }}</div>
+                </div>
+            </div>
+            <div *ngIf="path > 2 && !buy.payment.status" class="list__row list__row-info">
+                <div class="list__cell list__cell-full"><i class="fas fa-exclamation-circle"></i>No registra pago</div>
+            </div>
+        </div>
+        <div *ngIf="path > 2" class="warning">Revisar los datos ingresados antes de confirmar el registro de la compra</div>
+        <app-form *ngIf="path > 2 && form && form.buttons" [form]="form" (submitData)="sendForm($event)"></app-form>
+    </div>
+</div>
+<app-dialog-modal *ngFor="let dialog of dialogs" [dialog]="dialog" (responseDialogModal)="responseDialog($event)"></app-dialog-modal>

@@ -1,0 +1,21 @@
+
+// Define scroll bar design
+.scrollbar-custom::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: .1rem;
+}
+
+.scrollbar-custom::-webkit-scrollbar {
+    height: 1rem;
+    width: 1rem;
+    background: transparent;
+
+    @include respond(phone) {
+        width: .5rem;
+    }
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+    border-radius: 1rem;
+    background: var(--darkgrey);
+}

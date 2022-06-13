@@ -1,0 +1,174 @@
+<div class="title">
+    <div class="title__info">
+        <h2>Cliente</h2>
+    </div>
+    <div *ngIf="!editMode && !createMode" class="group">
+        <div *ngIf="customer.active" class="group__box group__box-icon">
+            <div routerLink="/panel/clientes/venta/nueva" [queryParams]="{ cliente: customer.id }" class="group__tool"><i class="fas fa-shopping-basket"></i><span>Venta</span></div>
+        </div>
+        <div class="group__box group__box-icon">
+            <div routerLink="/panel/clientes/cobro/nuevo" [queryParams]="{ cliente: customer.id }" class="group__tool"><i class="fas fa-dollar-sign"></i><span>Cobro</span></div>
+        </div>
+        <div *ngIf="['Super Administrador', 'Administrador'].indexOf(access.role) > -1" class="group__box group__box-icon">
+            <div (click)="editMode = true" class="group__tool"><i class="fas fa-pen"></i><span>Editar</span></div>
+        </div>
+        <div *ngIf="['Super Administrador', 'Administrador'].indexOf(access.role) > -1" class="group__box group__box-icon">
+            <div (click)="printSummaryDialogConfirm()" class="group__tool"><i class="fas fa-file-pdf"></i><span>Resumen</span></div>
+        </div>
+    </div>
+    <div *ngIf="['Super Administrador', 'Administrador'].indexOf(access.role) > -1 && editMode" class="group">
+        <div class="group__box group__box-icon">
+            <div (click)="editMode = false" class="group__tool"><i class="fas fa-times"></i><span>Volver</span></div>
+        </div>
+    </div>
+</div>
+<div *ngIf="!editMode && !createMode" class="section__info">
+    <div class="section__box">
+        <div class="card">
+            <div class="card__content">
+                <div class="card__item">
+                    <div class="card__box card__box-primary">
+                        <div class="card__info">
+                            <div class="card__label">Cliente:</div>
+                            <div class="card__title"><strong>{{ customer.fantasy_name }}</strong></div>
+                            <div class="card__label">CUIT/DNI:</div>
+                            <div class="card__subtitle">{{ customer.document || "-" }}</div>
+                            <div class="card__label">Razón social:</div>
+                            <div class="card__subtitle">{{ customer.name }}</div>
+                            <div class="card__label">IVA:</div>
+                            <div class="card__subtitle">{{ customer.tax_condition }}</div>
+                        </div>
+                    </div>
+                    <div class="card__box card__box-full">
+                        <div class="card__info">
+                            <div class="card__legend">
+                                <span><i class="fas fa-user-tie"></i>Vendedor</span>
+                                <span *ngIf="customer.user">{{ customer.user.lastname }} {{ customer.user.firstname }}</span>
+                            </div>
+                            <div class="card__legend">
+                                <span><i class="fas fa-phone"></i>Teléfono</span>
+                                <span>{{ customer.phone }}</span>
+                            </div>
+                            <div class="card__legend">
+                                <span><i class="fas fa-at"></i>Correo electrónico</span>
+                                <span>{{ customer.email }}</span>
+                            </div>
+                            <div class="card__legend">
+                                <span><i class="fas fa-map-marker-alt"></i>Ubicación</span>
+                                <span>{{ customer.address }} {{ customer.city }}</span>
+                            </div>
+                        </div>
+                        <div class="card__info">
+                            <div class="card__legend">
+                                <span>Total vendido</span>
+                                <span>{{ customer.sale | currency:"CAD":"symbol-narrow":"1.2" }}</span>
+                            </div>
+                            <div class="card__legend">
+                                <span>Total aprobado</span>
+                                <span>{{ customer.success | currency:"CAD":"symbol-narrow":"1.2" }}</span>
+                            </div>
+                            <div class="card__legend">
+                                <span>Total cobrado</span>
+                                <span>{{ customer.payment | currency:"CAD":"symbol-narrow":"1.2" }}</span>
+                            </div>
+                            <div class="card__legend">
+                                <span>Saldo pendiente</span>
+                                <span class="price"><strong>{{ customer.pending | currency:"CAD":"symbol-narrow":"1.2" }}</strong></span>
+                            </div>
+                        </div>
+                        <div class="card__info">
+                            <div class="card__legend">
+                                <span>Estado</span>
+                                <span>{{ customer.active ? "Activo" : "Inactivo" }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="!editMode && !createMode" class="section__info">
+    <div class="section__box">
+        <div class="list">
+            <div class="sectiontitle">Listado de ventas ordenadas por fecha descendiente</div>
+            <div *ngIf="paging" class="list__row">
+                <div class="list__cell list__cell-load"><i class="fas fa-spinner spin"></i></div>
+            </div>
+            <div *ngIf="!paging && salesView.length == 0" class="list__row">
+                <div class="list__cell list__cell-full"><i class="fas fa-exclamation-circle"></i>No se encontraron registros</div>
+            </div>
+            <div *ngIf="!paging && salesView.length > 0" class="list__row">
+                <div class="list__cell list__cell-full muted">Mostrando {{ (page - 1) * maxitems + 1 }} - {{ (page - 1) * maxitems + salesView.length }} de {{ salesFiltered.length }}</div>
+            </div>
+            <div *ngFor="let item of salesView" [ngClass]="{ 'list__row-cancel' : item.status == 'Cancelada' || item.status == 'Cancelado' }" class="list__row list__row-cells">
+                <div class="list__cell list__cell-date">
+                    <div class="list__subtitle"><span><strong>{{ item.datetime | date:"dd/MM/yyyy" }}</strong></span></div>
+                    <div class="list__subtitle"><span>{{ item.datetime | date:"HH:mm" }}</span></div>
+                </div>
+                <div class="list__cell list__cell-full">
+                    <div *ngIf="item.typeof == 'sale'" class="list__title">Venta</div>
+                    <div *ngIf="item.typeof == 'payment'" class="list__title">Cobro</div>
+                    <div class="list__subtitle">
+                        <span>
+                            <i *ngIf="item.status == 'Aprobada' || item.status == 'Aprobado'" class="fas fa-check"></i>
+                            <i *ngIf="item.status == 'Cancelada' || item.status == 'Cancelado'" class="fas fa-times"></i>
+                            <i *ngIf="item.status == 'Pendiente'" class="fas fa-thumbtack"></i>
+                            <i *ngIf="item.status == 'Lista'" class="fas fa-bell"></i>
+                            {{ item.status }}
+                        </span>
+                    </div>
+                </div>
+                <div class="list__cell list__cell-right">
+                    <div *ngIf="item.typeof == 'sale'" class="list__title"><strong>{{ item.total | currency:"CAD":"symbol-narrow":"1.2" }}</strong></div>
+                    <div *ngIf="item.typeof == 'payment'" class="list__title"><strong>-{{ item.total | currency:"CAD":"symbol-narrow":"1.2" }}</strong></div>
+                    <div class="list__subtitle">
+                        <div *ngIf="item.billing && !item.billing_date" class="list__tag list__tag-pending"><i class="fas fa-thumbtack"></i>Pendiente</div>
+                        <div *ngIf="item.billing && item.billing_date" class="list__tag list__tag-success"><i class="fas fa-check"></i>Facturada</div>
+                        <div *ngIf="item.typeof == 'sale' && !item.billing" class="list__tag list__tag-done"><i class="fas fa-circle"></i>Finalizada</div>
+                        <div *ngIf="item.typeof == 'payment' && !item.billing" class="list__tag list__tag-done"><i class="fas fa-circle"></i>Finalizado</div>
+                    </div>
+                </div>
+                <div *ngIf="item.typeof == 'sale'" [routerLink]="['/panel/clientes/venta/' + item.id]" class="list__cell list__cell-button">
+                    <i class="fas fa-chevron-circle-right"></i>
+                </div>
+                <div *ngIf="item.typeof == 'payment'" [routerLink]="['/panel/clientes/cobro/' + item.id]" class="list__cell list__cell-button">
+                    <i class="fas fa-chevron-circle-right"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="['Super Administrador', 'Administrador'].indexOf(access.role) > -1 && !editMode && !createMode" class="section__info">
+    <div class="section__box">
+        <div *ngIf="pages > 1" class="pagination">
+            <div *ngIf="page > 3" (click)="changePage(1)" class="pagination__page">
+                <div class="pagination__number"><i class="fas fa-chevron-left"></i></div>
+            </div>
+            <div *ngIf="page > 2" (click)="changePage(page - 2)" class="pagination__page">
+                <div class="pagination__number">{{ page - 2 }}</div>
+            </div>
+            <div *ngIf="page > 1" (click)="changePage(page - 1)" class="pagination__page">
+                <div class="pagination__number">{{ page - 1 }}</div>
+            </div>
+            <div class="pagination__current">
+                <div class="pagination__number">{{ page }}</div>
+            </div>
+            <div *ngIf="pages > page" (click)="changePage(page + 1)" class="pagination__page">
+                <div class="pagination__number">{{ page + 1 }}</div>
+            </div>
+            <div *ngIf="pages > page + 1" (click)="changePage(page + 2)" class="pagination__page">
+                <div class="pagination__number">{{ page + 2 }}</div>
+            </div>
+            <div *ngIf="pages > page + 2" (click)="changePage(pages)" class="pagination__page">
+                <div class="pagination__number"><i class="fas fa-chevron-right"></i></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="(editMode || createMode)" class="section__info">
+    <div class="section__box">
+        <app-form *ngIf="form && form.buttons" [form]="form" (submitData)="sendForm($event)"></app-form>
+    </div>
+</div>
+<app-dialog-modal *ngFor="let dialog of dialogs" [dialog]="dialog" (responseDialogModal)="responseDialog($event)"></app-dialog-modal>

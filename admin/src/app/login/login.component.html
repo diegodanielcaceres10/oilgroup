@@ -1,0 +1,17 @@
+<div class="login">
+    <app-load></app-load>
+    <div [ngClass]="{ 'login__box-hide' : loading }" class="login__box">
+        <img (load)="load()" class="login__back" src="./assets/img/back.jpg" alt="Backgroud image">
+        <div class="login__form">
+            <div class="login__logo">
+                <img src="./assets/img/logo.png" alt="logo">
+            </div>
+            <app-form *ngIf="form && form.buttons" [form]="form" [saving]="saving" (submitData)="login($event)"></app-form>
+            <div class="group">
+                <div class="group__box group__box-full">
+                    <span *ngIf="error" class="group__alert"><i class="fas fa-exclamation-circle"></i>{{ error }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
