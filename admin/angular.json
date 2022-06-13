@@ -60,7 +60,7 @@
                 }
               ]
             },
-            "dev": {
+            "cloud": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
