@@ -78,7 +78,8 @@ exports.create = async (req, res) => {
         customer.tax_condition = customer.tax_condition.replace(/'/gi, "");
         customer.address = customer.address ? customer.address.replace(/'/gi, "").toLowerCase().replace(/(^\w{1})|(\s{1}\w{1})/g, m => m.toUpperCase()) : "";
         customer.city = customer.city ? customer.city.replace(/'/gi, "").toLowerCase().replace(/(^\w{1})|(\s{1}\w{1})/g, m => m.toUpperCase()) : "";
-        customer.id = await storage.get_id(req, res, session, "insert into customer(user,fantasy_name,document,name,phone,email,tax_condition,address,city)values('" + customer.user + "','" + customer.fantasy_name + "','" + customer.document + "','" + customer.name + "','" + customer.phone + "','" + customer.email + "','" + customer.tax_condition + "','" + customer.address + "','" + customer.city + "')");
+        customer.schedule = customer.schedule ? customer.schedule.replace(/'/gi, "") : "";
+        customer.id = await storage.get_id(req, res, session, "insert into customer(user,fantasy_name,document,name,phone,email,tax_condition,address,city,schedule)values('" + customer.user + "','" + customer.fantasy_name + "','" + customer.document + "','" + customer.name + "','" + customer.phone + "','" + customer.email + "','" + customer.tax_condition + "','" + customer.address + "','" + customer.city + "','" + customer.schedule + "')");
 
         // Define response
         return res.status(200).send({ status: "success", data: customer.id });
@@ -117,7 +118,8 @@ exports.update = async (req, res) => {
         customer.tax_condition = customer.tax_condition.replace(/'/gi, "");
         customer.address = customer.address ? customer.address.replace(/'/gi, "").toLowerCase().replace(/(^\w{1})|(\s{1}\w{1})/g, m => m.toUpperCase()) : "";
         customer.city = customer.city ? customer.city.replace(/'/gi, "").toLowerCase().replace(/(^\w{1})|(\s{1}\w{1})/g, m => m.toUpperCase()) : "";
-        await storage.run_query(req, res, session, "update customer set user='" + customer.user + "',fantasy_name='" + customer.fantasy_name + "',document='" + customer.document + "',name='" + customer.name + "',phone='" + customer.phone + "',email='" + customer.email + "',tax_condition='" + customer.tax_condition + "',address='" + customer.address + "',city='" + customer.city + "'where id=" + customer.id);
+        customer.schedule = customer.schedule ? customer.schedule.replace(/'/gi, "") : "";
+        await storage.run_query(req, res, session, "update customer set user='" + customer.user + "',fantasy_name='" + customer.fantasy_name + "',document='" + customer.document + "',name='" + customer.name + "',phone='" + customer.phone + "',email='" + customer.email + "',tax_condition='" + customer.tax_condition + "',address='" + customer.address + "',city='" + customer.city + "',schedule='" + customer.schedule + "'where id=" + customer.id);
 
         // Define response
         return res.status(200).send({ status: "success" });
@@ -180,6 +182,7 @@ exports.summary = async (req, res) => {
         html = html.replace("{{CUIT}}", customer.document);
         html = html.replace("{{NAME}}", customer.name);
         html = html.replace("{{ADDRESS}}", customer.address + " " + customer.city);
+        html = html.replace("{{SCHEDULE}}", customer.schedule);
         html = html.replace("{{PHONE}}", customer.phone);
         html = html.replace("{{SUMMARY}}", customer.pending.toFixed(2));
         html = html.replace("{{DATE}}", moment().format("DD-MM-YYYY, HH:mm"));

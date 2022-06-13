@@ -285,7 +285,7 @@ exports.ticket = async (req, res) => {
         // Define sale
         let sale = req.body.sale;
         sale = await storage.get_row(req, res, session, "select*from sale where id=" + sale.id);
-        sale.customer = await storage.get_row(req, res, session, "select document,name,address,city,c.phone,lastname,firstname from customer c left join user u on user=username where id=" + sale.customer);
+        sale.customer = await storage.get_row(req, res, session, "select document,name,address,city,c.phone,lastname,firstname,schedule from customer c left join user u on user=username where id=" + sale.customer);
         sale.items = await storage.get_data(req, res, session, "select s.id,code,concept,brand,name,measure,price,quantity,units,subtotal from sale_detail s left join article a on article=a.id where subtotal and deleted=0 and sale=" + sale.id);
 
         // Read HTML Template
@@ -295,6 +295,7 @@ exports.ticket = async (req, res) => {
         html = html.replace("{{CUIT}}", sale.customer.document);
         html = html.replace("{{NAME}}", sale.customer.name);
         html = html.replace("{{ADDRESS}}", sale.customer.address + " " + sale.customer.city);
+        html = html.replace("{{SCHEDULE}}", sale.customer.schedule);
         html = html.replace("{{PHONE}}", sale.customer.phone);
         html = html.replace("{{USER}}", sale.customer.lastname + " " + sale.customer.firstname);
         html = html.replace("{{DESCRIPTION}}", sale.description);

@@ -181,6 +181,12 @@ export class CustomerComponent implements OnInit {
                                 value: this.customer.address,
                             },
                             {
+                                name: "schedule",
+                                type: "text",
+                                label: "Horarios",
+                                value: this.customer.schedule,
+                            },
+                            {
                                 name: "city",
                                 type: "text",
                                 label: "Localidad",
