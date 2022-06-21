@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build-prod": "forever --uid 06-ws-prod start server.js",
-    "build-dev": "forever --uid 06-ws-dev start server.js",
+    "build": "forever --uid 06-oilgroup-prd start server.js",
+    "cloud": "forever --uid 06-oilgroup-dev start server.js",
     "start": "nodemon server.js"
   },
   "repository": {

@@ -4,8 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build-prod": "ng build --prod",
-    "build-dev": "ng build --configuration=dev --base-href=/dev/oilgroup/admin/",
+    "build": "ng build --prod",
+    "cloud": "ng build --configuration=cloud --base-href=/dev/oilgroup/admin/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
