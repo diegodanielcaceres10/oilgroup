@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: "http://oilgroup.com.ar/api/oilgroup/",
+  apiUrl: "http://octomode.com.ar/api/oilgroup/",
 };

@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod",
+    "build": "ng build --prod --base-href=/production/oilgroup/admin/",
     "cloud": "ng build --configuration=cloud --base-href=/dev/oilgroup/admin/",
     "test": "ng test",
     "lint": "ng lint",
