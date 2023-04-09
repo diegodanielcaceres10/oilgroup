@@ -12,16 +12,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/xenecoding/oilgroup-app.git"
-  },
-  "author": "XENE CODE",
+  "author": "Diego Caceres",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/xenecoding/oilgroup-app/issues"
-  },
-  "homepage": "https://github.com/xenecoding/oilgroup-app#readme",
   "private": true,
   "dependencies": {
     "@amcharts/amcharts4": "^4.10.17",

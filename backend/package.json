@@ -10,16 +10,8 @@
     "build-dev": "forever --uid 06-dev-oilgroup start server.js",
     "start": "nodemon server.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/xenecoding/oilgroup-ws.git"
-  },
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/xenecoding/oilgroup-ws/issues"
-  },
-  "homepage": "https://github.com/xenecoding/oilgroup-ws#readme",
   "dependencies": {
     "dotenv": "^8.2.0",
     "express": "^4.17.1",

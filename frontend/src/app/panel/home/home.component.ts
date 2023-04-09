@@ -5,10 +5,9 @@ import { NavService } from '../../_shared/service/nav.service';
 import { HeaderService } from '../../_shared/service/header.service';
 import { LoadService } from '../../_shared/service/load.service';
 
-/* Imports */
+/* AM Charts */
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
-
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import am4themes_dataviz from "@amcharts/amcharts4/themes/dataviz";
 
@@ -87,7 +86,6 @@ export class HomeComponent implements OnInit {
                 if (this.metrics.customers && this.metrics.customers.length > 0) this.lineChart(this.metrics.customers, "customers-chart")
                 if (this.metrics.providers && this.metrics.providers.length > 0) this.lineChart(this.metrics.providers, "providers-chart")
             }, 100)
-
         } catch (e) {
             console.error("Error", e)
             this.LoadService.change(false)

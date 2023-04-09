@@ -77,32 +77,16 @@
             width: 20%;
         }
 
-        &-active {
-            background: var(--primary);
-            color: white;
-            font-weight: 600;
-
-            & button {
-                color: white;
-                font-weight: 600 !important;
-            }
-
-            @include respond(phone) {
-                color: var(--secondary);
-            }
-        }
-
         & button {
             align-items: center;
             background: transparent;
             border-color: transparent;
-            border-radius: .5rem;
             display: flex;
             font-family: inherit;
             font-size: 1.2rem;
             font-weight: 300;
             height: auto;
-            padding: 1rem;
+            padding: 0;
             text-transform: unset;
             width: 100%;
 
@@ -118,13 +102,13 @@
                 }
             }
 
-            &:hover {
-                color: var(--secondary);
+            &:active {
+                transform: none;
             }
-        }
 
-        & button:focus-within + ul li {
-            max-height: 5rem;
+            &:focus ul li, &:focus-within ul li {
+                max-height: 5rem;
+            }
         }
     }
 
@@ -152,27 +136,15 @@
     &__link {
         border-radius: .5rem;
         display: flex;
-        padding: 1rem;
+        flex-direction: column;
         width: 100%;
     
         @include respond(phone) {
-            align-items: center;
             color: white;
-            flex-direction: column;
 
             & i {
                 font-size: 2rem;
                 padding: .5rem;
-            }
-        }
-
-        &-active {
-            background: var(--primary) !important;
-            color: white;
-            font-weight: 600 !important;
-    
-            @include respond(phone) {
-                color: var(--secondary);
             }
         }
     }
@@ -195,29 +167,44 @@
         }
     }
 
+    &__legend {
+        align-items: center;
+        border-radius: .5rem;
+        display: flex;
+        padding: 1rem;
+        width: 100%;
+
+        @include respond(phone) {
+            flex-direction: column;
+        }
+
+        &-active {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+
+        &:hover {
+            color: var(--secondary);
+            font-weight: 500;
+        }
+    }
+
     &__dropdown {
         display: flex;
         flex-direction: column;
+        width: 100%;
 
         @include respond(phone) {
             background: var(--primary);
             border-top-right-radius: 1rem;
             border-top-left-radius: 1rem;
-            bottom: 100%;
+            bottom: 8rem;
             left: 0;
-            position: absolute;
-            width: 100%;
+            padding-bottom: 1rem;
+            position: fixed;
+            width: 100vw;
             z-index: 200;
-        }
-    }
-
-    &__xene {
-        align-items: center;
-        display: flex;
-        justify-content: center;
-
-        @include respond(phone) {
-            display: none;
         }
     }
 }

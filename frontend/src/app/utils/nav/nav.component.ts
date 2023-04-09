@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../_shared/service/user.service';
 import { NavService } from 'src/app/_shared/service/nav.service';
@@ -10,6 +10,7 @@ import { LoadService } from '../../_shared/service/load.service';
 })
 export class NavComponent implements OnInit {
 
+    @ViewChild("logo") logo: ElementRef;
     access: any = {}
     items: any = [
         {
@@ -132,7 +133,8 @@ export class NavComponent implements OnInit {
             this.menuselected = name
             this.pageselected = subname
             if (this.menuselected != name || this.pageselected != subname) this.LoadService.change(true)
-            this.Router.navigateByUrl(link)
+            this.Router.navigateByUrl(link);
+            this.logo && this.logo.nativeElement && this.logo.nativeElement.focus()
         } catch (e) {
             console.error("Error", e)
         }

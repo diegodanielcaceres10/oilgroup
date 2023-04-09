@@ -9,6 +9,12 @@ import { HeaderService } from '../../../_shared/service/header.service';
 import { LoadService } from '../../../_shared/service/load.service';
 import { Location } from '@angular/common';
 
+/* AM Charts */
+import * as am4core from "@amcharts/amcharts4/core";
+import * as am4charts from "@amcharts/amcharts4/charts";
+import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+import am4themes_dataviz from "@amcharts/amcharts4/themes/dataviz";
+
 @Component({
     selector: 'app-article',
     templateUrl: './article.component.html',
@@ -29,7 +35,7 @@ export class ArticleComponent implements OnInit {
     providers: any = []
     brands: any = []
     categories: any = []
-    tab: string = "Medidas"
+    tab: string = "profitability"
     dialogs: any = []
     form: any = {}
 
@@ -61,7 +67,8 @@ export class ArticleComponent implements OnInit {
             } else {
                 const id = this.ActivatedRoute.snapshot.params["id"]
                 this.page = parseInt(this.ActivatedRoute.snapshot.params["page"])
-                this.tab = this.ActivatedRoute.snapshot.queryParams["lista"] == "stock" ? "stock" : "medidas"
+                const param = this.ActivatedRoute.snapshot.queryParams["lista"];
+                this.tab = param == "stock" ? "stock" : param == "medidas" ? "medidas" : "profitability"
                 this.find(parseInt(id))
             }
         } catch (e) {
@@ -228,6 +235,52 @@ export class ArticleComponent implements OnInit {
                 ],
             }
             this.LoadService.change(false)
+            setTimeout(() => {
+                if (this.article.profitability && this.article.profitability.length > 0) this.profitabilityChart(this.article.profitability);
+            }, 100);
+        } catch (e) {
+            console.error("Error", e)
+            this.LoadService.change(false)
+        }
+    }
+
+    profitabilityChart(data) {
+        try {
+            am4core.useTheme(am4themes_dataviz);
+            am4core.useTheme(am4themes_animated);
+
+            // Create chart instance
+            let chart = am4core.create("profitability-chart", am4charts.XYChart);
+            chart.data = data;
+
+            // Create axes
+            let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+            categoryAxis.dataFields.category = "item";
+            categoryAxis.renderer.grid.template.location = 0;
+            categoryAxis.renderer.minGridDistance = 30;
+            categoryAxis.renderer.height = 150;
+            categoryAxis.renderer.labels.template.horizontalCenter = "right";
+            categoryAxis.renderer.labels.template.verticalCenter = "middle";
+            categoryAxis.renderer.labels.template.rotation = 270;
+            categoryAxis.renderer.labels.template.maxWidth = 150;
+            categoryAxis.renderer.labels.template.wrap = true;
+            categoryAxis.renderer.labels.template.textAlign = "end";
+
+            let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+
+            // Create series
+            let series = chart.series.push(new am4charts.ColumnSeries());
+            series.dataFields.valueY = "total";
+            series.dataFields.categoryX = "item";
+            series.columns.template.tooltipText = "{categoryX}: [bold]${valueY}[/]";
+            series.columns.template.fillOpacity = .8;
+
+            // value config
+            let valueLabel = series.bullets.push(new am4charts.LabelBullet());
+            valueLabel.label.text = "$ [bold]{valueY}[/]";
+            valueLabel.label.dy = -8;
+            chart.maskBullets = false;
+
         } catch (e) {
             console.error("Error", e)
             this.LoadService.change(false)
@@ -238,7 +291,12 @@ export class ArticleComponent implements OnInit {
         try {
             this.tab = value
             this.filtered = value == "medidas" ? this.article.prices : this.article.history
-            this.changePage(1)
+            this.changePage(1);
+            if (value == "profitability") {
+                setTimeout(() => {
+                    if (this.article.profitability && this.article.profitability.length > 0) this.profitabilityChart(this.article.profitability);
+                }, 100);
+            }
         } catch (e) {
             console.error("Error", e)
             this.LoadService.change(false)
