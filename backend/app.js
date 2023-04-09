@@ -1,6 +1,5 @@
 // Define modules
 const express = require("express");
-const bodyParser = require("body-parser");
 const rateLimit = require("express-rate-limit");
 const dotenv = require("dotenv");
 
@@ -25,18 +24,18 @@ const script = require("./routes/script");
 const app = express();
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true }));
-const environment = `${process.env.ENV ? ("/" + process.env.ENV) : ""}/api/oilgroup`;
+const environment = `/${process.env.ENV}/oilgroup/api`;
 app.use(`${environment}`, (req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin,X-Requested-With,Content-Type,enctype,Accept,x-access-token,Authorization");
-    res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+    res.header("Access-Control-Allow-Headers", "Content-Type,Authorization");
+    res.header("Access-Control-Allow-Methods", "GET,PUT,POST");
     next();
 });
 
 // Limit requests from same API
 const limiter = rateLimit({
-    max: 1000,
-    windowMs: 5 * 60 * 1000,
+    max: 10000,
+    windowMs: 60 * 60 * 1000,
 });
 app.use("/", limiter);
 
