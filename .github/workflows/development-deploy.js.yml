@@ -25,7 +25,7 @@ jobs:
         script: |
           forever stop ${{ secrets.DEV_FOREVER_ID }} || echo "Forever cannot find process"
           cd /root/.forever/ && rm ${{ secrets.DEV_FOREVER_ID }}.log
-          cd ${{ secrets.ROOT_BACKEND }}development/macedonio/
+          cd ${{ secrets.ROOT_BACKEND }}development/oilgroup/
           cd backend/
           rm config.env
           rm -rf node_modules/
@@ -43,7 +43,7 @@ jobs:
           export NVM_DIR="$HOME/.nvm"
           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
           [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-          cd ${{ secrets.ROOT_BACKEND }}development/macedonio/
+          cd ${{ secrets.ROOT_BACKEND }}development/oilgroup/
           git checkout .
           git checkout development
           git pull ${{ secrets.PROYECT_URL }}
@@ -65,7 +65,7 @@ jobs:
         password: ${{ secrets.HOST_PASSWORD }}
         port: ${{ secrets.HOST_PORT }}
         source: config.env
-        target: ${{ secrets.ROOT_BACKEND }}development/macedonio/backend/
+        target: ${{ secrets.ROOT_BACKEND }}development/oilgroup/backend/
 
     - name: Restart backend
       uses: appleboy/ssh-action@master
@@ -79,7 +79,7 @@ jobs:
           export NVM_DIR="$HOME/.nvm"
           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
           [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-          cd ${{ secrets.ROOT_BACKEND }}development/macedonio/
+          cd ${{ secrets.ROOT_BACKEND }}development/oilgroup/
           cd backend/
           npm run build-dev
           echo "UPDATE AND RESTART DEVELOPMENT BACKEND SUCCESSFUL"
@@ -120,7 +120,7 @@ jobs:
         password: ${{ secrets.HOST_PASSWORD }}
         port: ${{ secrets.HOST_PORT }}
         script: |
-          rm -rf ${{ secrets.ROOT_FRONTEND }}development/macedonio/
-          cp -r ${{ secrets.ROOT_TEMP }}frontend/dist/ ${{ secrets.ROOT_FRONTEND }}development/macedonio/
+          rm -rf ${{ secrets.ROOT_FRONTEND }}development/oilgroup/
+          cp -r ${{ secrets.ROOT_TEMP }}frontend/dist/ ${{ secrets.ROOT_FRONTEND }}development/oilgroup/
           rm -rf ${{ secrets.ROOT_TEMP }}
           echo "UPDATE AND RESTART DEVELOPMENT FRONTEND SUCCESSFUL"
