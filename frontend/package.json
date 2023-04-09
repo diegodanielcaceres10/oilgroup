@@ -4,10 +4,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build-prd": "ng build --prod --base-href=/production/oilgroup/admin/",
-    "build-hom": "ng build --configuration=hom --base-href=/homolog/oilgroup/admin/",
-    "build-qua": "ng build --configuration=qua --base-href=/quality/oilgroup/admin/",
-    "build-dev": "ng build --configuration=dev --base-href=/development/oilgroup/admin/",
+    "build-prd": "ng build --prod --base-href=/production/oilgroup/web/",
+    "build-hom": "ng build --configuration=hom --base-href=/homolog/oilgroup/web/",
+    "build-qua": "ng build --configuration=qua --base-href=/quality/oilgroup/web/",
+    "build-dev": "ng build --configuration=dev --base-href=/development/oilgroup/web/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
