@@ -102,12 +102,20 @@
                 }
             }
 
+            &:hover {
+                opacity: 1;
+            }
+
             &:active {
                 transform: none;
             }
 
-            &:focus ul li, &:focus-within ul li {
-                max-height: 5rem;
+            &:focus ul, &:focus-within ul {
+                padding-bottom: 1rem;
+
+                & li {
+                    max-height: 5rem;
+                }
             }
         }
     }
@@ -199,9 +207,8 @@
             background: var(--primary);
             border-top-right-radius: 1rem;
             border-top-left-radius: 1rem;
-            bottom: 8rem;
+            bottom: 7.5rem;
             left: 0;
-            padding-bottom: 1rem;
             position: fixed;
             width: 100vw;
             z-index: 200;

@@ -3,6 +3,7 @@ import { UserService } from '../../_shared/service/user.service';
 import { HeaderService } from 'src/app/_shared/service/header.service';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import * as moment from 'moment';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-header',
@@ -30,6 +31,7 @@ export class HeaderComponent implements OnInit {
     alerts: any = []
     alert: any = {}
     show: boolean
+    environment: string = environment.name;
 
     constructor(
         private UserService: UserService,
