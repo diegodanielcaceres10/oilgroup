@@ -15,3 +15,4 @@
         </div>
     </div>
 </div>
+<span *ngIf="environment" [ngClass]="{ 'environment-dev' : environment == 'DEV', 'environment-qua' : environment == 'QUA', 'environment-hom' : environment == 'HOM' }" class="environment environment-float"><strong>Ambiente</strong>: {{ environment }}</span>

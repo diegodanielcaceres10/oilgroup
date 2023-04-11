@@ -75,3 +75,29 @@ i {
 .white {
     background-color: white;
 }
+
+.environment {
+    background: whitesmoke;
+    border-radius: .3rem;
+    color: var(--primary);
+    font-size: 1.3rem;
+    padding: .5rem 1rem;
+
+    &-float {
+        bottom: 1rem;
+        position: fixed;
+        right: 1rem;
+    }
+
+    &-dev {
+        background: lightblue;
+    }
+
+    &-qua {
+        background: lightcoral;
+    }
+
+    &-hom {
+        background: lightgreen;
+    }
+}
