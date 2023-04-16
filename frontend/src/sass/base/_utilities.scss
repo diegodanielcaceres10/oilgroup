@@ -1,0 +1,103 @@
+
+i {
+    padding: 0 .5rem;
+}
+
+.click {
+    cursor: pointer;
+
+    &:hover {
+        opacity: .8;
+    }
+
+    &:active {
+        transform: translateY(.1rem);
+    }
+}
+
+.spin {
+    animation: rotate 1s linear infinite;
+    font-size: 2rem;
+}
+
+.ring {
+    animation: ring 1s linear infinite;
+}
+
+.center {
+    text-align: center;
+}
+
+.right {
+    text-align: right;
+}
+
+.muted {
+    color: #999;
+}
+
+.price {
+    font-size: 2rem;
+}
+
+.sectiontitle {
+    padding: 1rem;
+}
+
+.sectionquote {
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.warning {
+    background: var(--lightgrey);
+    border: .1rem solid var(--darkgrey);
+    border-radius: 3rem;
+    color: var(--error);
+    font-weight: bold;
+    margin: 1rem;
+    padding: 1rem;
+}
+
+.upper {
+    text-transform: uppercase;
+}
+
+.backfocus {
+    background: rgba(white, .5);
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    z-index: 40;
+}
+
+
+.white {
+    background-color: white;
+}
+
+.environment {
+    background: whitesmoke;
+    border-radius: .3rem;
+    color: var(--primary);
+    font-size: 1.3rem;
+    padding: .5rem 1rem;
+
+    &-float {
+        bottom: 1rem;
+        position: fixed;
+        right: 1rem;
+    }
+
+    &-dev {
+        background: lightblue;
+    }
+
+    &-qua {
+        background: lightcoral;
+    }
+
+    &-hom {
+        background: lightgreen;
+    }
+}
