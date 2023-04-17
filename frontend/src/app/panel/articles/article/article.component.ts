@@ -68,7 +68,7 @@ export class ArticleComponent implements OnInit {
                 const id = this.ActivatedRoute.snapshot.params["id"]
                 this.page = parseInt(this.ActivatedRoute.snapshot.params["page"])
                 const param = this.ActivatedRoute.snapshot.queryParams["lista"];
-                this.tab = param == "stock" ? "stock" : param == "medidas" ? "medidas" : "profitability"
+                this.tab = param == "stock" ? "stock" : param == "medidas" ? "medidas" : param == "ventas" ? "ventas" : "rentabilidad"
                 this.find(parseInt(id))
             }
         } catch (e) {
@@ -290,7 +290,7 @@ export class ArticleComponent implements OnInit {
     setList(value) {
         try {
             this.tab = value
-            this.filtered = value == "medidas" ? this.article.prices : this.article.history
+            this.filtered = value == "medidas" ? this.article.prices : value == "ventas" ? this.article.sales : this.article.history
             this.changePage(1);
             if (value == "profitability") {
                 setTimeout(() => {
