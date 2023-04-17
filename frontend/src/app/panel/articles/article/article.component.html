@@ -79,14 +79,15 @@
 </div>
 <div *ngIf="!editMode && !createMode" class="section__info">
     <div class="tab">
-        <div (click)="setList('profitability')" [ngClass]="{ 'tab__option-current' : tab == 'profitability' }" class="tab__option">Rentabilidad</div>
+        <div (click)="setList('rentabilidad')" [ngClass]="{ 'tab__option-current' : tab == 'rentabilidad' }" class="tab__option">Rentabilidad</div>
         <div (click)="setList('medidas')" [ngClass]="{ 'tab__option-current' : tab == 'medidas' }" class="tab__option">Medidas</div>
         <div (click)="setList('stock')" [ngClass]="{ 'tab__option-current' : tab == 'stock' }" class="tab__option">Stock</div>
+        <div (click)="setList('ventas')" [ngClass]="{ 'tab__option-current' : tab == 'ventas' }" class="tab__option">Ventas</div>
     </div>
 </div>
 <div *ngIf="!editMode && !createMode" class="section__info">
     <div class="section__box">
-        <div *ngIf="tab == 'profitability'" class="chart">
+        <div *ngIf="tab == 'rentabilidad'" class="chart">
             <div class="chart__box">
                 <div class="chart__title">Rentabilidad de los últimos 6 meses</div>
                 <div *ngIf="!article.profitability || article.profitability.length == 0" class="list">
@@ -155,6 +156,35 @@
                 <div class="list__cell list__cell-right">
                     <div class="list__title"><strong>{{ item.units }}</strong></div>
                     <div class="list__subtitle"><span>Unidades</span></div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="tab == 'ventas'" class="list">
+            <div class="sectiontitle">Ventas del pruducto</div>
+            <div *ngIf="paging" class="list__row">
+                <div class="list__cell list__cell-load"><i class="fas fa-spinner spin"></i></div>
+            </div>
+            <div *ngIf="!paging && view.length == 0" class="list__row">
+                <div class="list__cell list__cell-full"><i class="fas fa-exclamation-circle"></i>No se encontraron registros</div>
+            </div>
+            <div *ngIf="!paging && view.length > 0" class="list__row">
+                <div class="list__cell list__cell-full muted">Mostrando {{ (page - 1) * maxitems + 1 }} - {{ (page - 1) * maxitems + view.length }} de {{ filtered.length }}</div>
+            </div>
+            <div *ngFor="let item of view" class="list__row list__row-cells">
+                <div class="list__cell list__cell-date">
+                    <div class="list__subtitle"><span><strong>{{ item.datetime | date:"dd/MM/yyyy" }}</strong></span></div>
+                    <div class="list__subtitle"><span>{{ item.datetime | date:"HH:mm" }}</span></div>
+                </div>
+                <div class="list__cell list__cell-full">
+                    <div *ngIf="item.quantity" class="list__title"><strong>{{ item.quantity }}</strong> Unidades</div>
+                    <div *ngIf="item.quantity" class="list__subtitle">x {{ (item.price | currency:"CAD":"symbol-narrow":"1.2") || "$-" }}</div>
+                    <div *ngIf="!item.quantity && item.stock" class="list__title"><strong>{{ item.stock }}</strong> Unidades</div>
+                </div>
+                <div class="list__cell list__cell-right">
+                    <div *ngIf="item.subtotal" class="list__title"><strong>{{ (item.subtotal | currency:"CAD":"symbol-narrow":"1.2") || "$-" }}</strong></div>
+                </div>
+                <div [routerLink]="['/panel/clientes/venta/' + item.sale]" class="list__cell list__cell-button">
+                    <i class="fas fa-chevron-circle-right"></i>
                 </div>
             </div>
         </div>
