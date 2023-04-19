@@ -176,12 +176,11 @@
                     <div class="list__subtitle"><span>{{ item.datetime | date:"HH:mm" }}</span></div>
                 </div>
                 <div class="list__cell list__cell-full">
-                    <div *ngIf="item.quantity" class="list__title"><strong>{{ item.quantity }}</strong> Unidades</div>
-                    <div *ngIf="item.quantity" class="list__subtitle">x {{ (item.price | currency:"CAD":"symbol-narrow":"1.2") || "$-" }}</div>
-                    <div *ngIf="!item.quantity && item.stock" class="list__title"><strong>{{ item.stock }}</strong> Unidades</div>
+                    <div class="list__title"><strong>{{ item.units }}</strong> {{ item.units == 1 ? "unidad" : "unidades" }}</div>
+                    <div class="list__subtitle">x {{ (item.price | currency:"CAD":"symbol-narrow":"1.2") || "$-" }}</div>
                 </div>
                 <div class="list__cell list__cell-right">
-                    <div *ngIf="item.subtotal" class="list__title"><strong>{{ (item.subtotal | currency:"CAD":"symbol-narrow":"1.2") || "$-" }}</strong></div>
+                    <div class="list__title"><strong>{{ (item.subtotal | currency:"CAD":"symbol-narrow":"1.2") || "$-" }}</strong></div>
                 </div>
                 <div [routerLink]="['/panel/clientes/venta/' + item.sale]" class="list__cell list__cell-button">
                     <i class="fas fa-chevron-circle-right"></i>

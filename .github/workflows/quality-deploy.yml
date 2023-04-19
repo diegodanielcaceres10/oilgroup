@@ -110,7 +110,7 @@ jobs:
         password: ${{ secrets.HOST_PASSWORD }}
         port: ${{ secrets.HOST_PORT }}
         source: frontend/dist/
-        target: ${{ secrets.ROOT_TEMP }}
+        target: ${{ secrets.ROOT_TEMP }}quality/oilgroup/
 
     - name: Restart front
       uses: appleboy/ssh-action@master
@@ -121,6 +121,6 @@ jobs:
         port: ${{ secrets.HOST_PORT }}
         script: |
           rm -rf ${{ secrets.ROOT_FRONTEND }}quality/oilgroup/
-          cp -r ${{ secrets.ROOT_TEMP }}frontend/dist/ ${{ secrets.ROOT_FRONTEND }}quality/oilgroup/
-          rm -rf ${{ secrets.ROOT_TEMP }}
+          cp -r ${{ secrets.ROOT_TEMP }}quality/oilgroup/frontend/dist/ ${{ secrets.ROOT_FRONTEND }}quality/oilgroup/
+          rm -rf ${{ secrets.ROOT_TEMP }}quality/oilgroup/
           echo "UPDATE AND RESTART QUALITY FRONTEND SUCCESSFUL"
