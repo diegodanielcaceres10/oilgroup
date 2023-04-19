@@ -120,7 +120,7 @@ jobs:
         password: ${{ secrets.HOST_PASSWORD }}
         port: ${{ secrets.HOST_PORT }}
         script: |
-          rm -rf ${{ secrets.ROOT_FRONTEND }}homolog/oilgroup/
-          cp -r ${{ secrets.ROOT_TEMP }}frontend/dist/ ${{ secrets.ROOT_FRONTEND }}homolog/oilgroup/
+          rm -rf ${{ secrets.ROOT_DOMAIN }}homolog/
+          cp -r ${{ secrets.ROOT_TEMP }}frontend/dist/ ${{ secrets.ROOT_DOMAIN }}homolog/
           rm -rf ${{ secrets.ROOT_TEMP }}
           echo "UPDATE AND RESTART HOMOLOG FRONTEND SUCCESSFUL"
