@@ -81,7 +81,6 @@ exports.exportPayments = async (req, res) => {
         html = html.replace("{{ITEMS}}", itemsHTML);
         html = html.replace("{{USER}}", user.lastname + " " + user.firstname);
         html = html.replace("{{DATETIME}}", moment().format("DD-MM-YYYY, HH:mm"));
-        html = html.replace("{{IMAGES_FOLDER}}", process.env.IMAGES_FOLDER);
 
         // create PDF
         const pdf = await htmlpdf.create(req, res, session, html);
@@ -137,7 +136,6 @@ exports.exportActivities = async (req, res) => {
         html = html.replace("{{ITEMS}}", itemsHTML);
         html = html.replace("{{USER}}", user.lastname + " " + user.firstname);
         html = html.replace("{{DATETIME}}", moment().format("DD-MM-YYYY, HH:mm"));
-        html = html.replace("{{IMAGES_FOLDER}}", process.env.IMAGES_FOLDER);
 
         // create PDF
         const pdf = await htmlpdf.create(req, res, session, html);
