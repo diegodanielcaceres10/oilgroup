@@ -63,7 +63,11 @@ exports.run_query = (req, res, session, query) => {
         con.query(query, (err, data) => {
             console.log(moment().format(), session, query);
             if (err) {
-                console.error(moment().format(), session, err.sqlMessage, err.sql);
+                if (err.sqlMessage) {
+                    console.error(moment().format(), session, err.sqlMessage, err.sql);
+                } else {
+                    console.error(moment().format(), session, err);
+                }
                 return res.status(500).send({ status: "query error" });
             };
             return resolve();
@@ -77,7 +81,11 @@ exports.get_data = (req, res, session, query) => {
         con.query(query, (err, data) => {
             console.log(moment().format(), session, query);
             if (err) {
-                console.error(moment().format(), session, err.sqlMessage, err.sql);
+                if (err.sqlMessage) {
+                    console.error(moment().format(), session, err.sqlMessage, err.sql);
+                } else {
+                    console.error(moment().format(), session, err);
+                }
                 return res.status(500).send({ status: "query error" });
             };
             return resolve(data);
@@ -91,7 +99,11 @@ exports.get_row = (req, res, session, query) => {
         con.query(query, (err, data) => {
             console.log(moment().format(), session, query);
             if (err) {
-                console.error(moment().format(), session, err.sqlMessage, err.sql);
+                if (err.sqlMessage) {
+                    console.error(moment().format(), session, err.sqlMessage, err.sql);
+                } else {
+                    console.error(moment().format(), session, err);
+                }
                 return res.status(500).send({ status: "query error" });
             };
             if (data.length == 0) {
@@ -109,7 +121,11 @@ exports.get_id = (req, res, session, query) => {
         con.query(query, (err, data) => {
             console.log(moment().format(), session, query);
             if (err) {
-                console.error(moment().format(), session, err.sqlMessage, err.sql);
+                if (err.sqlMessage) {
+                    console.error(moment().format(), session, err.sqlMessage, err.sql);
+                } else {
+                    console.error(moment().format(), session, err);
+                }
                 return res.status(500).send({ status: "query error" });
             };
             console.log(moment().format(), session, "Inserted ID: " + data.insertId);
@@ -124,7 +140,11 @@ exports.get_value = (req, res, session, query) => {
         con.query(query, (err, data) => {
             console.log(moment().format(), session, query);
             if (err) {
-                console.error(moment().format(), session, err.sqlMessage, err.sql);
+                if (err.sqlMessage) {
+                    console.error(moment().format(), session, err.sqlMessage, err.sql);
+                } else {
+                    console.error(moment().format(), session, err);
+                }
                 return res.status(500).send({ status: "query error" });
             };
             if (data.length == 0) {
@@ -142,7 +162,11 @@ exports.empty_row = (req, res, session, query) => {
         con.query(query, (err, data) => {
             console.log(moment().format(), session, query);
             if (err) {
-                console.error(moment().format(), session, err.sqlMessage, err.sql);
+                if (err.sqlMessage) {
+                    console.error(moment().format(), session, err.sqlMessage, err.sql);
+                } else {
+                    console.error(moment().format(), session, err);
+                }
                 return res.status(500).send({ status: "query error" });
             };
             if (data.length > 0) {
@@ -160,7 +184,11 @@ exports.exists_row = (req, res, session, query) => {
         con.query(query, (err, data) => {
             console.log(moment().format(), session, query);
             if (err) {
-                console.error(moment().format(), session, err.sqlMessage, err.sql);
+                if (err.sqlMessage) {
+                    console.error(moment().format(), session, err.sqlMessage, err.sql);
+                } else {
+                    console.error(moment().format(), session, err);
+                }
                 return res.status(500).send({ status: "query error" });
             };
             if (data.length == 0) {
@@ -178,7 +206,11 @@ exports.valid_row = (req, res, session, query) => {
         con.query(query, (err, data) => {
             console.log(moment().format(), session, query);
             if (err) {
-                console.error(moment().format(), session, err.sqlMessage, err.sql);
+                if (err.sqlMessage) {
+                    console.error(moment().format(), session, err.sqlMessage, err.sql);
+                } else {
+                    console.error(moment().format(), session, err);
+                }
                 return res.status(500).send({ status: "query error" });
             };
             if (data.length == 0) {
