@@ -174,7 +174,7 @@ exports.summary = async (req, res) => {
         // Define customer
         let customer = req.body.customer;
         customer = await storage.get_row(req, res, session, "select*,ifnull(sum(total),0)pending from customer left join(select customer,total,billing,status from sale where status!='Cancelada'and status!='Inicial'union all select customer,-(import),0,status from customer_payment where status='Aprobado')s on customer=id where id=" + customer.id);
-        customer.sales = await storage.get_data(req, res, session, "select id,('sale')typeof,datetime,total,status from sale where customer=" + customer.id + " and status!='Cancelada'and status!='Inicial'union all select id,'payment',datetime,import,status from customer_payment where customer=" + customer.id + " and status!='Cancelado'order by datetime desc,typeof");
+        customer.sales = await storage.get_data(req, res, session, "select id,('sale')typeof,datetime,total,validate_date,status from sale where customer=" + customer.id + " and status!='Cancelada'and status!='Inicial'union all select id,'payment',datetime,import,null,status from customer_payment where customer=" + customer.id + " and status!='Cancelado'order by datetime desc,typeof");
 
         // Read HTML Template
         let html = fs.readFileSync("./templates/summary.html", "utf8");
@@ -187,11 +187,30 @@ exports.summary = async (req, res) => {
         html = html.replace("{{SUMMARY}}", customer.pending.toFixed(2));
         html = html.replace("{{DATE}}", moment().format("DD-MM-YYYY, HH:mm"));
         let itemsHTML = "";
+        let pending = summary;
         for (let item of customer.sales) {
             if (item.typeof == "sale") {
-                itemsHTML += `<tr style="border-bottom: 1px solid;">
+                let type = "Remito N° " + item.id;
+                let color = "";
+                let bold = "";
+                if (pending > 0) {
+                    type += " - Pendiente";
+                    if (item.total > pending) {
+                        type += " parcial";
+                    } else {
+                        type += " total";
+                    }
+                    pending -= item.total;
+                    color = "color: red;";
+                    if (item.validate_date && moment(item.validate_date).format("DD-MM-YYYY") < moment().format("DD-MM-YYYY")) {
+                        bold = "font-weight: bold;";
+                        type += " - Vencido";
+                    }
+                }
+                itemsHTML += `<tr style="${bold}${color}border-bottom: 1px solid black;">
                 <td style="white-space: pre;">${moment(item.datetime).format("DD-MM-YYYY, HH:mm")}</td>
-                <td>Remito N° ${item.id}</td>
+                <td style="white-space: pre;">${item.validate_date ? moment(item.validate_date).format("DD-MM-YYYY") : ""}</td>
+                <td>${type}</td>
                 <td style="text-align: right;">$ ${item.total.toFixed(2)}</td>
                 <td style="text-align: right;">-</td>
                 <td style="text-align: right;">$ ${summary.toFixed(2)}</td>
@@ -200,6 +219,7 @@ exports.summary = async (req, res) => {
             } else {
                 itemsHTML += `<tr style="border-bottom: 1px solid;">
                 <td style="white-space: pre;">${moment(item.datetime).format("DD-MM-YYYY, HH:mm")}</td>
+                <td style="white-space: pre;"></td>
                 <td>Recibo N° ${item.id}</td>
                 <td style="text-align: right;">-</td>
                 <td style="text-align: right;">$ ${item.total.toFixed(2)}</td>
