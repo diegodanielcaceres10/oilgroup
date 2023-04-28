@@ -42,8 +42,8 @@
                     <div class="list__subtitle"><span>{{ item.size }} {{ item.variety }}</span></div>
                 </div>
                 <div class="list__cell list__cell-right">
-                    <div class="list__title"><strong>{{ (item.price_list | currency:"CAD":"symbol-narrow":"1.2") || "$-" }}</strong></div>
-                    <div class="list__title"><strong>{{ (item.price_offer | currency:"CAD":"symbol-narrow":"1.2") || "$-" }}</strong></div>
+                    <div class="list__title"><strong>{{ (item.price_list | currency:"ARS":"symbol-narrow":"1.2") || "$-" }}</strong></div>
+                    <div class="list__title"><strong>{{ (item.price_offer | currency:"ARS":"symbol-narrow":"1.2") || "$-" }}</strong></div>
                     <div class="list__subtitle muted"><span>precios</span></div>
                 </div>
                 <div *ngIf="['Super Administrador', 'Administrador'].indexOf(access.role) > -1" (click)="updatePriceDialogForm(item)" class="list__cell list__cell-button">

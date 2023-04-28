@@ -65,19 +65,19 @@
                         <div class="card__info">
                             <div class="card__legend">
                                 <span>Total vendido</span>
-                                <span>{{ customer.sale | currency:"CAD":"symbol-narrow":"1.2" }}</span>
+                                <span>{{ customer.sale | currency:"ARS":"symbol-narrow":"1.2" }}</span>
                             </div>
                             <div class="card__legend">
                                 <span>Total aprobado</span>
-                                <span>{{ customer.success | currency:"CAD":"symbol-narrow":"1.2" }}</span>
+                                <span>{{ customer.success | currency:"ARS":"symbol-narrow":"1.2" }}</span>
                             </div>
                             <div class="card__legend">
                                 <span>Total cobrado</span>
-                                <span>{{ customer.payment | currency:"CAD":"symbol-narrow":"1.2" }}</span>
+                                <span>{{ customer.payment | currency:"ARS":"symbol-narrow":"1.2" }}</span>
                             </div>
                             <div class="card__legend">
                                 <span>Saldo pendiente</span>
-                                <span class="price"><strong>{{ customer.pending | currency:"CAD":"symbol-narrow":"1.2" }}</strong></span>
+                                <span class="price"><strong>{{ customer.pending | currency:"ARS":"symbol-narrow":"1.2" }}</strong></span>
                             </div>
                         </div>
                         <div class="card__info">
@@ -124,8 +124,8 @@
                     </div>
                 </div>
                 <div class="list__cell list__cell-right">
-                    <div *ngIf="item.typeof == 'sale'" class="list__title"><strong>{{ item.total | currency:"CAD":"symbol-narrow":"1.2" }}</strong></div>
-                    <div *ngIf="item.typeof == 'payment'" class="list__title"><strong>-{{ item.total | currency:"CAD":"symbol-narrow":"1.2" }}</strong></div>
+                    <div *ngIf="item.typeof == 'sale'" class="list__title"><strong>{{ item.total | currency:"ARS":"symbol-narrow":"1.2" }}</strong></div>
+                    <div *ngIf="item.typeof == 'payment'" class="list__title"><strong>-{{ item.total | currency:"ARS":"symbol-narrow":"1.2" }}</strong></div>
                     <div class="list__subtitle">
                         <div *ngIf="item.billing && !item.billing_date" class="list__tag list__tag-pending"><i class="fas fa-thumbtack"></i>Pendiente</div>
                         <div *ngIf="item.billing && item.billing_date" class="list__tag list__tag-success"><i class="fas fa-check"></i>Facturada</div>
