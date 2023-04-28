@@ -1,6 +1,7 @@
 // Define modules
 const express = require("express");
 const rateLimit = require("express-rate-limit");
+const fileUpload = require("express-fileupload");
 const dotenv = require("dotenv");
 
 // Define env
@@ -32,6 +33,11 @@ app.use(`${environment}`, (req, res, next) => {
     res.header("Access-Control-Allow-Methods", "GET,PUT,POST");
     next();
 });
+
+// enable files upload
+app.use(fileUpload({
+    createParentPath: true,
+}));
 
 // Limit requests from same API
 const limiter = rateLimit({

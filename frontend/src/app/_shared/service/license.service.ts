@@ -24,11 +24,38 @@ export class LicenseService {
     }
 
     /**
-     * calc
+     * getDollar
      */
-    public async calc(data) {
+    public async getDollar() {
         return new Promise((resolve, reject) => {
-            this.api.post("license/calc/", data).toPromise().then((data: any) => {
+            this.api.get("https://api.bluelytics.com.ar/v2/latest").toPromise().then((data: any) => {
+                const dollar = data && data.blue && data.blue.value_sell;
+                resolve(dollar);
+            }).catch((error) => {
+                reject(error);
+            })
+        })
+    }
+
+    /**
+     * price
+     */
+    public async price(data) {
+        return new Promise((resolve, reject) => {
+            this.api.post("license/price/", data).toPromise().then((data: any) => {
+                resolve(data)
+            }).catch((error) => {
+                reject(error)
+            })
+        })
+    }
+
+    /**
+     * upload
+     */
+    public async upload(data) {
+        return new Promise((resolve, reject) => {
+            this.api.post("license/upload/", data, "form-data").toPromise().then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)

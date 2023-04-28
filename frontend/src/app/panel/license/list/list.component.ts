@@ -5,6 +5,7 @@ import { NavService } from '../../../_shared/service/nav.service';
 import { HeaderService } from '../../../_shared/service/header.service';
 import { LoadService } from '../../../_shared/service/load.service';
 import { Location } from '@angular/common';
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-list',
@@ -18,7 +19,6 @@ export class ListComponent implements OnInit {
     licensesView: any = []
     page: number = 1
     pages: number = 1
-    roles: any = ["Administrador", "Vendedor"]
     maxitems: number = 20
     filters: any = []
     dialogs: any = []
@@ -45,7 +45,7 @@ export class ListComponent implements OnInit {
             this.getAll(this.page)
         } catch (e) {
             console.error("Error", e)
-            this.LoadService.change(false)
+            this.LoadService.change(false);
         }
     }
 
@@ -133,7 +133,74 @@ export class ListComponent implements OnInit {
         } catch (e) {
             console.error("Error", e)
         }
+    }
 
+    setPriceDialogConfirm(data) {
+        try {
+            this.dialogs.push({
+                type: "confirm",
+                title: "Salvar cotización",
+                message: "¿Estas seguro de continuar?",
+                values: data,
+                event: "setPrice",
+            })
+        } catch (e) {
+            console.error("Error", e)
+        }
+    }
+
+    uploadTicketDialogForm(data) {
+        try {
+            this.dialogs.push({
+                type: "form",
+                title: "Adjuntar comprobante",
+                form: {
+                    full: true,
+                    event: "uploadTicketDialogConfirm",
+                    groups: [
+                        {
+                            fields: [
+                                {
+                                    name: "id",
+                                    type: "hidden",
+                                    value: data.id,
+                                },
+                                {
+                                    name: "ticket",
+                                    type: "file",
+                                    label: "Comprobante",
+                                    required: true,
+                                },
+                            ],
+                        },
+                    ],
+                    buttons: [
+                        {
+                            icon: "fas fa-check",
+                            text: "Enviar",
+                            type: "submit",
+                            primary: true,
+                        },
+                    ],
+                },
+            })
+        } catch (e) {
+            console.error("Error", e)
+        }
+    }
+
+    uploadTicketDialogConfirm(data) {
+        try {
+            this.dialogs.push({
+                type: "confirm",
+                title: "Enviar comprobante",
+                message: "¿Estas seguro de continuar?",
+                values: data,
+                event: "uploadTicket",
+            })
+        } catch (e) {
+            console.error("Error", e)
+        }
     }
 
     // Define response dialog events
@@ -152,6 +219,12 @@ export class ListComponent implements OnInit {
                     })
                     this.getAll(1)
                     this.dialogs.pop()
+                } else if (data.event == "setPrice") {
+                    this.setPrice(data.values);
+                } else if (data.event == "uploadTicketDialogConfirm") {
+                    this.uploadTicketDialogConfirm(data.values);
+                } else if (data.event == "uploadTicket") {
+                    this.uploadTicket(data.values);
                 } else {
                     setTimeout(() => {
                         this.HeaderService.showError("Error en el proceso")
@@ -167,8 +240,67 @@ export class ListComponent implements OnInit {
 
     calcDollar(data) {
         try {
-            console.log(data);
-            
+            data.loading = true;
+            this.LicenseService.getDollar().then((res: any) => {
+                data.coefficient = res;
+                data.coefficient_date = moment();
+                data.loading = false;
+            }).catch((e) => {
+                console.error("Error", e);
+                this.HeaderService.showError("Error al calcular la cotización");
+            })
+        } catch (e) {
+            console.error("Error", e);
+        }
+    }
+
+    setPrice(data) {
+        try {
+            this.LicenseService.price({ price: data }).then((res: any) => {
+                if (res.status == "success") {
+                    setTimeout(() => {
+                        this.HeaderService.showSuccess("Cotización reservada con exito. Deberá adjuntar el comprobante durante las proximas 24 horas");
+                        this.dialogs.pop();
+                    }, 100)
+                } else {
+                    console.error("Response", res.status);
+                    this.HeaderService.showError("Error al reservaar la cotización!");
+                    this.dialogs.pop();
+                }
+            }).catch((e) => {
+                console.error("Error", e);
+                this.HeaderService.showError("Error en la conectividad");
+                this.dialogs.pop();
+            })
+        } catch (e) {
+            console.error("Error", e);
+        }
+    }
+
+    uploadTicket(data) {
+        try {
+            this.LicenseService.upload(data).then((res: any) => {
+                if (res.status == "success") {
+                    setTimeout(() => {
+                        this.HeaderService.showSuccess("Comprobante adjunto con exito.");
+                        this.dialogs = [];
+                        this.licensesView && this.licensesView.some(i => {
+                            if (i.id == data.id) {
+                                i.status = "Analisis";
+                                return true;
+                            }
+                        });
+                    }, 100)
+                } else {
+                    console.error("Response", res.status)
+                    this.HeaderService.showError("Error al enviar el comprobante!")
+                    this.dialogs.pop()
+                }
+            }).catch((e) => {
+                console.error("Error", e)
+                this.HeaderService.showError("Error en la conectividad")
+                this.dialogs.pop()
+            })
         } catch (e) {
             console.error("Error", e)
         }
