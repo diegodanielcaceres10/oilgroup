@@ -105,6 +105,13 @@ export class NavComponent implements OnInit {
             label: "Usuarios",
             link: "/panel/usuarios/1",
         },
+        {
+            access: ["Super Administrador"],
+            name: "license",
+            icon: "fas fa-info-circle",
+            label: "Licencia",
+            link: "/panel/licencia/1",
+        },
     ]
     menuselected: string = ""
     pageselected: string = ""
