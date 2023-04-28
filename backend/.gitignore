@@ -1,5 +1,8 @@
 node_modules
 config.env
 
+# upload files
+uploads
+
 # updates
 querys
