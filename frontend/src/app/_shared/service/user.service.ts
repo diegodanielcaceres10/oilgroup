@@ -20,7 +20,7 @@ export class UserService {
      * getCurrentSession
      */
     public getCurrentSession(): any {
-        this.user = JSON.parse(sessionStorage.getItem("oilgroup-auth")) || null
+        this.user = JSON.parse(sessionStorage.getItem("oilgroupAccessToken")) || null
     }
 
     /**
@@ -30,7 +30,7 @@ export class UserService {
         return new Promise((resolve, reject) => {
             this.api.post("user/login/", user).toPromise().then((user: any) => {
                 if (user.status == "success") {
-                    sessionStorage.setItem("oilgroup-auth", JSON.stringify(user.data))
+                    sessionStorage.setItem("oilgroupAccessToken", JSON.stringify(user.data))
                     this.user = user.data
                 }
                 resolve(user.status)
@@ -75,7 +75,7 @@ export class UserService {
      */
     public async logOut() {
         this.user = null
-        sessionStorage.removeItem("oilgroup-auth")
+        sessionStorage.removeItem("oilgroupAccessToken")
         sessionStorage.removeItem("oilgroup-buy")
         sessionStorage.removeItem("oilgroup-sale")
         this.Router.navigateByUrl('login');
