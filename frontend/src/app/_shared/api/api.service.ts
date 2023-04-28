@@ -40,7 +40,7 @@ export class ApiService {
      * @return An `Observable` of the response, with the response body as a JSON object.
      */
     public post(path: string, values?: any, raw?: string): Observable<Object> {
-        const auth = JSON.parse(sessionStorage.getItem("oilgroup-auth")) || {}
+        const auth = JSON.parse(sessionStorage.getItem("oilgroupAccessToken")) || {}
         const headers = new HttpHeaders().set('Authorization', `Bearer ${auth.token}`)
         let body: any = {};
         if (raw == "form-data") {
@@ -69,7 +69,7 @@ export class ApiService {
      * @return An `Observable` of the response, with the response body as a JSON object.
      */
     public download(path: string, body?: any): Observable<Object> {
-        const auth = JSON.parse(sessionStorage.getItem("oilgroup-auth")) || {}
+        const auth = JSON.parse(sessionStorage.getItem("oilgroupAccessToken")) || {}
         const headers = new HttpHeaders().set('Authorization', `Bearer ${auth.token}`)
         if (!body) {
             body = {

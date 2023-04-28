@@ -277,11 +277,6 @@ exports.ticket = async (req, res) => {
             return res.status(400).send();
         };
 
-        // Define username
-        let username = req.body.username;
-        username = username.replace(/'/gi, "");
-        let user = await storage.get_row(req, res, session, "select*from user where username='" + username + "'");
-
         // Define sale
         let sale = req.body.sale;
         sale = await storage.get_row(req, res, session, "select*from sale where id=" + sale.id);

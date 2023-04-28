@@ -190,27 +190,28 @@ exports.summary = async (req, res) => {
         let pending = summary;
         for (let item of customer.sales) {
             if (item.typeof == "sale") {
-                let type = "Remito N° " + item.id;
+                let description = "Remito N° " + item.id;
+                let validate = moment(item.datetime).add(1, "months").format("DD-MM-YYYY");
                 let color = "";
                 let bold = "";
                 if (pending > 0) {
-                    type += " - Pendiente";
+                    description += " - Pendiente";
                     if (item.total > pending) {
-                        type += " parcial";
+                        description += " parcial ($ " + pending.toFixed(2) + ")";
                     } else {
-                        type += " total";
+                        description += " total";
                     }
                     pending -= item.total;
                     color = "color: red;";
-                    if (item.validate_date && moment(item.validate_date).format("DD-MM-YYYY") < moment().format("DD-MM-YYYY")) {
+                    if (moment(item.datetime).add(1, "months").format("DD-MM-YYYY") < moment().format("DD-MM-YYYY")) {
                         bold = "font-weight: bold;";
-                        type += " - Vencido";
+                        validate += "<br>Vencido";
                     }
                 }
                 itemsHTML += `<tr style="${bold}${color}border-bottom: 1px solid black;">
                 <td style="white-space: pre;">${moment(item.datetime).format("DD-MM-YYYY, HH:mm")}</td>
-                <td style="white-space: pre;">${item.validate_date ? moment(item.validate_date).format("DD-MM-YYYY") : ""}</td>
-                <td>${type}</td>
+                <td style="white-space: pre;">${validate}</td>
+                <td>${description}</td>
                 <td style="text-align: right;">$ ${item.total.toFixed(2)}</td>
                 <td style="text-align: right;">-</td>
                 <td style="text-align: right;">$ ${summary.toFixed(2)}</td>
