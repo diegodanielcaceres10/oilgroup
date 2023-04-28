@@ -187,11 +187,31 @@ exports.summary = async (req, res) => {
         html = html.replace("{{SUMMARY}}", customer.pending.toFixed(2));
         html = html.replace("{{DATE}}", moment().format("DD-MM-YYYY, HH:mm"));
         let itemsHTML = "";
+        let pending = summary;
         for (let item of customer.sales) {
             if (item.typeof == "sale") {
-                itemsHTML += `<tr style="border-bottom: 1px solid;">
+                let description = "Remito N° " + item.id;
+                let validate = moment(item.datetime).add(1, "months").format("DD-MM-YYYY");
+                let color = "";
+                let bold = "";
+                if (pending > 0) {
+                    description += " - Pendiente";
+                    if (item.total > pending) {
+                        description += " parcial ($ " + pending.toFixed(2) + ")";
+                    } else {
+                        description += " total";
+                    }
+                    pending -= item.total;
+                    color = "color: red;";
+                    if (moment(item.datetime).add(1, "months").format("DD-MM-YYYY") < moment().format("DD-MM-YYYY")) {
+                        bold = "font-weight: bold;";
+                        validate += "<br>Vencido";
+                    }
+                }
+                itemsHTML += `<tr style="${bold}${color}border-bottom: 1px solid black;">
                 <td style="white-space: pre;">${moment(item.datetime).format("DD-MM-YYYY, HH:mm")}</td>
-                <td>Remito N° ${item.id}</td>
+                <td style="white-space: pre;">${validate}</td>
+                <td>${description}</td>
                 <td style="text-align: right;">$ ${item.total.toFixed(2)}</td>
                 <td style="text-align: right;">-</td>
                 <td style="text-align: right;">$ ${summary.toFixed(2)}</td>
@@ -200,6 +220,7 @@ exports.summary = async (req, res) => {
             } else {
                 itemsHTML += `<tr style="border-bottom: 1px solid;">
                 <td style="white-space: pre;">${moment(item.datetime).format("DD-MM-YYYY, HH:mm")}</td>
+                <td style="white-space: pre;"></td>
                 <td>Recibo N° ${item.id}</td>
                 <td style="text-align: right;">-</td>
                 <td style="text-align: right;">$ ${item.total.toFixed(2)}</td>
