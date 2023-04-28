@@ -1,6 +1,7 @@
 // Define modules
 const express = require("express");
 const rateLimit = require("express-rate-limit");
+const fileUpload = require("express-fileupload");
 const dotenv = require("dotenv");
 
 // Define env
@@ -18,6 +19,7 @@ const provider_payment = require("./routes/provider_payment");
 const customer_payment = require("./routes/customer_payment");
 const metric = require("./routes/metric");
 const report = require("./routes/report");
+const license = require("./routes/license");
 const script = require("./routes/script");
 
 // Define app
@@ -31,6 +33,11 @@ app.use(`${environment}`, (req, res, next) => {
     res.header("Access-Control-Allow-Methods", "GET,PUT,POST");
     next();
 });
+
+// enable files upload
+app.use(fileUpload({
+    createParentPath: true,
+}));
 
 // Limit requests from same API
 const limiter = rateLimit({
@@ -52,6 +59,7 @@ app.use(`${environment}/provider_payment/`, provider_payment);
 app.use(`${environment}/customer_payment/`, customer_payment);
 app.use(`${environment}/report/`, report);
 app.use(`${environment}/metric/`, metric);
+app.use(`${environment}/license/`, license);
 app.use(`${environment}/script/`, script);
 
 module.exports = app;

@@ -17,6 +17,8 @@ exports.getAll = async (req, res) => {
 
         // Hide native users
         filter += filter == "" ? "where role!='Super Administrador'and username!='admin'and username!='supervisor'and username!='operator'" : "and role!='Super Administrador'and username!='admin'and username!='supervisor'and username!='operator'";
+
+        // Define users
         let users = await storage.get_data(req, res, session, "select username,lastname,firstname,phone,email,role,type,active from user " + filter + "order by lastname,firstname,username");
 
         // Define response

@@ -246,12 +246,12 @@ export class ListComponent implements OnInit {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.getAll(1)
-                        this.HeaderService.showSuccess("Cliente actualizado con exito")
+                        this.HeaderService.showSuccess("Usuario actualizado con exito")
                         this.dialogs = []
                     }, 100)
                 } else {
                     console.error("Response", res.status)
-                    this.HeaderService.showError("Error al proveedor el cliente!")
+                    this.HeaderService.showError("Error al actualizar el usuario!")
                     this.dialogs.pop()
                 }
             }).catch((e) => {

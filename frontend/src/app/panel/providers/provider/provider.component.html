@@ -51,15 +51,15 @@
                         <div class="card__info">
                             <div class="card__legend">
                                 <span>Comprado</span>
-                                <span>{{ provider.buy | currency:"CAD":"symbol-narrow":"1.2" }}</span>
+                                <span>{{ provider.buy | currency:"ARS":"symbol-narrow":"1.2" }}</span>
                             </div>
                             <div class="card__legend">
                                 <span>Pagado</span>
-                                <span>{{ provider.payment | currency:"CAD":"symbol-narrow":"1.2" }}</span>
+                                <span>{{ provider.payment | currency:"ARS":"symbol-narrow":"1.2" }}</span>
                             </div>
                             <div class="card__legend">
                                 <span>Saldo pendiente</span>
-                                <span class="price"><strong>{{ provider.pending | currency:"CAD":"symbol-narrow":"1.2" }}</strong></span>
+                                <span class="price"><strong>{{ provider.pending | currency:"ARS":"symbol-narrow":"1.2" }}</strong></span>
                             </div>
                         </div>
                         <div class="card__info">
@@ -100,9 +100,9 @@
                     <div class="list__subtitle"><span>{{ item.name }}</span></div>
                 </div>
                 <div class="list__cell list__cell-right">
-                    <div *ngIf="!item.price_offer" class="list__title"><span><strong>{{ item.price_list | currency:"CAD":"symbol-narrow":"1.2" }}</strong></span></div>
-                    <div *ngIf="item.price_offer" class="list__title"><span><strong>{{ item.price_offer | currency:"CAD":"symbol-narrow":"1.2" }}</strong></span></div>
-                    <div *ngIf="item.price_offer" class="list__subtitle muted"><span><s>{{ item.price_list | currency:"CAD":"symbol-narrow":"1.2" }}</s></span></div>
+                    <div *ngIf="!item.price_offer" class="list__title"><span><strong>{{ item.price_list | currency:"ARS":"symbol-narrow":"1.2" }}</strong></span></div>
+                    <div *ngIf="item.price_offer" class="list__title"><span><strong>{{ item.price_offer | currency:"ARS":"symbol-narrow":"1.2" }}</strong></span></div>
+                    <div *ngIf="item.price_offer" class="list__subtitle muted"><span><s>{{ item.price_list | currency:"ARS":"symbol-narrow":"1.2" }}</s></span></div>
                 </div>
                 <div [routerLink]="['/panel/articulos/' + item.id + '/1']" class="list__cell list__cell-button">
                     <i class="fas fa-chevron-circle-right"></i>
@@ -137,7 +137,7 @@
                     </div>
                 </div>
                 <div class="list__cell list__cell-right">
-                    <div class="list__title"><strong>{{ item.total | currency:"CAD":"symbol-narrow":"1.2" }}</strong></div>
+                    <div class="list__title"><strong>{{ item.total | currency:"ARS":"symbol-narrow":"1.2" }}</strong></div>
                 </div>
                 <div *ngIf="item.typeof == 'buy'" [routerLink]="['/panel/proveedores/compra/' + item.id]" class="list__cell list__cell-button">
                     <i class="fas fa-chevron-circle-right"></i>
