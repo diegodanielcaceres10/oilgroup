@@ -22,6 +22,7 @@ export class ListComponent implements OnInit {
     maxitems: number = 20
     filters: any = []
     dialogs: any = []
+    removesubscribe: any;
 
     constructor(
         private ActivatedRoute: ActivatedRoute,
@@ -49,6 +50,15 @@ export class ListComponent implements OnInit {
         }
     }
 
+    ngOnDestroy() {
+        try {
+            this.removesubscribe = undefined;
+        } catch (e) {
+            console.error("Error", e)
+            this.LoadService.change(false);
+        }
+    }
+
     getAll(page) {
         try {
             this.paging = true
@@ -59,6 +69,21 @@ export class ListComponent implements OnInit {
                 if (res.status == "success") {
                     this.licenses = res.data
                     this.licensesFiltered = res.data
+                    let current = this.licensesFiltered && this.licensesFiltered.find(i => i.current);
+                    if (current) {
+                        if (current.coefficient_validate) {
+                            let validatetime = current.coefficient_validate && moment(current.coefficient_validate).add(-10, "minutes").format("YYYY-MM-DD, HH:mm:ss");
+                            if (validatetime < moment().format("YYYY-MM-DD, HH:mm:ss")) {
+                                current.coefficient = undefined;
+                                current.coefficient_date = undefined;
+                                current.coefficient_validate = undefined;
+                                this.removePrice(current, (1000 * 60));
+                            } else {
+                                const timeout = moment(validatetime).diff(moment());
+                                this.removePrice(current, timeout + (1000 * 60));
+                            }
+                        }
+                    }
                     this.pages = Math.ceil(this.licensesFiltered.length / this.maxitems)
                     this.changePage(this.page)
                 } else {
@@ -244,6 +269,8 @@ export class ListComponent implements OnInit {
             this.LicenseService.getDollar().then((res: any) => {
                 data.coefficient = res;
                 data.coefficient_date = moment();
+                data.coefficient_validate = moment().add(1, "day");
+                data.calc = true;
                 data.loading = false;
             }).catch((e) => {
                 console.error("Error", e);
@@ -256,11 +283,13 @@ export class ListComponent implements OnInit {
 
     setPrice(data) {
         try {
-            this.LicenseService.price({ price: data }).then((res: any) => {
+            this.LicenseService.price({ license: data }).then((res: any) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.HeaderService.showSuccess("Cotización reservada con exito. Deberá adjuntar el comprobante durante las proximas 24 horas");
+                        data.calc = false;
                         this.dialogs.pop();
+                        this.removePrice(data, (1000 * 60 * 60 * 24) + (1000 * 60));
                     }, 100)
                 } else {
                     console.error("Response", res.status);
@@ -272,6 +301,28 @@ export class ListComponent implements OnInit {
                 this.HeaderService.showError("Error en la conectividad");
                 this.dialogs.pop();
             })
+        } catch (e) {
+            console.error("Error", e);
+        }
+    }
+
+    removePrice(data, timeout) {
+        try {
+            setTimeout(() => {
+                this.LicenseService.remove({ license: data }).then((res: any) => {
+                    if (res.status == "success") {
+                        if (res.remove) {
+                            data.coefficient = undefined;
+                            data.coefficient_date = undefined;
+                            data.coefficient_validate = undefined;
+                        }
+                    } else {
+                        console.error("Response", res.status);
+                    }
+                }).catch((e) => {
+                    console.error("Error", e);
+                });
+            }, timeout);
         } catch (e) {
             console.error("Error", e);
         }

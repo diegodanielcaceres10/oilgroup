@@ -51,6 +51,19 @@ export class LicenseService {
     }
 
     /**
+     * remove
+     */
+    public async remove(data) {
+        return new Promise((resolve, reject) => {
+            this.api.post("license/remove/", data).toPromise().then((data: any) => {
+                resolve(data)
+            }).catch((error) => {
+                reject(error)
+            })
+        })
+    }
+
+    /**
      * upload
      */
     public async upload(data) {
