@@ -174,7 +174,7 @@ exports.summary = async (req, res) => {
         // Define customer
         let customer = req.body.customer;
         customer = await storage.get_row(req, res, session, "select*,ifnull(sum(total),0)pending from customer left join(select customer,total,billing,status from sale where status!='Cancelada'and status!='Inicial'union all select customer,-(import),0,status from customer_payment where status='Aprobado')s on customer=id where id=" + customer.id);
-        customer.sales = await storage.get_data(req, res, session, "select id,('sale')typeof,datetime,total,status from sale where customer=" + customer.id + " and status!='Cancelada'and status!='Inicial'union all select id,'payment',datetime,import,status from customer_payment where customer=" + customer.id + " and status!='Cancelado'order by datetime desc,typeof");
+        customer.sales = await storage.get_data(req, res, session, "select id,('sale')typeof,datetime,total,validate_date,status from sale where customer=" + customer.id + " and status!='Cancelada'and status!='Inicial'union all select id,'payment',datetime,import,null,status from customer_payment where customer=" + customer.id + " and status!='Cancelado'order by datetime desc,typeof");
 
         // Read HTML Template
         let html = fs.readFileSync("./templates/summary.html", "utf8");
