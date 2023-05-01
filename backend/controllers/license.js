@@ -19,12 +19,12 @@ exports.getAll = async (req, res) => {
         filter += (filter == "" ? "where " : "and ") + "month<curdate()";
 
         // Define licenses
-        let licenses = await storage.get_data(req, res, session, "select*from license " + filter + "order by month desc");
+        let licenses = await storage.get_data(req, res, session, "select l.*, sum(p.total)payments from license l left join license_payment p on l.id=license and p.status='Aprobado'" + filter + "group by month order by month desc");
         let current = this.licenses && this.licenses.find(i => i.current);
         if (current) {
             if (current.coefficient_validate) {
                 let timezone = process.env.TIMEZONE || 0;
-                let validatetime = current.coefficient_validate && moment(current.coefficient_validate).add(timezone, "hours").add(-10, "minutes").format("YYYY-MM-DD, HH:mm:ss");
+                let validatetime = current.coefficient_validate && moment(current.coefficient_validate).add(timezone, "hours").add(-1, "minutes").format("YYYY-MM-DD, HH:mm:ss");
                 if (validatetime < moment().format("YYYY-MM-DD, HH:mm:ss")) {
                     current.coefficient = undefined;
                     current.coefficient_date = undefined;

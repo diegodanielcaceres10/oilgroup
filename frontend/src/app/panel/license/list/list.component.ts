@@ -5,6 +5,7 @@ import { NavService } from '../../../_shared/service/nav.service';
 import { HeaderService } from '../../../_shared/service/header.service';
 import { LoadService } from '../../../_shared/service/load.service';
 import { Location } from '@angular/common';
+import { environment } from 'src/environments/environment';
 import * as moment from 'moment';
 
 @Component({
@@ -22,7 +23,7 @@ export class ListComponent implements OnInit {
     maxitems: number = 20
     filters: any = []
     dialogs: any = []
-    removesubscribe: any;
+    priceCoefficientValidate: number = environment.priceCoefficientValidate;
 
     constructor(
         private ActivatedRoute: ActivatedRoute,
@@ -50,15 +51,6 @@ export class ListComponent implements OnInit {
         }
     }
 
-    ngOnDestroy() {
-        try {
-            this.removesubscribe = undefined;
-        } catch (e) {
-            console.error("Error", e)
-            this.LoadService.change(false);
-        }
-    }
-
     getAll(page) {
         try {
             this.paging = true
@@ -72,7 +64,7 @@ export class ListComponent implements OnInit {
                     let current = this.licensesFiltered && this.licensesFiltered.find(i => i.current);
                     if (current) {
                         if (current.coefficient_validate) {
-                            let validatetime = current.coefficient_validate && moment(current.coefficient_validate).add(-10, "minutes").format("YYYY-MM-DD, HH:mm:ss");
+                            let validatetime = current.coefficient_validate && moment(current.coefficient_validate).format("YYYY-MM-DD, HH:mm:ss");
                             if (validatetime < moment().format("YYYY-MM-DD, HH:mm:ss")) {
                                 current.coefficient = undefined;
                                 current.coefficient_date = undefined;
@@ -269,9 +261,15 @@ export class ListComponent implements OnInit {
             this.LicenseService.getDollar().then((res: any) => {
                 data.coefficient = res;
                 data.coefficient_date = moment();
-                data.coefficient_validate = moment().add(1, "day");
+                data.coefficient_validate = moment().add(this.priceCoefficientValidate, "hours");
                 data.calc = true;
                 data.loading = false;
+                setTimeout(() => {
+                    if (data.calc) {
+                        data.calc = false;
+                        data.coefficient_validate = undefined;
+                    }
+                }, (1000 * 60 * 1));
             }).catch((e) => {
                 console.error("Error", e);
                 this.HeaderService.showError("Error al calcular la cotización");
@@ -286,11 +284,13 @@ export class ListComponent implements OnInit {
             this.LicenseService.price({ license: data }).then((res: any) => {
                 if (res.status == "success") {
                     setTimeout(() => {
-                        this.HeaderService.showSuccess("Cotización reservada con exito. Deberá adjuntar el comprobante durante las proximas 24 horas");
+                        this.HeaderService.showSuccess("Cotización reservada con exito. Deberá adjuntar el comprobante durante las proximas " + this.priceCoefficientValidate + " horas");
                         data.calc = false;
                         this.dialogs.pop();
-                        this.removePrice(data, (1000 * 60 * 60 * 24) + (1000 * 60));
-                    }, 100)
+                        let validatetime = moment(data.coefficient_validate).format("YYYY-MM-DD, HH:mm:ss");
+                        const timeout = moment(validatetime).diff(moment());
+                        this.removePrice(data, timeout + (1000 * 60));
+                    }, 100);
                 } else {
                     console.error("Response", res.status);
                     this.HeaderService.showError("Error al reservaar la cotización!");

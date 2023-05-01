@@ -42,7 +42,7 @@
                     </div>
                 </div>
                 <div *ngIf="item.status != 'Aprobado' && item.status != 'Analisis' && item.coefficient && item.coefficient_validate" class="list__cell list__cell-right">
-                    <div class="list__title"><strong>{{ (item.coefficient * (item.tax ? (item.value + item.tax) : item.value)) | currency:"ARS":"symbol-narrow":"1.2" }}</strong></div>
+                    <div class="list__title">{{ item.payments ? "Saldo pendiente: " : "" }}<strong>{{ ((item.coefficient * (item.tax ? (item.value + item.tax) : item.value)) - item.payments) | currency:"ARS":"symbol-narrow":"1.2" }}</strong></div>
                     <div *ngIf="item.coefficient_date && item.calc" class="list__subtitle"><span>Cotizado: {{ item.coefficient_date | date:"dd/MM/yyyy, HH:mm" }}</span></div>
                     <div *ngIf="!item.calc" class="list__subtitle"><span>Valido hasta: {{ item.coefficient_validate | date:"dd/MM/yyyy, HH:mm" }} <i class="fas fa-clock"></i></span></div>
                 </div>
