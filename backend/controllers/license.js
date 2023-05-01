@@ -16,7 +16,7 @@ exports.getAll = async (req, res) => {
         let filter = await storage.whereObj(req.body.filter || []);
 
         // Hide native users
-        filter += (filter == "" ? "where " : "and ") + "month<curdate()";
+        filter += (filter == "" ? "where " : "and ") + "month<=curdate()";
 
         // Define licenses
         let licenses = await storage.get_data(req, res, session, "select l.*, sum(p.total)payments from license l left join license_payment p on l.id=license and p.status='Aprobado'" + filter + "group by month order by month desc");
