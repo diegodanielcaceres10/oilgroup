@@ -6,6 +6,7 @@ export const environment = {
     production: false,
     name: "LOCAL",
     apiUrl: "http://localhost:7006/local/oilgroup/api/",
+    priceCoefficientValidate: 1,
 };
 
 /*

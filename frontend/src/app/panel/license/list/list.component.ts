@@ -5,6 +5,7 @@ import { NavService } from '../../../_shared/service/nav.service';
 import { HeaderService } from '../../../_shared/service/header.service';
 import { LoadService } from '../../../_shared/service/load.service';
 import { Location } from '@angular/common';
+import { environment } from 'src/environments/environment';
 import * as moment from 'moment';
 
 @Component({
@@ -22,6 +23,7 @@ export class ListComponent implements OnInit {
     maxitems: number = 20
     filters: any = []
     dialogs: any = []
+    priceCoefficientValidate: number = environment.priceCoefficientValidate;
 
     constructor(
         private ActivatedRoute: ActivatedRoute,
@@ -59,6 +61,21 @@ export class ListComponent implements OnInit {
                 if (res.status == "success") {
                     this.licenses = res.data
                     this.licensesFiltered = res.data
+                    let current = this.licensesFiltered && this.licensesFiltered.find(i => i.current);
+                    if (current) {
+                        if (current.coefficient_validate) {
+                            let validatetime = current.coefficient_validate && moment(current.coefficient_validate).format("YYYY-MM-DD, HH:mm:ss");
+                            if (validatetime < moment().format("YYYY-MM-DD, HH:mm:ss")) {
+                                current.coefficient = undefined;
+                                current.coefficient_date = undefined;
+                                current.coefficient_validate = undefined;
+                                this.removePrice(current, (1000 * 60));
+                            } else {
+                                const timeout = moment(validatetime).diff(moment());
+                                this.removePrice(current, timeout + (1000 * 60));
+                            }
+                        }
+                    }
                     this.pages = Math.ceil(this.licensesFiltered.length / this.maxitems)
                     this.changePage(this.page)
                 } else {
@@ -244,7 +261,15 @@ export class ListComponent implements OnInit {
             this.LicenseService.getDollar().then((res: any) => {
                 data.coefficient = res;
                 data.coefficient_date = moment();
+                data.coefficient_validate = moment().add(this.priceCoefficientValidate, "hours");
+                data.calc = true;
                 data.loading = false;
+                setTimeout(() => {
+                    if (data.calc) {
+                        data.calc = false;
+                        data.coefficient_validate = undefined;
+                    }
+                }, (1000 * 60 * 1));
             }).catch((e) => {
                 console.error("Error", e);
                 this.HeaderService.showError("Error al calcular la cotización");
@@ -256,12 +281,16 @@ export class ListComponent implements OnInit {
 
     setPrice(data) {
         try {
-            this.LicenseService.price({ price: data }).then((res: any) => {
+            this.LicenseService.price({ license: data }).then((res: any) => {
                 if (res.status == "success") {
                     setTimeout(() => {
-                        this.HeaderService.showSuccess("Cotización reservada con exito. Deberá adjuntar el comprobante durante las proximas 24 horas");
+                        this.HeaderService.showSuccess("Cotización reservada con exito. Deberá adjuntar el comprobante durante las proximas " + this.priceCoefficientValidate + " horas");
+                        data.calc = false;
                         this.dialogs.pop();
-                    }, 100)
+                        let validatetime = moment(data.coefficient_validate).format("YYYY-MM-DD, HH:mm:ss");
+                        const timeout = moment(validatetime).diff(moment());
+                        this.removePrice(data, timeout + (1000 * 60));
+                    }, 100);
                 } else {
                     console.error("Response", res.status);
                     this.HeaderService.showError("Error al reservaar la cotización!");
@@ -272,6 +301,28 @@ export class ListComponent implements OnInit {
                 this.HeaderService.showError("Error en la conectividad");
                 this.dialogs.pop();
             })
+        } catch (e) {
+            console.error("Error", e);
+        }
+    }
+
+    removePrice(data, timeout) {
+        try {
+            setTimeout(() => {
+                this.LicenseService.remove({ license: data }).then((res: any) => {
+                    if (res.status == "success") {
+                        if (res.remove) {
+                            data.coefficient = undefined;
+                            data.coefficient_date = undefined;
+                            data.coefficient_validate = undefined;
+                        }
+                    } else {
+                        console.error("Response", res.status);
+                    }
+                }).catch((e) => {
+                    console.error("Error", e);
+                });
+            }, timeout);
         } catch (e) {
             console.error("Error", e);
         }
