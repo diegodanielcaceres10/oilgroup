@@ -116,9 +116,9 @@ export class ListComponent implements OnInit {
             this.page = page
             this.UserService.getAll({ filter: this.filters }).then((res: any) => {
                 if (res.status == "success") {
-                    this.users = res.data
-                    this.usersFiltered = res.data
-                    this.pages = Math.ceil(this.usersFiltered.length / this.maxitems)
+                    this.users = res.data;
+                    this.usersFiltered = res.data;
+                    this.pages = Math.ceil(this.usersFiltered.length / this.maxitems);
                     this.changePage(this.page)
                 } else {
                     console.error("Response", res.status)
