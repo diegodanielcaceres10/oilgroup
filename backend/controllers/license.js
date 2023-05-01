@@ -127,7 +127,6 @@ exports.upload = async (req, res) => {
         let file = req.files.ticket;
         // Use the mv() method to place the file in upload directory (i.e. "uploads")
         const filename = "./uploads/" + moment().format("YYYY-MM-DD") + "-" + file.name.trim();
-        console.log(filename);
         const options = {
             folder: "oilgroup/" + process.env.CLOUDFOLDER + "/",
             use_filename: true,
