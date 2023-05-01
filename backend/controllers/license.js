@@ -29,7 +29,7 @@ exports.getAll = async (req, res) => {
                     current.coefficient = undefined;
                     current.coefficient_date = undefined;
                     current.coefficient_validate = undefined;
-                    await storage.run_query(req, res, session, "update license set coefficient=null,coefficient_date=null,coefficient_validate=null where id=" + item.id);
+                    await storage.run_query(req, res, session, "update license set coefficient_validate=null where id=" + item.id);
                 }
             }
         }
@@ -57,7 +57,9 @@ exports.price = async (req, res) => {
         let license = req.body.license;
         await storage.exists_row(req, res, session, "select*from license where id=" + license.id + " and current='1'");
 
-        // Update provider
+        // Update license
+        license.coefficient_date = moment(license.coefficient_date).format("YYYY-MM-DD HH:mm:ss");
+        license.coefficient_validate = moment(license.coefficient_validate).format("YYYY-MM-DD HH:mm:ss");
         await storage.run_query(req, res, session, "update license set coefficient='" + license.coefficient + "',coefficient_date='" + license.coefficient_date + "',coefficient_validate='" + license.coefficient_validate + "'where id=" + license.id);
 
         // Define response

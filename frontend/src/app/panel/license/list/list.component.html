@@ -41,13 +41,14 @@
                         <div class="list__tag list__tag-pending"><strong>{{ item.status }}</strong></div>
                     </div>
                 </div>
-                <div class="list__cell list__cell-right">
+                <div *ngIf="item.status != 'Aprobado' && item.status != 'Analisis' && item.coefficient && item.coefficient_validate" class="list__cell list__cell-right">
+                    <div class="list__title"><strong>{{ (item.coefficient * (item.tax ? (item.value + item.tax) : item.value)) | currency:"ARS":"symbol-narrow":"1.2" }}</strong></div>
+                    <div *ngIf="item.coefficient_date && item.calc" class="list__subtitle"><span>Cotizado: {{ item.coefficient_date | date:"dd/MM/yyyy, HH:mm" }}</span></div>
+                    <div *ngIf="!item.calc" class="list__subtitle"><span>Valido hasta: {{ item.coefficient_validate | date:"dd/MM/yyyy, HH:mm" }} <i class="fas fa-clock"></i></span></div>
+                </div>
+                <div *ngIf="item.status == 'Aprobado'" class="list__cell list__cell-right">
                     <div *ngIf="item.total" class="list__title"><strong>{{ item.total | currency:"ARS":"symbol-narrow":"1.2" }}</strong></div>
                     <div *ngIf="item.datetime" class="list__subtitle"><span>{{ item.datetime | date:"dd/MM/yyyy, HH:mm" }}</span></div>
-                    <div *ngIf="!item.total && item.coefficient" class="list__title"><strong>{{ (item.coefficient * (item.tax ? (item.value + item.tax) : item.value)) | currency:"ARS":"symbol-narrow":"1.2" }}</strong></div>
-                    <div *ngIf="!item.datetime && item.coefficient && item.coefficient_validate" class="list__subtitle"><span>Valido hasta: {{ item.coefficient_validate | date:"dd/MM/yyyy, HH:mm" }} <i class="fas fa-clock"></i></span></div>
-                    <!-- <div *ngIf="!item.coefficient_validate && item.coefficient_date" class="list__subtitle"><span>{{ item.coefficient_date | date:"dd/MM/yyyy, HH:mm" }}</span></div>
-                    <div *ngIf="item.coefficient_validate" class="list__subtitle"><span>Valido hasta: {{ item.coefficient_validate | date:"dd/MM/yyyy, HH:mm" }} <i class="fas fa-clock"></i></span></div> -->
                 </div>
                 <div *ngIf="item.status == 'Aprobado'" class="list__cell list__cell-icon">
                     <i class="fas fa-check-circle"></i>
@@ -55,16 +56,16 @@
                 <div *ngIf="item.status == 'Analisis'" class="list__cell list__cell-icon">
                     <i class="fas fa-info-circle"></i>
                 </div>
-                <div *ngIf="item.status != 'Aprobado' && item.status != 'Analisis' && item.current && item.coefficient && item.calc" (click)="setPriceDialogConfirm(item)" class="list__cell list__cell-button">
+                <div *ngIf="item.status != 'Aprobado' && item.status != 'Analisis' && item.current && item.coefficient_validate && item.calc" (click)="setPriceDialogConfirm(item)" class="list__cell list__cell-button">
                     <i class="fas fa-thumbtack"></i>
                 </div>
-                <div *ngIf="item.status != 'Aprobado' && item.status != 'Analisis' && item.current && item.coefficient && !item.calc" (click)="uploadTicketDialogForm(item)" class="list__cell list__cell-button">
+                <div *ngIf="item.status != 'Aprobado' && item.status != 'Analisis' && item.current && item.coefficient_validate && !item.calc" (click)="uploadTicketDialogForm(item)" class="list__cell list__cell-button">
                     <i class="fas fa-paperclip"></i>
                 </div>
-                <div *ngIf="item.status != 'Aprobado' && item.status != 'Analisis' && item.current && item.coefficient && !item.loading" (click)="calcDollar(item)" class="list__cell list__cell-button">
+                <div *ngIf="item.status != 'Aprobado' && item.status != 'Analisis' && item.current && item.coefficient_validate && !item.loading && item.calc" (click)="calcDollar(item)" class="list__cell list__cell-button">
                     <i class="fas fa-sync-alt"></i>
                 </div>
-                <div *ngIf="item.status != 'Aprobado' && item.status != 'Analisis' && item.current && !item.coefficient && !item.loading" (click)="calcDollar(item)" class="list__cell list__cell-button">
+                <div *ngIf="item.status != 'Aprobado' && item.status != 'Analisis' && item.current && !item.coefficient_validate && !item.loading" (click)="calcDollar(item)" class="list__cell list__cell-button">
                     <i class="fas fa-calculator"></i>
                 </div>
                 <div *ngIf="item.status != 'Aprobado' && item.status != 'Analisis' && item.current && item.loading" class="list__cell list__cell-icon">
