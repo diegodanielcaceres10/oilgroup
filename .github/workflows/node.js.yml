@@ -39,16 +39,35 @@ jobs:
         password: ${{ secrets.HOST_PASSWORD }}
         port: ${{ secrets.HOST_PORT }}
         script: |
+          forever stop ${{ secrets.HOM_FOREVER_ID }} || echo "Forever cannot find process"
+          cd /root/.forever/ && rm ${{ secrets.HOM_FOREVER_ID }}.log
           cd ${{ secrets.ROOT_BACKEND }}development/oilgroup/
           rm -rf backend/
           echo "REMOVE ENV FILE AND NODE MODULES SUCCESSFUL"
 
-#    - name: Upload back
-#      uses: appleboy/scp-action@master
-#      with:
-#        host: ${{ secrets.HOST_IP }}
-#        username: ${{ secrets.HOST_USERNAME }}
-#        password: ${{ secrets.HOST_PASSWORD }}
-#        port: ${{ secrets.HOST_PORT }}
-#        source: backend/
-#        target: ${{ secrets.ROOT_BACKEND }}development/oilgroup/
+    - name: Upload back
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST_IP }}
+        username: ${{ secrets.HOST_USERNAME }}
+        password: ${{ secrets.HOST_PASSWORD }}
+        port: ${{ secrets.HOST_PORT }}
+        source: backend/
+        target: ${{ secrets.ROOT_BACKEND }}development/oilgroup/
+
+    - name: Restart backend
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST_IP }}
+        username: ${{ secrets.HOST_USERNAME }}
+        password: ${{ secrets.HOST_PASSWORD }}
+        port: ${{ secrets.HOST_PORT }}
+        script: |
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+          [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+          cd ${{ secrets.ROOT_BACKEND }}development/oilgroup/
+          cd backend/
+          npm run build-hom
+          echo "UPDATE AND RESTART HOMOLOG BACKEND SUCCESSFUL"
