@@ -31,12 +31,24 @@ jobs:
         cat config.env
         echo "CREATE ENV FILE SUCCESSFUL"
 
-    - name: Upload back
-      uses: appleboy/scp-action@master
+    - name: Stop and clean backend
+      uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST_IP }}
         username: ${{ secrets.HOST_USERNAME }}
         password: ${{ secrets.HOST_PASSWORD }}
         port: ${{ secrets.HOST_PORT }}
-        source: backend/
-        target: ${{ secrets.ROOT_BACKEND }}development/oilgroup/
+        script: |
+          cd ${{ secrets.ROOT_BACKEND }}development/oilgroup/
+          rm -rf backend/
+          echo "REMOVE ENV FILE AND NODE MODULES SUCCESSFUL"
+
+#    - name: Upload back
+#      uses: appleboy/scp-action@master
+#      with:
+#        host: ${{ secrets.HOST_IP }}
+#        username: ${{ secrets.HOST_USERNAME }}
+#        password: ${{ secrets.HOST_PASSWORD }}
+#        port: ${{ secrets.HOST_PORT }}
+#        source: backend/
+#        target: ${{ secrets.ROOT_BACKEND }}development/oilgroup/
