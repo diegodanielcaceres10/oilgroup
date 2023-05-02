@@ -36,8 +36,8 @@ jobs:
           echo "REMOVING ENV FILE"
           rm config.env
           echo "REMOVE FOREVER FILES, ENV FILE AND NODE MODULES SUCCESSFUL"
-          ls
-          sh deploy.sh
+          cd ..
+          git pull
 
     - name: Create env file
       run: |
