@@ -38,5 +38,5 @@ jobs:
         username: ${{ secrets.HOST_USERNAME }}
         password: ${{ secrets.HOST_PASSWORD }}
         port: ${{ secrets.HOST_PORT }}
-        source: backend
-        target: ${{ secrets.ROOT_BACKEND }}test/oilgroup/
+        source: backend/
+        target: ${{ secrets.ROOT_BACKEND }}development/oilgroup/
