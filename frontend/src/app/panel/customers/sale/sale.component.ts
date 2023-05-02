@@ -229,12 +229,6 @@ export class SaleComponent implements OnInit {
                                     disabled: true,
                                 },
                                 {
-                                    name: "validate",
-                                    type: "date",
-                                    label: "Fecha de vencimiento",
-                                    value: this.sale.validate,
-                                },
-                                {
                                     name: "description",
                                     type: "textarea",
                                     label: "Descripción",
@@ -441,15 +435,13 @@ export class SaleComponent implements OnInit {
             this.steps[0].groups[0].fields[1].value = this.customers.find(i => i.id == item.customer)
             this.steps[0].groups[0].fields[2].value = item.billing
             this.steps[0].groups[0].fields[3].value = item.document
-            this.steps[0].groups[0].fields[4].value = item.validate
-            this.steps[0].groups[0].fields[5].value = item.description
+            this.steps[0].groups[0].fields[4].value = item.description
             setTimeout(() => {
                 this.sale.status = this.steps[0].groups[0].fields[0].value
                 this.sale.customer = this.steps[0].groups[0].fields[1].value
                 this.sale.billing = this.steps[0].groups[0].fields[2].value
                 this.sale.document = this.steps[0].groups[0].fields[3].value
-                this.sale.validate = this.steps[0].groups[0].fields[4].value
-                this.sale.description = this.steps[0].groups[0].fields[5].value
+                this.sale.description = this.steps[0].groups[0].fields[4].value
                 sessionStorage.setItem("oilgroup-sale", JSON.stringify(this.sale))
                 this.form = this.steps[1]
                 this.path = 1

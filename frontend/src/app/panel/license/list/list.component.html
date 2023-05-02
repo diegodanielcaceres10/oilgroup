@@ -1,0 +1,108 @@
+<div class="title">
+    <div class="title__info">
+        <h2>Cuotas</h2>
+    </div>
+    <div class="group">
+        <div class="group__box group__box-icon">
+            <div (click)="filterDialogForm()" class="group__tool"><i class="fas fa-sliders-h"></i><span>Filtro</span></div>
+        </div>
+    </div>
+</div>
+<div class="section__info">
+    <div class="section__box">
+        <div class="list">
+            <div class="list__row list__row-wrap">
+                <div *ngFor="let filter of filters" class="list__cell list__cell-hidden">
+                    <div *ngIf="filter.type != 'hidden' && filter.value && !filter.id" class="list__filter">
+                        <span>{{ filter.label }}:</span>
+                        <strong>{{ filter.value }}</strong>
+                        <span *ngIf="!filter.required" (click)="filter.value = '';getAll(1)" class="click"><i class="fas fa-times"></i></span>
+                    </div>
+                    <div *ngIf="filter.type != 'hidden' && filter.value && filter.value[filter.nameLabel] && filter.id" class="list__filter">
+                        <span>{{ filter.label }}:</span>
+                        <strong>{{ filter.value[filter.nameLabel] }}</strong>
+                        <span *ngIf="!filter.required" (click)="filter.value = '';getAll(1)" class="click"><i class="fas fa-times"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="paging" class="list__row">
+                <div class="list__cell list__cell-load"><i class="fas fa-spinner spin"></i></div>
+            </div>
+            <div *ngIf="!paging && licensesView.length > 0" class="list__row">
+                <div class="list__cell list__cell-full muted">Mostrando {{ (page - 1) * maxitems + 1 }} - {{ (page - 1) * maxitems + licensesView.length }} de {{ licensesFiltered.length }}</div>
+            </div>
+            <div *ngFor="let item of licensesView" class="list__row list__row-cells">
+                <div class="list__cell list__cell-full">
+                    <div class="list__title">U$D <strong>{{ item.value | number:"1.2" }}</strong><span *ngIf="item.tax"> + <strong>{{ item.tax | number:"1.2" }}</strong></span></div>
+                    <div class="list__subtitle"><span>{{ item.month | date:"MMMM 'de' yyyy" }}</span></div>
+                </div>
+                <div *ngIf="item.status == 'Analisis'" class="list__cell">
+                    <div class="list__subtitle">
+                        <div class="list__tag list__tag-pending"><strong>{{ item.status }}</strong></div>
+                    </div>
+                </div>
+                <div *ngIf="item.status != 'Aprobado' && item.status != 'Analisis' && item.coefficient && item.coefficient_validate" class="list__cell list__cell-right">
+                    <div class="list__title">{{ item.payments ? "Saldo pendiente: " : "" }}<strong>{{ ((item.coefficient * (item.tax ? (item.value + item.tax) : item.value)) - item.payments) | currency:"ARS":"symbol-narrow":"1.2" }}</strong></div>
+                    <div *ngIf="item.coefficient_date && item.calc" class="list__subtitle"><span>Cotizado: {{ item.coefficient_date | date:"dd/MM/yyyy, HH:mm" }}</span></div>
+                    <div *ngIf="!item.calc" class="list__subtitle"><span>Valido hasta: {{ item.coefficient_validate | date:"dd/MM/yyyy, HH:mm" }} <i class="fas fa-clock"></i></span></div>
+                </div>
+                <div *ngIf="item.status == 'Aprobado'" class="list__cell list__cell-right">
+                    <div *ngIf="item.total" class="list__title"><strong>{{ item.total | currency:"ARS":"symbol-narrow":"1.2" }}</strong></div>
+                    <div *ngIf="item.datetime" class="list__subtitle"><span>{{ item.datetime | date:"dd/MM/yyyy, HH:mm" }}</span></div>
+                </div>
+                <div *ngIf="item.status == 'Aprobado'" class="list__cell list__cell-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div *ngIf="item.status == 'Analisis'" class="list__cell list__cell-icon">
+                    <i class="fas fa-info-circle"></i>
+                </div>
+                <div *ngIf="item.status != 'Aprobado' && item.status != 'Analisis' && item.current && item.coefficient_validate && item.calc" (click)="setPriceDialogConfirm(item)" class="list__cell list__cell-button">
+                    <i class="fas fa-thumbtack"></i>
+                </div>
+                <div *ngIf="item.status != 'Aprobado' && item.status != 'Analisis' && item.current && item.coefficient_validate && !item.calc" (click)="uploadTicketDialogForm(item)" class="list__cell list__cell-button">
+                    <i class="fas fa-paperclip"></i>
+                </div>
+                <div *ngIf="item.status != 'Aprobado' && item.status != 'Analisis' && item.current && item.coefficient_validate && !item.loading && item.calc" (click)="calcDollar(item)" class="list__cell list__cell-button">
+                    <i class="fas fa-sync-alt"></i>
+                </div>
+                <div *ngIf="item.status != 'Aprobado' && item.status != 'Analisis' && item.current && !item.coefficient_validate && !item.loading" (click)="calcDollar(item)" class="list__cell list__cell-button">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <div *ngIf="item.status != 'Aprobado' && item.status != 'Analisis' && item.current && item.loading" class="list__cell list__cell-icon">
+                    <i class="fas fa-spinner spin"></i>
+                </div>
+            </div>
+            <div *ngIf="!paging && licensesView.length == 0" class="list__row">
+                <div class="list__cell list__cell-full"><i class="fas fa-exclamation-circle"></i>No se encontraron registros</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="section__info">
+    <div class="section__box">
+        <div *ngIf="pages > 1" class="pagination">
+            <div *ngIf="page > 3" (click)="changePage(1)" class="pagination__page">
+                <div class="pagination__number"><i class="fas fa-chevron-left"></i></div>
+            </div>
+            <div *ngIf="page > 2" (click)="changePage(page - 2)" class="pagination__page">
+                <div class="pagination__number">{{ page - 2 }}</div>
+            </div>
+            <div *ngIf="page > 1" (click)="changePage(page - 1)" class="pagination__page">
+                <div class="pagination__number">{{ page - 1 }}</div>
+            </div>
+            <div class="pagination__current">
+                <div class="pagination__number">{{ page }}</div>
+            </div>
+            <div *ngIf="pages > page" (click)="changePage(page + 1)" class="pagination__page">
+                <div class="pagination__number">{{ page + 1 }}</div>
+            </div>
+            <div *ngIf="pages > page + 1" (click)="changePage(page + 2)" class="pagination__page">
+                <div class="pagination__number">{{ page + 2 }}</div>
+            </div>
+            <div *ngIf="pages > page + 2" (click)="changePage(pages)" class="pagination__page">
+                <div class="pagination__number"><i class="fas fa-chevron-right"></i></div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-dialog-modal *ngFor="let dialog of dialogs" [dialog]="dialog" (responseDialogModal)="responseDialog($event)"></app-dialog-modal>

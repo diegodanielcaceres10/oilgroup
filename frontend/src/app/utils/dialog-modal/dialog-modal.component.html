@@ -36,8 +36,8 @@
                             </span>
                         </span>
                         <span *ngIf="value.label">{{ value.label }}: </span>
-                        <strong *ngIf="value.name && value.bold && value.format && value.format == 'decimal'">{{ item[value.name] | currency:"CAD":"symbol-narrow":"1.2" }}</strong>
-                        <span *ngIf="value.name && !value.bold && value.format && value.format == 'decimal'">{{ item[value.name] | currency:"CAD":"symbol-narrow":"1.2" }}</span>
+                        <strong *ngIf="value.name && value.bold && value.format && value.format == 'decimal'">{{ item[value.name] | currency:"ARS":"symbol-narrow":"1.2" }}</strong>
+                        <span *ngIf="value.name && !value.bold && value.format && value.format == 'decimal'">{{ item[value.name] | currency:"ARS":"symbol-narrow":"1.2" }}</span>
                         <strong *ngIf="value.name && value.bold && !value.format">{{ item[value.name] }}</strong>
                         <span *ngIf="value.name && !value.bold && !value.format">{{ item[value.name] }}</span>
                         <div *ngIf="value.span && value.muted" class="list__subtitle muted"><span>{{ value.span }}</span></div>

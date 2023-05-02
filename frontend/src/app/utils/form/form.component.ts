@@ -46,6 +46,11 @@ export class FormComponent implements OnInit {
                         }
                     } else if (field.type == "checkbox") {
                         this.FormGroup.addControl(field.name, new FormControl(field.value ? true : false))
+                    } else if (field.type == "file") {
+                        this.FormGroup.addControl(field.name, new FormControl({
+                            value: field.value,
+                            disabled: field.disabled,
+                        }, validators))
                     } else {
                         this.FormGroup.addControl(field.name, new FormControl({
                             value: field.value,
@@ -152,6 +157,27 @@ export class FormComponent implements OnInit {
         } else if (field.type != "select" || !field.id) {
             this.FormGroup.controls[field.name].setValue(value)
         }
+    }
+
+    drawFile(files, field) {
+        try {
+            for (let item of files) {
+                const file: File = item;
+                if (["application/pdf", "image/png", "image/jpeg", "image/jpg"].indexOf(file.type) == -1) {
+                    field.error = "FORMAT";
+                    return;
+                };
+                if (1048576 < file.size) {
+                    field.error = "SIZE";
+                    return;
+                };
+                field.value = file;
+                this.FormGroup.controls[field.name].setValue(file);
+                this.FormGroup.markAllAsTouched();
+            };
+        } catch (e) {
+            console.error("Error", e);
+        };
     }
 
     eventForm(type) {

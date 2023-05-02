@@ -40,7 +40,7 @@
                         <div class="card__info">
                             <div class="card__label">Venta:</div>
                             <div class="card__title"><strong>{{ sale.customer.fantasy_name }}</strong></div>
-                            <div class="card__title"><strong>{{ sale.total | currency:"CAD":"symbol-narrow":"1.2" }}</strong></div>
+                            <div class="card__title"><strong>{{ sale.total | currency:"ARS":"symbol-narrow":"1.2" }}</strong></div>
                         </div>
                         <div class="card__info">
                             <div class="card__label">Estado:</div>
@@ -80,10 +80,6 @@
                                 <span>{{ sale.billing_date | date:"dd/MM/yyyy, HH:mm" }}</span>
                             </div>
                             <div class="card__legend">
-                                <span>Fecha de vencimiento</span>
-                                <span>{{ sale.validate_date | date:"dd/MM/yyyy" }}</span>
-                            </div>
-                            <div class="card__legend">
                                 <span>Descripción</span>
                                 <span>{{ sale.description }}</span>
                             </div>
@@ -97,13 +93,13 @@
                                 <div *ngFor="let item of sale.items" class="list__row list__row-detail">
                                     <div *ngIf="item.article" class="list__cell list__cell-full">
                                         <div class="list__title">{{ item.brand }} {{ item.name }}</div>
-                                        <div class="list__subtitle"><span>{{ item.price | currency:"CAD":"symbol-narrow":"1.2" }} x {{ item.quantity }} - {{ item.measure }}</span></div>
+                                        <div class="list__subtitle"><span>{{ item.price | currency:"ARS":"symbol-narrow":"1.2" }} x {{ item.quantity }} - {{ item.measure }}</span></div>
                                     </div>
                                     <div *ngIf="!item.article" class="list__cell list__cell-full">
                                         <div class="list__title">{{ item.concept }}</div>
                                     </div>
                                     <div class="list__cell list__cell-right">
-                                        <div class="list__title">{{ item.subtotal | currency:"CAD":"symbol-narrow":"1.2" }}</div>
+                                        <div class="list__title">{{ item.subtotal | currency:"ARS":"symbol-narrow":"1.2" }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -248,12 +244,12 @@
                 <div class="list__cell list__cell-full">
                     <div class="list__subtitle"><span>{{ item.brand }}</span></div>
                     <div class="list__title">{{ item.name }}</div>
-                    <div class="list__subtitle"><span>{{ item.price | currency:"CAD":"symbol-narrow":"1.2" }}</span></div>
+                    <div class="list__subtitle"><span>{{ item.price | currency:"ARS":"symbol-narrow":"1.2" }}</span></div>
                     <div class="list__subtitle"><span>{{ item.measure }} x {{ item.quantity }}</span></div>
                     <div class="list__subtitle"><span>Stock: {{ item.units }}</span></div>
                 </div>
                 <div class="list__cell list__cell-right">
-                    <div class="list__title">{{ item.subtotal | currency:"CAD":"symbol-narrow":"1.2" }}</div>
+                    <div class="list__title">{{ item.subtotal | currency:"ARS":"symbol-narrow":"1.2" }}</div>
                 </div>
             </div>
             <div *ngFor="let item of sale.details" class="list__row list__row-info">
@@ -264,7 +260,7 @@
                     <div class="list__subtitle"><span>{{ item.concept }}</span></div>
                 </div>
                 <div class="list__cell list__cell-right">
-                    <div class="list__title">{{ item.subtotal | currency:"CAD":"symbol-narrow":"1.2" }}</div>
+                    <div class="list__title">{{ item.subtotal | currency:"ARS":"symbol-narrow":"1.2" }}</div>
                 </div>
             </div>
             <div *ngIf="sale.articles.length > 0 || sale.details.length > 0" class="list__row list__row-info">
@@ -272,7 +268,7 @@
                     <div class="list__title">Total</div>
                 </div>
                 <div class="list__cell list__cell-right">
-                    <div class="list__title"><strong>{{ sale.total | currency:"CAD":"symbol-narrow":"1.2" }}</strong></div>
+                    <div class="list__title"><strong>{{ sale.total | currency:"ARS":"symbol-narrow":"1.2" }}</strong></div>
                 </div>
             </div>
             <div *ngIf="path > 3 && sale.payment.status" class="list__row list__row-info">
@@ -282,7 +278,7 @@
                     <div class="list__subtitle"><span>{{ sale.payment.ticket }}</span></div>
                 </div>
                 <div class="list__cell list__cell-right">
-                    <div class="list__title">-{{ sale.payment.import | currency:"CAD":"symbol-narrow":"1.2" }}</div>
+                    <div class="list__title">-{{ sale.payment.import | currency:"ARS":"symbol-narrow":"1.2" }}</div>
                 </div>
             </div>
             <div *ngIf="path > 3 && !sale.payment.status" class="list__row list__row-info">
@@ -300,8 +296,8 @@
                 <div class="list__quote">{{ item.brand }}</div>
                 <div class="list__title">{{ item.name }}</div>
                 <div class="list__subtitle"><span>Cantidad: <strong>{{ item.stock }}</strong> - Disponible: <strong>{{ item.available }}</strong></span></div>
-                <div *ngIf="!item.edit" class="list__title">{{ item.subtotal | currency:"CAD":"symbol-narrow":"1.2" }}</div>
-                <div *ngIf="item.edit" class="list__title"><s>{{ (item.price * item.quantity) | currency:"CAD":"symbol-narrow":"1.2" }}</s> / {{ item.subtotal | currency:"CAD":"symbol-narrow":"1.2" }}</div>
+                <div *ngIf="!item.edit" class="list__title">{{ item.subtotal | currency:"ARS":"symbol-narrow":"1.2" }}</div>
+                <div *ngIf="item.edit" class="list__title"><s>{{ (item.price * item.quantity) | currency:"ARS":"symbol-narrow":"1.2" }}</s> / {{ item.subtotal | currency:"ARS":"symbol-narrow":"1.2" }}</div>
                 <div *ngIf="item.replaces && item.replaces.length > 0" class="list__subtitle"><span>Remplazos</span></div>
                 <div *ngIf="item.replaces && item.replaces.length > 0" class="list__box">
                     <span *ngFor="let replace of item.replaces" class="list__attach"><span *ngIf="!item.review" (click)="removeReplace(item, replace)" class="click"><i class="fas fa-times"></i></span>{{ replace.brand }} {{ replace.name }}: <strong>{{ replace.stock }}</strong></span>
@@ -332,7 +328,7 @@
         <div *ngFor="let item of sale.details;let i = index" [ngClass]="{ 'list__row-blocked' : item.deleted }" class="list__row list__row-cells">
             <div class="list__cell list__cell-full">
                 <div class="list__title">{{ item.concept }}</div>
-                <div class="list__title">{{ item.subtotal | currency:"CAD":"symbol-narrow":"1.2" }}</div>
+                <div class="list__title">{{ item.subtotal | currency:"ARS":"symbol-narrow":"1.2" }}</div>
             </div>
             <div *ngIf="!item.review && !item.deleted" (click)="error = '';item.review = true" class="list__cell list__cell-button">
                 <i class="fas fa-check"></i>

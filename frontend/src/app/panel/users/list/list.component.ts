@@ -116,9 +116,9 @@ export class ListComponent implements OnInit {
             this.page = page
             this.UserService.getAll({ filter: this.filters }).then((res: any) => {
                 if (res.status == "success") {
-                    this.users = res.data
-                    this.usersFiltered = res.data
-                    this.pages = Math.ceil(this.usersFiltered.length / this.maxitems)
+                    this.users = res.data;
+                    this.usersFiltered = res.data;
+                    this.pages = Math.ceil(this.usersFiltered.length / this.maxitems);
                     this.changePage(this.page)
                 } else {
                     console.error("Response", res.status)
@@ -246,12 +246,12 @@ export class ListComponent implements OnInit {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.getAll(1)
-                        this.HeaderService.showSuccess("Cliente actualizado con exito")
+                        this.HeaderService.showSuccess("Usuario actualizado con exito")
                         this.dialogs = []
                     }, 100)
                 } else {
                     console.error("Response", res.status)
-                    this.HeaderService.showError("Error al proveedor el cliente!")
+                    this.HeaderService.showError("Error al actualizar el usuario!")
                     this.dialogs.pop()
                 }
             }).catch((e) => {

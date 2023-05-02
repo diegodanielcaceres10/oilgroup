@@ -88,9 +88,9 @@ exports.create = async (req, res) => {
         sale.document = sale.billing && sale.document == "Factura A" ? "Factura A" : "Factura B";
         sale.status = ["Aprobada", "Lista", "Pendiente"].indexOf(sale.status) > -1 ? sale.status : "Pendiente";
         if (sale.billing) {
-            sale.id = await storage.get_id(req, res, session, "insert into sale (user,customer,ticket,description,total,document,billing,validate_date) values ('" + username + "'," + sale.customer.id + ",'" + sale.ticket + "','" + sale.description + "'," + sale.total + ",'" + sale.document + "',1," + (sale.validate ? "'" + sale.validate + "'" : "null") + ")");
+            sale.id = await storage.get_id(req, res, session, "insert into sale (user,customer,ticket,description,total,document,billing) values ('" + username + "'," + sale.customer.id + ",'" + sale.ticket + "','" + sale.description + "'," + sale.total + ",'" + sale.document + "',1)");
         } else {
-            sale.id = await storage.get_id(req, res, session, "insert into sale (user,customer,ticket,description,total,billing,validate_date) values ('" + username + "'," + sale.customer.id + ",'" + sale.ticket + "','" + sale.description + "'," + sale.total + ",0," + (sale.validate ? "'" + sale.validate + "'" : "null") + ")");
+            sale.id = await storage.get_id(req, res, session, "insert into sale (user,customer,ticket,description,total,billing) values ('" + username + "'," + sale.customer.id + ",'" + sale.ticket + "','" + sale.description + "'," + sale.total + ",0)");
         }
 
         // Define articles
@@ -276,11 +276,6 @@ exports.ticket = async (req, res) => {
             console.log(req.body);
             return res.status(400).send();
         };
-
-        // Define username
-        let username = req.body.username;
-        username = username.replace(/'/gi, "");
-        let user = await storage.get_row(req, res, session, "select*from user where username='" + username + "'");
 
         // Define sale
         let sale = req.body.sale;
