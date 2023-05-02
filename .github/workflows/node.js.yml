@@ -9,7 +9,7 @@ on:
 
 jobs:
   build_backend:
-    name: Build Brontend
+    name: Build Backend
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -21,4 +21,15 @@ jobs:
         node-version: '16'
 
     - name: Install dependencies
-      run: cd backend && npm install && ls
+      run: cd backend && npm install
+
+    - name: Create env file
+      run: |
+        cd backend
+        touch config.env
+        echo "${{ secrets.HOM_ENV_FILE }}" >> config.env
+        cat config.env
+        echo "CREATE ENV FILE SUCCESSFUL"
+
+    - name: Install dependencies
+      run: ls
