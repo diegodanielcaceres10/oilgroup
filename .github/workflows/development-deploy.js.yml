@@ -23,32 +23,21 @@ jobs:
         password: ${{ secrets.HOST_PASSWORD }}
         port: ${{ secrets.HOST_PORT }}
         script: |
+          echo "STOPPING FOREVER PROCESS"
           forever stop ${{ secrets.DEV_FOREVER_ID }} || echo "Forever cannot find process"
+          echo "REMOVING FOREVER LOGS"
           cd /root/.forever/ && rm ${{ secrets.DEV_FOREVER_ID }}.log
-          cd ${{ secrets.ROOT_BACKEND }}development/oilgroup/
+          echo "REMOVING NODE MODULES"
+          cd ${{ secrets.ROOT_BACKEND }}
+          cd development/
+          cd oilgroup/
           cd backend/
-          rm config.env
           rm -rf node_modules/
-          echo "REMOVE ENV FILE AND NODE MODULES SUCCESSFUL"
-
-    - name: Update backend
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST_IP }}
-        username: ${{ secrets.HOST_USERNAME }}
-        password: ${{ secrets.HOST_PASSWORD }}
-        port: ${{ secrets.HOST_PORT }}
-        script: |
-          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-          export NVM_DIR="$HOME/.nvm"
-          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-          [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-          cd ${{ secrets.ROOT_BACKEND }}development/oilgroup/
-          git checkout .
-          git checkout development
-          git pull ${{ secrets.PROYECT_URL }}
-          cd backend/
-          npm install
+          echo "REMOVING ENV FILE"
+          rm config.env
+          echo "REMOVE FOREVER FILES, ENV FILE AND NODE MODULES SUCCESSFUL"
+          ls
+          sh deploy.sh
 
     - name: Create env file
       run: |
@@ -67,22 +56,22 @@ jobs:
         source: config.env
         target: ${{ secrets.ROOT_BACKEND }}development/oilgroup/backend/
 
-    - name: Restart backend
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST_IP }}
-        username: ${{ secrets.HOST_USERNAME }}
-        password: ${{ secrets.HOST_PASSWORD }}
-        port: ${{ secrets.HOST_PORT }}
-        script: |
-          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-          export NVM_DIR="$HOME/.nvm"
-          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-          [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-          cd ${{ secrets.ROOT_BACKEND }}development/oilgroup/
-          cd backend/
-          npm run build-dev
-          echo "UPDATE AND RESTART DEVELOPMENT BACKEND SUCCESSFUL"
+    # - name: Restart backend
+    #   uses: appleboy/ssh-action@master
+    #   with:
+    #     host: ${{ secrets.HOST_IP }}
+    #     username: ${{ secrets.HOST_USERNAME }}
+    #     password: ${{ secrets.HOST_PASSWORD }}
+    #     port: ${{ secrets.HOST_PORT }}
+    #     script: |
+    #       curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+    #       export NVM_DIR="$HOME/.nvm"
+    #       [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+    #       [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+    #       cd ${{ secrets.ROOT_BACKEND }}development/oilgroup/
+    #       cd backend/
+    #       npm run build-dev
+    #       echo "UPDATE AND RESTART DEVELOPMENT BACKEND SUCCESSFUL"
 
   build_frontend:
     name: Build Frontend
