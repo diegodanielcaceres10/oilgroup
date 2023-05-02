@@ -6,8 +6,6 @@ name: Node.js CI
 on:
   push:
     branches: [ "development" ]
-  pull_request:
-    branches: [ "development" ]
 
 jobs:
   build_backend:
@@ -23,4 +21,4 @@ jobs:
         node-version: '16'
 
     - name: Install dependencies
-      run: cd backend && npm install && ll
+      run: cd backend && npm install && ls
