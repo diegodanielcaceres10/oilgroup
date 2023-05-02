@@ -39,7 +39,7 @@ jobs:
         password: ${{ secrets.HOST_PASSWORD }}
         port: ${{ secrets.HOST_PORT }}
         script: |
-          forever stop ${{ secrets.HOM_FOREVER_ID }} || echo "Forever cannot find process"
+          forever stop ${{ secrets.DEV_FOREVER_ID }} || echo "Forever cannot find process"
           cd /root/.forever/ && rm ${{ secrets.HOM_FOREVER_ID }}.log
           cd ${{ secrets.ROOT_BACKEND }}development/oilgroup/
           rm -rf backend/
@@ -69,5 +69,5 @@ jobs:
           [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
           cd ${{ secrets.ROOT_BACKEND }}development/oilgroup/
           cd backend/
-          npm run build-hom
+          npm run build-dev
           echo "UPDATE AND RESTART HOMOLOG BACKEND SUCCESSFUL"
