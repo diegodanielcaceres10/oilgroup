@@ -32,4 +32,4 @@ jobs:
         echo "CREATE ENV FILE SUCCESSFUL"
 
     - name: Install dependencies
-      run: ls
+      run: cd backend && ls
