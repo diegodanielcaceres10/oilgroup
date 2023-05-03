@@ -6,6 +6,7 @@ import { HeaderService } from '../../_shared/service/header.service';
 import { LoadService } from '../../_shared/service/load.service';
 import { Location } from '@angular/common';
 import * as moment from 'moment';
+import { HttpEventType } from '@angular/common/http';
 
 @Component({
     selector: 'app-report',
@@ -24,6 +25,7 @@ export class ReportComponent implements OnInit {
     maxitems: number = 20
     filters: any = []
     dialogs: any = []
+    suscription: any
 
     constructor(
         private ActivatedRoute: ActivatedRoute,
@@ -40,38 +42,6 @@ export class ReportComponent implements OnInit {
             setTimeout(() => {
                 this.NavService.page({ page: "home", subpage: "" })
             }, 0)
-            this.ReportService.progressPayments.subscribe((data: any) => {
-                if (data.body && data.status) {
-                    const blob: any = new Blob([data.body], { type: 'application/pdf' });
-                    const objectUrl = URL.createObjectURL(blob);
-                    window.open(objectUrl, '_blank');
-                    this.dialogs.pop()
-                } else if (data.error) {
-                    console.error("Response ", data)
-                    this.HeaderService.showError("Error en la conectividad")
-                    this.dialogs.pop()
-                }
-            }), (e) => {
-                console.error("Error", e)
-                this.HeaderService.showError("Error en la conectividad")
-                this.dialogs.pop()
-            }
-            this.ReportService.progressActivities.subscribe((data: any) => {
-                if (data.body && data.status) {
-                    const blob: any = new Blob([data.body], { type: 'application/pdf' });
-                    const objectUrl = URL.createObjectURL(blob);
-                    window.open(objectUrl, '_blank');
-                    this.dialogs.pop()
-                } else if (data.error) {
-                    console.error("Response ", data)
-                    this.HeaderService.showError("Error en la conectividad")
-                    this.dialogs.pop()
-                }
-            }), (e) => {
-                console.error("Error", e)
-                this.HeaderService.showError("Error en la conectividad")
-                this.dialogs.pop()
-            }
             this.page = parseInt(this.ActivatedRoute.snapshot.params["page"])
             this.path = this.ActivatedRoute.snapshot.url[1].path
             this.report = this.path == "actividades" ? "activities" : "payments"
@@ -102,6 +72,14 @@ export class ReportComponent implements OnInit {
         } catch (e) {
             console.error("Error", e)
             this.LoadService.change(false)
+        }
+    }
+
+    ngOnDestroy(): void {
+        try {
+            this.suscription && this.suscription.unsubscribe();
+        } catch (e) {
+            console.error("Error", e);
         }
     }
 
@@ -304,6 +282,23 @@ export class ReportComponent implements OnInit {
                 this.HeaderService.showError("Error en la conectividad")
                 this.dialogs.pop()
             })
+            this.suscription = this.ReportService.progressPayments.subscribe((data: any) => {
+                if (data.body && data.status == 200 && data.type == HttpEventType.Response) {
+                    const blob: any = new Blob([data.body], { type: 'application/pdf' });
+                    const objectUrl = URL.createObjectURL(blob);
+                    window.open(objectUrl, '_blank');
+                    this.suscription.unsubscribe();
+                    this.dialogs = []
+                } else if (data.error) {
+                    console.error("Response ", data)
+                    this.HeaderService.showError("Error en la conectividad")
+                    this.dialogs.pop()
+                }
+            }), (e) => {
+                console.error("Error", e)
+                this.HeaderService.showError("Error en la conectividad")
+                this.dialogs.pop()
+            }
         } catch (e) {
             console.error("Error", e)
         }
@@ -316,6 +311,23 @@ export class ReportComponent implements OnInit {
                 this.HeaderService.showError("Error en la conectividad")
                 this.dialogs.pop()
             })
+            this.suscription = this.ReportService.progressActivities.subscribe((data: any) => {
+                if (data.body && data.status == 200 && data.type == HttpEventType.Response) {
+                    const blob: any = new Blob([data.body], { type: 'application/pdf' });
+                    const objectUrl = URL.createObjectURL(blob);
+                    window.open(objectUrl, '_blank');
+                    this.suscription.unsubscribe();
+                    this.dialogs = []
+                } else if (data.error) {
+                    console.error("Response ", data)
+                    this.HeaderService.showError("Error en la conectividad")
+                    this.dialogs.pop()
+                }
+            }), (e) => {
+                console.error("Error", e)
+                this.HeaderService.showError("Error en la conectividad")
+                this.dialogs.pop()
+            }
         } catch (e) {
             console.error("Error", e)
         }

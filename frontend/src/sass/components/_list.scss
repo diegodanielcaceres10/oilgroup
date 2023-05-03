@@ -8,6 +8,21 @@
         overflow-y: scroll;
     }
 
+    &__tool {
+        align-items: center;
+        background: var(--primary);
+        border: none;
+        color: white;
+        cursor: pointer;
+        display: flex;
+        font-size: 1.2rem;
+        font-weight: 600;
+        justify-content: center;
+        height: 3rem;
+        padding: 0 1rem;
+        width: auto;
+    }
+
     &__row {
         align-items: center;
         display: flex;
