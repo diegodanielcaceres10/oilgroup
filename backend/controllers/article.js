@@ -357,6 +357,57 @@ exports.updateStock = async (req, res) => {
     };
 };
 
+exports.exportPrices = async (req, res) => {
+    try {
+        let session = "Username: " + (req.body.username || "undefined") + " | API: customer/exportPrices |";
+
+        // Define username
+        let username = req.body.username;
+        username = username.replace(/'/gi, "");
+        let user = await storage.get_row(req, res, session, "select*from user where username='" + username + "'");
+
+        // Get articles
+        let articles = await storage.get_data(req, res, session, "select pr.id,article,provider,fantasy_name,code,brand,a.name,size,variety,measure,units,price_list,price_offer from price pr left join article a on article=a.id left join provider p on provider=p.id where a.active and p.active order by brand,a.name,units");
+
+        // Read HTML Template
+        let html = fs.readFileSync("./templates/prices.html", "utf8");
+        let itemsHTML = "";
+        for (let item of articles) {
+            itemsHTML += `<tr style="border-bottom: 1px solid;">
+            <td style="white-space: pre;">${item.code}</td>
+            <td>${item.brand} ${item.name} ${item.size} ${item.variety}<br>${item.measure} x ${item.units}</td>
+            <td style="text-align: right;">$ ${item.price_list ? item.price_list.toFixed(2) : "-"}</td>
+            <td style="text-align: right;">$ ${item.price_offer ? item.price_offer.toFixed(2) : "-"}</td>
+            </tr>`;
+        }
+        if (articles.length == 0) {
+            itemsHTML += `<tr style="border-bottom: 1px solid;">
+            <td style="white-space: pre;"></td>
+            <td>No existen registros</td>
+            <td style="text-align: right;"></td>
+            <td style="text-align: right;"></td>
+            </tr>`;
+        }
+        html = html.replace("{{ITEMS}}", itemsHTML);
+        html = html.replace("{{USER}}", user.lastname + " " + user.firstname);
+        html = html.replace("{{DATETIME}}", moment().format("DD-MM-YYYY, HH:mm"));
+
+        // create PDF
+        const pdf = await htmlpdf.create(req, res, session, html);
+
+        // Define response
+        const data = fs.readFileSync(pdf);
+
+        // Remove file
+        fs.unlinkSync(pdf);
+        res.contentType("application/pdf");
+        res.send(data);
+    } catch (err) {
+        console.error(moment().format(), err);
+        return res.status(500).send({ status: "error", error: err.message });
+    };
+};
+
 exports.exportStock = async (req, res) => {
     try {
         let session = "Username: " + (req.body.username || "undefined") + " | API: customer/exportStock |";
@@ -406,36 +457,43 @@ exports.exportStock = async (req, res) => {
     };
 };
 
-exports.exportPrices = async (req, res) => {
+exports.exportSales = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: customer/exportPrices |";
+        let session = "Username: " + (req.body.username || "undefined") + " | API: customer/exportSales |";
 
         // Define username
         let username = req.body.username;
         username = username.replace(/'/gi, "");
         let user = await storage.get_row(req, res, session, "select*from user where username='" + username + "'");
 
-        // Get articles
-        let articles = await storage.get_data(req, res, session, "select pr.id,article,provider,fantasy_name,code,brand,a.name,size,variety,measure,units,price_list,price_offer from price pr left join article a on article=a.id left join provider p on provider=p.id where a.active and p.active order by brand,a.name,units");
+        // Get article
+        let article = req.body.article;
+        article = await storage.get_row(req, res, session, "select*from article where id=" + article.id);
+        article.sales = await storage.get_data(req, res, session, "select sale,datetime,units,price,subtotal,fantasy_name from sale_detail,sale s,customer c where sale=s.id and customer=c.id and article=" + article.id + " and status!='Cancelada'and status!='Inicial'and subtotal > 0 order by datetime desc");
 
         // Read HTML Template
-        let html = fs.readFileSync("./templates/prices.html", "utf8");
+        let html = fs.readFileSync("./templates/sales.html", "utf8");
+        html = html.replace("{{ID}}", article.id);
+        html = html.replace("{{BRAND}}", article.brand);
+        html = html.replace("{{CATEGORY}}", article.category);
+        html = html.replace("{{NAME}}", article.name);
+        html = html.replace("{{CODE}}", article.code);
         let itemsHTML = "";
-        for (let item of articles) {
-            itemsHTML += `<tr style="border-bottom: 1px solid;">
-            <td style="white-space: pre;">${item.code}</td>
-            <td>${item.brand} ${item.name} ${item.size} ${item.variety}<br>${item.measure} x ${item.units}</td>
-            <td style="text-align: right;">$ ${item.price_list ? item.price_list.toFixed(2) : "-"}</td>
-            <td style="text-align: right;">$ ${item.price_offer ? item.price_offer.toFixed(2) : "-"}</td>
-            </tr>`;
-        }
-        if (articles.length == 0) {
+        if (!article.sales || article.sales.length == 0) {
             itemsHTML += `<tr style="border-bottom: 1px solid;">
             <td style="white-space: pre;"></td>
             <td>No existen registros</td>
             <td style="text-align: right;"></td>
-            <td style="text-align: right;"></td>
             </tr>`;
+        } else {
+            for (let item of article.sales) {
+                itemsHTML += `<tr style="border-bottom: 1px solid;">
+                <td style="white-space: pre;">${moment(item.datetime).format("DD-MM-YYYY, HH:mm")}</td>
+                <td>${item.fantasy_name}</td>
+                <td>${item.units } ${item.units > 1 ? "Unidades" : "Unidad" } x $ ${item.price ? (item.price.toFixed(2)) : "-"}</td>
+                <td style="text-align: right;">$ ${item.subtotal ? (item.subtotal.toFixed(2)) : "-"}</td>
+                </tr>`;
+            }
         }
         html = html.replace("{{ITEMS}}", itemsHTML);
         html = html.replace("{{USER}}", user.lastname + " " + user.firstname);

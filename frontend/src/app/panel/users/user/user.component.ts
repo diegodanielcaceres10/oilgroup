@@ -60,6 +60,14 @@ export class UserComponent implements OnInit {
         }
     }
 
+    ngOnDestroy(): void {
+        try {
+            this.suscription && this.suscription.unsubscribe();
+        } catch (e) {
+            console.error("Error", e);
+        }
+    }
+
     find(username) {
         try {
             this.LoadService.change(true)
