@@ -74,6 +74,14 @@ export class SaleComponent implements OnInit {
         }
     }
 
+    ngOnDestroy(): void {
+        try {
+            this.suscription && this.suscription.unsubscribe();
+        } catch (e) {
+            console.error("Error", e);
+        }
+    }
+
     find(id) {
         try {
             this.LoadService.change(true)

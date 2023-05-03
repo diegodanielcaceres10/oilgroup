@@ -8,6 +8,7 @@ import { NavService } from '../../../_shared/service/nav.service';
 import { HeaderService } from '../../../_shared/service/header.service';
 import { LoadService } from '../../../_shared/service/load.service';
 import { Location } from '@angular/common';
+import { HttpEventType } from '@angular/common/http';
 
 /* AM Charts */
 import * as am4core from "@amcharts/amcharts4/core";
@@ -38,6 +39,7 @@ export class ArticleComponent implements OnInit {
     tab: string = "profitability"
     dialogs: any = []
     form: any = {}
+    suscription: any
 
     constructor(
         private ActivatedRoute: ActivatedRoute,
@@ -74,6 +76,14 @@ export class ArticleComponent implements OnInit {
         } catch (e) {
             console.error("Error", e)
             this.LoadService.change(false)
+        }
+    }
+
+    ngOnDestroy(): void {
+        try {
+            this.suscription && this.suscription.unsubscribe();
+        } catch (e) {
+            console.error("Error", e);
         }
     }
 
@@ -515,6 +525,19 @@ export class ArticleComponent implements OnInit {
         }
     }
 
+    exportSalesDialogConfirm() {
+        try {
+            this.dialogs.push({
+                type: "confirm",
+                title: "Exportar ventas del articulo",
+                message: "¿Estas seguro de continuar?",
+                event: "exportSales",
+            })
+        } catch (e) {
+            console.error("Error", e)
+        }
+    }
+
     // Define response dialog events
     responseDialog(data) {
         try {
@@ -533,6 +556,8 @@ export class ArticleComponent implements OnInit {
                     this.updateMeasure(data.values)
                 } else if (data.event == "deleteMeasure") {
                     this.deleteMeasure(data.values)
+                } else if (data.event == "exportSales") {
+                    this.exportSales()
                 } else {
                     setTimeout(() => {
                         this.HeaderService.showError("Error en el proceso")
@@ -687,6 +712,36 @@ export class ArticleComponent implements OnInit {
                 this.HeaderService.showError("Error en la conectividad")
                 this.dialogs.pop()
             })
+        } catch (e) {
+            console.error("Error", e)
+        }
+    }
+
+    exportSales() {
+        try {
+            let article = { ...this.article }
+            this.ArticleService.exportSales({ article: article, }).catch((e) => {
+                console.error("Error", e)
+                this.HeaderService.showError("Error en la conectividad")
+                this.dialogs.pop()
+            })
+            this.suscription = this.ArticleService.progressSales.subscribe((data: any) => {
+                if (data.body && data.status == 200 && data.type == HttpEventType.Response) {
+                    let blob: any = new Blob([data.body], { type: 'application/pdf' });
+                    const objectUrl = URL.createObjectURL(blob);
+                    window.open(objectUrl, '_blank');
+                    this.suscription.unsubscribe();
+                    this.dialogs = []
+                } else if (data.error) {
+                    console.error("Response ", data)
+                    this.HeaderService.showError("Error en la conectividad")
+                    this.dialogs.pop()
+                }
+            }), (e) => {
+                console.error("Error", e)
+                this.HeaderService.showError("Error en la conectividad")
+                this.dialogs.pop()
+            }
         } catch (e) {
             console.error("Error", e)
         }

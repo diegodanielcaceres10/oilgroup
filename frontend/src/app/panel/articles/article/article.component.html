@@ -169,6 +169,7 @@
             </div>
             <div *ngIf="!paging && view.length > 0" class="list__row">
                 <div class="list__cell list__cell-full muted">Mostrando {{ (page - 1) * maxitems + 1 }} - {{ (page - 1) * maxitems + view.length }} de {{ filtered.length }}</div>
+                <button (click)="exportSalesDialogConfirm()" class="list__tool"><i class="fas fa-file-pdf"></i><span>Exportar</span></button>
             </div>
             <div *ngFor="let item of view" class="list__row list__row-cells">
                 <div class="list__cell list__cell-date">
@@ -177,7 +178,7 @@
                 </div>
                 <div class="list__cell list__cell-full">
                     <div class="list__title">{{ item.fantasy_name }}</div>
-                    <div class="list__subtitle"><strong>{{ item.units }}</strong> {{ item.units == 1 ? "unidad" : "unidades" }} x {{ (item.price | currency:"ARS":"symbol-narrow":"1.2") || "$-" }}</div>
+                    <div class="list__subtitle"><strong>{{ item.quantity }} {{ item.measure }}</strong> x {{ (item.price | currency:"ARS":"symbol-narrow":"1.2") || "$-" }}</div>
                 </div>
                 <div class="list__cell list__cell-right">
                     <div class="list__title"><strong>{{ (item.subtotal | currency:"ARS":"symbol-narrow":"1.2") || "$-" }}</strong></div>
