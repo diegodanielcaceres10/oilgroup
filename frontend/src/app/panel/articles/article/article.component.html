@@ -178,7 +178,7 @@
                 </div>
                 <div class="list__cell list__cell-full">
                     <div class="list__title">{{ item.fantasy_name }}</div>
-                    <div class="list__subtitle"><strong>{{ item.units }}</strong> {{ item.units == 1 ? "unidad" : "unidades" }} x {{ (item.price | currency:"ARS":"symbol-narrow":"1.2") || "$-" }}</div>
+                    <div class="list__subtitle"><strong>{{ item.quantity }} {{ item.measure }}</strong> x {{ (item.price | currency:"ARS":"symbol-narrow":"1.2") || "$-" }}</div>
                 </div>
                 <div class="list__cell list__cell-right">
                     <div class="list__title"><strong>{{ (item.subtotal | currency:"ARS":"symbol-narrow":"1.2") || "$-" }}</strong></div>
