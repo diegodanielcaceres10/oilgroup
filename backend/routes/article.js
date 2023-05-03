@@ -20,5 +20,6 @@ router.post("/updatePrices/", auth.singleAuth, article.updatePrices);
 router.post("/updateStock/", auth.singleAuth, article.updateStock);
 router.post("/exportPrices/", auth.singleAuth, article.exportPrices);
 router.post("/exportStock/", auth.singleAuth, article.exportStock);
+router.post("/exportSales/", auth.singleAuth, article.exportSales);
 
 module.exports = router

@@ -6,6 +6,7 @@ import { NavService } from '../../../_shared/service/nav.service';
 import { HeaderService } from '../../../_shared/service/header.service';
 import { LoadService } from '../../../_shared/service/load.service';
 import { Location } from '@angular/common';
+import { HttpEventType } from '@angular/common/http';
 
 @Component({
     selector: 'app-prices',
@@ -24,6 +25,7 @@ export class PricesComponent implements OnInit {
     filters: any = []
     dialogs: any = []
     form: any = {}
+    suscription: any;
 
     constructor(
         private ActivatedRoute: ActivatedRoute,
@@ -41,22 +43,6 @@ export class PricesComponent implements OnInit {
             setTimeout(() => {
                 this.NavService.page({ page: "article", subpage: "prices" })
             }, 0)
-            this.ArticleService.progressPrices.subscribe((data: any) => {
-                if (data.body && data.status) {
-                    const blob: any = new Blob([data.body], { type: 'application/pdf' });
-                    const objectUrl = URL.createObjectURL(blob);
-                    window.open(objectUrl, '_blank');
-                    this.dialogs.pop()
-                } else if (data.error) {
-                    console.error("Response ", data)
-                    this.HeaderService.showError("Error en la conectividad")
-                    this.dialogs.pop()
-                }
-            }), (e) => {
-                console.error("Error", e)
-                this.HeaderService.showError("Error en la conectividad")
-                this.dialogs.pop()
-            }
             this.access = this.UserService.getUser()
             this.page = parseInt(this.ActivatedRoute.snapshot.params["page"])
             let params = this.ActivatedRoute.snapshot.queryParams
@@ -121,6 +107,14 @@ export class PricesComponent implements OnInit {
         } catch (e) {
             console.error("Error", e)
             this.LoadService.change(false)
+        }
+    }
+
+    ngOnDestroy(): void {
+        try {
+            this.suscription && this.suscription.unsubscribe();
+        } catch (e) {
+            console.error("Error", e);
         }
     }
 
@@ -368,6 +362,23 @@ export class PricesComponent implements OnInit {
                 console.error("Error", e)
                 this.HeaderService.showError("Error en la conectividad")
                 this.dialogs.pop()
+                this.suscription = this.ArticleService.progressPrices.subscribe((data: any) => {
+                    if (data.body && data.status == 200 && data.type == HttpEventType.Response) {
+                        const blob: any = new Blob([data.body], { type: 'application/pdf' });
+                        const objectUrl = URL.createObjectURL(blob);
+                        window.open(objectUrl, '_blank');
+                        this.suscription.unsubscribe();
+                        this.dialogs = []
+                    } else if (data.error) {
+                        console.error("Response ", data)
+                        this.HeaderService.showError("Error en la conectividad")
+                        this.dialogs.pop()
+                    }
+                }), (e) => {
+                    console.error("Error", e)
+                    this.HeaderService.showError("Error en la conectividad")
+                    this.dialogs.pop()
+                }
             })
         } catch (e) {
             console.error("Error", e)

@@ -1,5 +1,5 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
 name: Deploy Production
 
@@ -15,6 +15,22 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+
+    - name: Install dependencies
+      run: cd backend && npm install
+
+    - name: Create env file
+      run: |
+        cd backend
+        touch config.env
+        echo "${{ secrets.PRD_ENV_FILE }}" >> config.env
+        cat config.env
+        echo "CREATE ENV FILE SUCCESSFUL"
+
     - name: Stop and clean backend
       uses: appleboy/ssh-action@master
       with:
@@ -26,46 +42,18 @@ jobs:
           forever stop ${{ secrets.PRD_FOREVER_ID }} || echo "Forever cannot find process"
           cd /root/.forever/ && rm ${{ secrets.PRD_FOREVER_ID }}.log
           cd ${{ secrets.ROOT_BACKEND }}production/oilgroup/
-          cd backend/
-          rm config.env
-          rm -rf node_modules/
+          rm -rf backend/
           echo "REMOVE ENV FILE AND NODE MODULES SUCCESSFUL"
 
-    - name: Update backend
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST_IP }}
-        username: ${{ secrets.HOST_USERNAME }}
-        password: ${{ secrets.HOST_PASSWORD }}
-        port: ${{ secrets.HOST_PORT }}
-        script: |
-          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-          export NVM_DIR="$HOME/.nvm"
-          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-          [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-          cd ${{ secrets.ROOT_BACKEND }}production/oilgroup/
-          git checkout .
-          git checkout master
-          git pull ${{ secrets.PROYECT_URL }}
-          cd backend/
-          npm install
-
-    - name: Create env file
-      run: |
-        touch config.env
-        echo "${{ secrets.PRD_ENV_FILE }}" >> config.env
-        cat config.env
-        echo "CREATE ENV FILE SUCCESSFUL"
-
-    - name: Upload env file
+    - name: Upload backend
       uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.HOST_IP }}
         username: ${{ secrets.HOST_USERNAME }}
         password: ${{ secrets.HOST_PASSWORD }}
         port: ${{ secrets.HOST_PORT }}
-        source: config.env
-        target: ${{ secrets.ROOT_BACKEND }}production/oilgroup/backend/
+        source: backend/
+        target: ${{ secrets.ROOT_BACKEND }}production/oilgroup/
 
     - name: Restart backend
       uses: appleboy/ssh-action@master
@@ -81,7 +69,7 @@ jobs:
           [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
           cd ${{ secrets.ROOT_BACKEND }}production/oilgroup/
           cd backend/
-          npm run build-prd
+          forever --uid ${{ secrets.PRD_FOREVER_ID }} start server.js
           echo "UPDATE AND RESTART PRODUCTION BACKEND SUCCESSFUL"
 
   build_frontend:
@@ -120,7 +108,7 @@ jobs:
         password: ${{ secrets.HOST_PASSWORD }}
         port: ${{ secrets.HOST_PORT }}
         script: |
-          rm -rf ${{ secrets.ROOT_FRONTEND }}production/oilgroup/
-          cp -r ${{ secrets.ROOT_TEMP }}production/oilgroup/frontend/dist/ ${{ secrets.ROOT_FRONTEND }}production/oilgroup/
+          rm -rf ${{ secrets.ROOT_DOMAIN }}production/
+          cp -r ${{ secrets.ROOT_TEMP }}production/oilgroup/frontend/dist/ ${{ secrets.ROOT_DOMAIN }}production/
           rm -rf ${{ secrets.ROOT_TEMP }}production/oilgroup/
           echo "UPDATE AND RESTART PRODUCTION FRONTEND SUCCESSFUL"
