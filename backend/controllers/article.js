@@ -77,7 +77,7 @@ exports.find = async (req, res) => {
         article.provider = await storage.get_row(req, res, session, "select*from provider where id=" + article.provider);
         article.prices = await storage.get_data(req, res, session, "select*from price where article=" + article.id + " order by units");
         article.history = await storage.get_data(req, res, session, "select('Ajuste')typeof,description,datetime,units from stock where article=" + article.id + " union all select'Compra',null,datetime,units from buy_detail,buy b where buy=b.id and article=" + article.id + " and status='Aprobada'union all select 'Venta',null,datetime,-stock from sale_detail,sale s where sale=s.id and article=" + article.id + " and review and stock > 0 and status!='Cancelada'and status!='Inicial'order by datetime desc");
-        article.sales = await storage.get_data(req, res, session, "select sale,datetime,units,price,subtotal,fantasy_name from sale_detail,sale s,customer c where sale=s.id and customer=c.id and article=" + article.id + " and status!='Cancelada'and status!='Inicial'and subtotal > 0 order by datetime desc");
+        article.sales = await storage.get_data(req, res, session, "select sale,datetime,quantity,measure,price,subtotal,fantasy_name from sale_detail,sale s,customer c where sale=s.id and customer=c.id and article=" + article.id + " and status!='Cancelada'and status!='Inicial'and subtotal > 0 order by datetime desc");
         await storage.run_query(req, res, session, "SET lc_time_names = 'es_ES'");
         article.profitability = await storage.get_data(req, res, session, "select m.item,(ifnull(s.total,0)-ifnull(b.total,0))total from(select date_format(curdate(), '%Y-%m')month,date_format(curdate(), '%M')item union select date_format(curdate()-interval 1 month, '%Y-%m'),date_format(curdate()-interval 1 month, '%M') union select date_format(curdate()-interval 2 month, '%Y-%m'),date_format(curdate()-interval 2 month, '%M'))m left join(select date_format(datetime, '%Y-%m')item,ifnull(sum(subtotal),0)total from sale_detail,sale s where article=" + article.id + " and sale=s.id and deleted=0 and status!='Pendiente'and status!='Cancelada'and status!='Inicial'and(month(datetime)=month(curdate())or month(datetime)=month(curdate()-interval 1 month)or month(datetime)=month(curdate()-interval 2 month))group by item)s on month=s.item left join(select date_format(datetime, '%Y-%m')item,ifnull(sum(subtotal),0)total from buy_detail,buy b where article=" + article.id + " and buy=b.id and status!='Cancelada'and(month(datetime)=month(curdate())or month(datetime)=month(curdate()-interval 1 month)or month(datetime)=month(curdate()-interval 2 month))group by item)b on month=b.item");
 
@@ -469,7 +469,7 @@ exports.exportSales = async (req, res) => {
         // Get article
         let article = req.body.article;
         article = await storage.get_row(req, res, session, "select*from article where id=" + article.id);
-        article.sales = await storage.get_data(req, res, session, "select sale,datetime,units,price,subtotal,fantasy_name from sale_detail,sale s,customer c where sale=s.id and customer=c.id and article=" + article.id + " and status!='Cancelada'and status!='Inicial'and subtotal > 0 order by datetime desc");
+        article.sales = await storage.get_data(req, res, session, "select sale,datetime,quantity,measure,price,subtotal,fantasy_name from sale_detail,sale s,customer c where sale=s.id and customer=c.id and article=" + article.id + " and status!='Cancelada'and status!='Inicial'and subtotal > 0 order by datetime desc");
 
         // Read HTML Template
         let html = fs.readFileSync("./templates/sales.html", "utf8");
@@ -490,7 +490,7 @@ exports.exportSales = async (req, res) => {
                 itemsHTML += `<tr style="border-bottom: 1px solid;">
                 <td style="white-space: pre;">${moment(item.datetime).format("DD-MM-YYYY, HH:mm")}</td>
                 <td>${item.fantasy_name}</td>
-                <td>${item.units } ${item.units > 1 ? "Unidades" : "Unidad" } x $ ${item.price ? (item.price.toFixed(2)) : "-"}</td>
+                <td>${item.quantity } ${item.measure} x $ ${item.price ? (item.price.toFixed(2)) : "-"}</td>
                 <td style="text-align: right;">$ ${item.subtotal ? (item.subtotal.toFixed(2)) : "-"}</td>
                 </tr>`;
             }
