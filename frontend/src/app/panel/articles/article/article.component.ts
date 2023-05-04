@@ -215,6 +215,13 @@ export class ArticleComponent implements OnInit {
                                 required: true,
                             },
                             {
+                                name: "cost",
+                                type: "number",
+                                label: "Costo de compra",
+                                value: this.article.cost,
+                                symbol: "fas fa-dollar-sign",
+                            },
+                            {
                                 name: "size",
                                 type: "text",
                                 label: "Tamaño",
@@ -574,11 +581,12 @@ export class ArticleComponent implements OnInit {
     // Define events
     createArticle(data) {
         try {
+            data.cost = data.cost ? parseFloat(data.cost) : false
             this.ArticleService.create({ article: data }).then((res: any) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.createMode = false
-                        this.tab = "medidas"
+                        this.tab = "rentabilidad"
                         this.find(res.data)
                         this.Location.replaceState("/panel/articulos/" + res.data + "/1")
                         this.HeaderService.showSuccess("Articulo creado con exito")
@@ -606,6 +614,7 @@ export class ArticleComponent implements OnInit {
 
     updateArticle(data) {
         try {
+            data.cost = data.cost ? parseFloat(data.cost) : false
             this.ArticleService.update({ article: data }).then((res: any) => {
                 if (res.status == "success") {
                     setTimeout(() => {
