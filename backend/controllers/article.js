@@ -50,7 +50,7 @@ exports.getAllPrices = async (req, res) => {
         filter += filter == "" ? "where a.active and p.active " : "and a.active and p.active ";
 
         // Get articles
-        let articles = await storage.get_data(req, res, session, "select pr.id,article,provider,fantasy_name,code,brand,a.name,size,variety,measure,units,price_list,price_offer from price pr left join article a on article=a.id left join provider p on provider=p.id " + filter + "order by brand,a.name,units");
+        let articles = await storage.get_data(req, res, session, "select pr.id,article,provider,fantasy_name,code,brand,a.name,cost,size,variety,measure,units,price_list,price_offer from price pr left join article a on article=a.id left join provider p on provider=p.id " + filter + "order by brand,a.name,units");
 
         // Define response
         return res.status(200).send({ status: "success", data: articles });
@@ -128,11 +128,12 @@ exports.create = async (req, res) => {
         };
 
         // Create article
+        article.cost = typeof article.cost == "number" ? parseFloat(article.cost) : "null";
         article.size = article.size ? article.size.replace(/'/gi, "") : "";
         article.variety = article.variety ? article.variety.replace(/'/gi, "") : "";
         article.stock_code = article.stock_code.replace(/'/gi, "");
         article.description = article.description ? article.description.replace(/'/gi, "") : "";
-        article.id = await storage.get_id(req, res, session, "insert into article (provider,brand,category,code,name,size,variety,stock_code,description) values (" + article.provider + ",'" + article.brand + "','" + article.category + "','" + article.code + "','" + article.name + "','" + article.size + "','" + article.variety + "','" + article.stock_code + "','" + article.description + "')");
+        article.id = await storage.get_id(req, res, session, "insert into article (provider,brand,category,code,name,size,variety,stock_code,cost,description) values (" + article.provider + ",'" + article.brand + "','" + article.category + "','" + article.code + "','" + article.name + "','" + article.size + "','" + article.variety + "','" + article.stock_code + "'," + article.cost + ",'" + article.description + "')");
 
         // Create price default measure: units
         await storage.run_query(req, res, session, "insert into price (article,measure) values (" + article.id + ",'Unidad')");
@@ -185,11 +186,12 @@ exports.update = async (req, res) => {
         };
 
         // Create article
+        article.cost = typeof article.cost == "number" ? parseFloat(article.cost) : "null";
         article.size = article.size ? article.size.replace(/'/gi, "") : "";
         article.variety = article.variety ? article.variety.replace(/'/gi, "") : "";
         article.stock_code = article.stock_code.replace(/'/gi, "");
         article.description = article.description ? article.description.replace(/'/gi, "") : "";
-        await storage.run_query(req, res, session, "update article set provider=" + article.provider + ",brand='" + article.brand + "',category='" + article.category + "',code='" + article.code + "',name='" + article.name + "',size='" + article.size + "',variety='" + article.variety + "',stock_code='" + article.stock_code + "',description='" + article.description + "'where id=" + article.id);
+        await storage.run_query(req, res, session, "update article set provider=" + article.provider + ",brand='" + article.brand + "',category='" + article.category + "',code='" + article.code + "',name='" + article.name + "',size='" + article.size + "',variety='" + article.variety + "',stock_code='" + article.stock_code + "',cost=" + article.cost + ",description='" + article.description + "'where id=" + article.id);
 
         // Define response
         return res.status(200).send({ status: "success" });
