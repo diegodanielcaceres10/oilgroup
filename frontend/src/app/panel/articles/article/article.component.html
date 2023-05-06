@@ -43,6 +43,10 @@
                                 <span>{{ article.stock_code }}</span>
                             </div>
                             <div class="card__legend">
+                                <span>Precio de costo</span>
+                                <span>{{ (article.cost | currency:"ARS":"symbol-narrow":"1.2") || "$-" }}</span>
+                            </div>
+                            <div class="card__legend">
                                 <span>Tamaño</span>
                                 <span>{{ article.size }}</span>
                             </div>
@@ -114,7 +118,8 @@
             <div *ngFor="let item of view" class="list__row list__row-cells">
                 <div class="list__cell list__cell-full">
                     <div class="list__title"><strong>{{ item.measure }}</strong></div>
-                    <div class="list__subtitle">{{ (item.price_list | currency:"ARS":"symbol-narrow":"1.2") || "$-" }} - {{ (item.price_offer | currency:"ARS":"symbol-narrow":"1.2") || "$-" }}</div>
+                    <div class="list__subtitle">Precio de lista: <strong>{{ (item.price_list | currency:"ARS":"symbol-narrow":"1.2") || "$-" }}</strong></div>
+                    <div class="list__subtitle">Precio de oferta: <strong>{{ (item.price_offer | currency:"ARS":"symbol-narrow":"1.2") || "$-" }}</strong></div>
                 </div>
                 <div class="list__cell list__cell-right">
                     <div class="list__title"><strong>{{ item.units }}</strong></div>
