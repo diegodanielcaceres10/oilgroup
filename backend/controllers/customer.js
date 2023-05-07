@@ -191,9 +191,8 @@ exports.summary = async (req, res) => {
         for (let item of customer.sales) {
             if (item.typeof == "sale") {
                 let description = "Remito N° " + item.id;
-                let validate = moment(item.datetime).add(1, "months").format("DD-MM-YYYY");
+                let validate = moment(item.datetime).add(1, "months").format("DD-MM-YYYY, HH:mm");
                 let color = "";
-                let bold = "";
                 if (pending > 0) {
                     description += " - Pendiente";
                     if (item.total > pending) {
@@ -203,12 +202,13 @@ exports.summary = async (req, res) => {
                     }
                     pending -= item.total;
                     color = "color: red;";
-                    if (moment(item.datetime).add(1, "months").format("DD-MM-YYYY") < moment().format("DD-MM-YYYY")) {
-                        bold = "font-weight: bold;";
+                    console.log(moment());
+                    console.log(moment(item.datetime).add(1, "months"));
+                    if (moment() > moment(item.datetime).add(1, "months")) {
                         validate += "<br>Vencido";
                     }
                 }
-                itemsHTML += `<tr style="${bold}${color}border-bottom: 1px solid black;">
+                itemsHTML += `<tr style="${color}border-bottom: 1px solid black;">
                 <td style="white-space: pre;">${moment(item.datetime).format("DD-MM-YYYY, HH:mm")}</td>
                 <td style="white-space: pre;">${validate}</td>
                 <td>${description}</td>
