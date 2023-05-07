@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
   name: "",
-  apiUrl: "http://octomode.com.ar/production/oilgroup/api/",
+  apiUrl: "https://oilgroup.com.ar/api/",
   priceCoefficientValidate: 24,
 };
