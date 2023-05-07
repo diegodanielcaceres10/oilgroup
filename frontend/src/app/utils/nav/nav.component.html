@@ -11,7 +11,7 @@
                         <i class="{{ item.icon }}"></i><span>{{ item.label }}</span>
                     </div>
                 </a>
-                <button *ngIf="(!item.access || item.access.indexOf(access.role) > -1) && !item.link" class="nav__link">
+                <button *ngIf="(!item.access || item.access.indexOf(access.role) > -1) && !item.link" onclick="this.focus()" class="nav__link">
                     <div [ngClass]="{ 'nav__legend-active' : menuselected == item.name }" class="nav__legend">
                         <i class="{{ item.icon }}"></i><span>{{ item.label }}</span><i class="fas fa-plus"></i>
                     </div>
