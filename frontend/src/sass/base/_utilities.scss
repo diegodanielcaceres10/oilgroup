@@ -86,6 +86,10 @@ i {
     padding: .5rem 1rem;
     position: fixed;
 
+    @include respond(phone) {
+        bottom: 9rem;
+    }
+
     &-dev {
         background: lightblue;
     }
