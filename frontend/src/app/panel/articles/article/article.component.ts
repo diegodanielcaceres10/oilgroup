@@ -98,7 +98,7 @@ export class ArticleComponent implements OnInit {
                         this.setList(this.tab)
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al encontrar el articulo!")
                     this.LoadService.change(false)
                 }
@@ -122,7 +122,7 @@ export class ArticleComponent implements OnInit {
                         this.article.provider = this.providers.find(i => i.id == this.article.provider.id)
                     }
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al encontrar los proveedores!")
                 }
             }).catch((e) => {
@@ -133,7 +133,7 @@ export class ArticleComponent implements OnInit {
                 if (res.status == "success") {
                     this.brands = res.data
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al encontrar las marcas!")
                 }
             }).catch((e) => {
@@ -144,7 +144,7 @@ export class ArticleComponent implements OnInit {
                 if (res.status == "success") {
                     this.categories = res.data
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al encontrar las categorias!")
                 }
             }).catch((e) => {
@@ -598,7 +598,7 @@ export class ArticleComponent implements OnInit {
                         this.dialogs.pop()
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al crear el articulo!")
                     this.dialogs.pop()
                 }
@@ -629,7 +629,7 @@ export class ArticleComponent implements OnInit {
                         this.dialogs.pop()
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al actualizar el articulo!")
                     this.dialogs.pop()
                 }
@@ -659,7 +659,7 @@ export class ArticleComponent implements OnInit {
                         this.dialogs.pop()
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al crear la medida!")
                     this.dialogs.pop()
                 }
@@ -688,7 +688,7 @@ export class ArticleComponent implements OnInit {
                         this.dialogs.pop()
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al eliminar la medida!")
                     this.dialogs.pop()
                 }
@@ -712,7 +712,7 @@ export class ArticleComponent implements OnInit {
                         this.dialogs = []
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al actualizar la medida!")
                     this.dialogs.pop()
                 }

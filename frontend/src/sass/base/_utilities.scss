@@ -79,15 +79,12 @@ i {
 .environment {
     background: whitesmoke;
     border-radius: .3rem;
+    bottom: 1rem;
     color: var(--primary);
     font-size: 1.3rem;
+    left: 1rem;
     padding: .5rem 1rem;
-
-    &-float {
-        bottom: 1rem;
-        position: fixed;
-        right: 1rem;
-    }
+    position: fixed;
 
     &-dev {
         background: lightblue;

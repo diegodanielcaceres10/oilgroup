@@ -131,7 +131,7 @@ export class PricesComponent implements OnInit {
                     this.pages = Math.ceil(this.articlesFiltered.length / this.maxitems)
                     this.changePage(this.page)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al encontrar los articulos!")
                     this.paging = false
                     this.LoadService.change(false)
@@ -342,7 +342,7 @@ export class PricesComponent implements OnInit {
                         this.dialogs = []
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al actualizar los precios!")
                     this.dialogs.pop()
                 }

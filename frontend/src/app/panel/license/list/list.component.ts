@@ -79,7 +79,7 @@ export class ListComponent implements OnInit {
                     this.pages = Math.ceil(this.licensesFiltered.length / this.maxitems)
                     this.changePage(this.page)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al encontrar los usuarios!")
                     this.paging = false
                     this.LoadService.change(false)
@@ -292,7 +292,7 @@ export class ListComponent implements OnInit {
                         this.removePrice(data, timeout + (1000 * 60));
                     }, 100);
                 } else {
-                    console.error("Response", res.status);
+                    console.error("Response:", res.status);
                     this.HeaderService.showError("Error al reservaar la cotización!");
                     this.dialogs.pop();
                 }
@@ -317,7 +317,7 @@ export class ListComponent implements OnInit {
                             data.coefficient_validate = undefined;
                         }
                     } else {
-                        console.error("Response", res.status);
+                        console.error("Response:", res.status);
                     }
                 }).catch((e) => {
                     console.error("Error", e);
@@ -343,7 +343,7 @@ export class ListComponent implements OnInit {
                         });
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al enviar el comprobante!")
                     this.dialogs.pop()
                 }

@@ -139,9 +139,11 @@ export class NavComponent implements OnInit {
         try {
             this.menuselected = name
             this.pageselected = subname
-            if (this.menuselected != name || this.pageselected != subname) this.LoadService.change(true)
+            if (this.menuselected != name || this.pageselected != subname) this.LoadService.change(true);
+            setTimeout(() => {
+                this.logo && this.logo.nativeElement && this.logo.nativeElement.focus();
+            }, 0);
             this.Router.navigateByUrl(link);
-            this.logo && this.logo.nativeElement && this.logo.nativeElement.focus()
         } catch (e) {
             console.error("Error", e)
         }

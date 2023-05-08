@@ -121,7 +121,7 @@ export class ListComponent implements OnInit {
                     this.pages = Math.ceil(this.usersFiltered.length / this.maxitems);
                     this.changePage(this.page)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al encontrar los usuarios!")
                     this.paging = false
                     this.LoadService.change(false)
@@ -250,7 +250,7 @@ export class ListComponent implements OnInit {
                         this.dialogs = []
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al actualizar el usuario!")
                     this.dialogs.pop()
                 }

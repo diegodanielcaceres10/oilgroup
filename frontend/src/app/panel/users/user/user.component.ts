@@ -81,7 +81,7 @@ export class UserComponent implements OnInit {
                         this.changePage(this.page)
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al encontrar el usuario!")
                     this.LoadService.change(false)
                 }
@@ -308,7 +308,7 @@ export class UserComponent implements OnInit {
                         this.dialogs.pop()
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al crear el usuario!")
                     this.dialogs.pop()
                 }
@@ -338,7 +338,7 @@ export class UserComponent implements OnInit {
                         this.dialogs.pop()
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al actualizar el usuario!")
                     this.dialogs.pop()
                 }
@@ -363,7 +363,7 @@ export class UserComponent implements OnInit {
                         this.dialogs = []
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al resetear el usuario!")
                     this.dialogs.pop()
                 }
