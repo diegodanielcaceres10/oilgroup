@@ -79,16 +79,13 @@ i {
 .environment {
     background: whitesmoke;
     border-radius: .3rem;
-    bottom: 1rem;
+    bottom: 0;
     color: var(--primary);
-    font-size: 1.3rem;
-    left: 1rem;
+    font-size: 1.2rem;
+    left: 0;
     padding: .5rem 1rem;
     position: fixed;
-
-    @include respond(phone) {
-        bottom: 9rem;
-    }
+    z-index: 210;
 
     &-dev {
         background: lightblue;
