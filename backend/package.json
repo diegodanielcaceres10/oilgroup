@@ -4,10 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build-prd": "forever --uid 06-prd-oilgroup start server.js",
-    "build-hom": "forever --uid 06-hom-oilgroup start server.js",
-    "build-qua": "forever --uid 06-qua-oilgroup start server.js",
-    "build-dev": "forever --uid 06-dev-oilgroup start server.js",
     "start": "nodemon server.js"
   },
   "author": "",

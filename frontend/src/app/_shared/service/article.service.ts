@@ -8,6 +8,7 @@ export class ArticleService {
 
     @Output() progressPrices: EventEmitter<any> = new EventEmitter()
     @Output() progressStock: EventEmitter<any> = new EventEmitter()
+    @Output() progressSales: EventEmitter<any> = new EventEmitter()
 
     constructor(
         private api: ApiService,
@@ -188,6 +189,17 @@ export class ArticleService {
             this.progressStock.emit(data)
         }, error => {
             this.progressStock.emit(error)
+        })
+    }
+
+    /**
+     * exportSales
+     */
+    public async exportSales(data) {
+        return this.api.download("article/exportSales/", data).subscribe(data => {
+            this.progressSales.emit(data)
+        }, error => {
+            this.progressSales.emit(error)
         })
     }
 }
