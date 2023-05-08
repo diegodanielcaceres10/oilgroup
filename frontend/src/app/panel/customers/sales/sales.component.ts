@@ -67,7 +67,7 @@ export class SalesComponent implements OnInit {
                         this.LoadService.change(false)
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al encontrar las metricas!")
                     this.LoadService.change(false)
                 }

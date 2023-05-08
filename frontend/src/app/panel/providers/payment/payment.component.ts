@@ -100,7 +100,7 @@ export class PaymentComponent implements OnInit {
                             this.LoadService.change(false)
                         }, 100)
                     } else {
-                        console.error("Response", res.status)
+                        console.error("Response:", res.status)
                         this.HeaderService.showError("Error al encontrar los proveedores!")
                     }
                 }).catch((e) => {
@@ -127,7 +127,7 @@ export class PaymentComponent implements OnInit {
                         this.LoadService.change(false)
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al encontrar el pago!")
                     this.LoadService.change(false)
                 }
@@ -215,7 +215,7 @@ export class PaymentComponent implements OnInit {
                         this.dialogs = []
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al crear el pago!")
                     this.dialogs.pop()
                 }
@@ -240,7 +240,7 @@ export class PaymentComponent implements OnInit {
                         this.dialogs = []
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al cancelar el pago!")
                     this.dialogs.pop()
                 }

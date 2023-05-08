@@ -202,8 +202,6 @@ exports.summary = async (req, res) => {
                     }
                     pending -= item.total;
                     color = "color: red;";
-                    console.log(moment());
-                    console.log(moment(item.datetime).add(1, "months"));
                     if (moment() > moment(item.datetime).add(1, "months")) {
                         validate += "<br>Vencido";
                     }

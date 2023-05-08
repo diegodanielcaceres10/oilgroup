@@ -11,10 +11,6 @@
         position: relative;
         margin: .5rem 0;
 
-        &:focus-within .form__options {
-            display: flex;
-        }
-
         &-check {
             align-items: center;
             flex-direction: row;
@@ -209,11 +205,6 @@
         top: 0;
         width: 100%;
         z-index: 40;
-    }
-
-    &__options {
-        position: relative;
-        width: 100%;
     }
 
     &__list {

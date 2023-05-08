@@ -111,7 +111,7 @@ export class SaleComponent implements OnInit {
                                         this.LoadService.change(false)
                                     }, 100)
                             } else {
-                                console.error("Response", res.status)
+                                console.error("Response:", res.status)
                                 this.HeaderService.showError("Error al encontrar los articulos!")
                             }
                         }).catch((e) => {
@@ -124,7 +124,7 @@ export class SaleComponent implements OnInit {
                         }, 100)
                     }
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al encontrar la venta!")
                     this.LoadService.change(false)
                 }
@@ -155,7 +155,7 @@ export class SaleComponent implements OnInit {
                 if (res.status == "success") {
                     this.articles = res.data
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al encontrar los articulos!")
                 }
             }).catch((e) => {
@@ -175,7 +175,7 @@ export class SaleComponent implements OnInit {
                         this.sale.customer = this.customers.find(i => i.id == this.sale.customer.id)
                     }
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al encontrar los proveedores!")
                 }
             }).catch((e) => {
@@ -1214,7 +1214,7 @@ export class SaleComponent implements OnInit {
                         this.dialogs.pop()
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al crear la venta!")
                     this.dialogs.pop()
                 }
@@ -1240,7 +1240,7 @@ export class SaleComponent implements OnInit {
                         this.dialogs = []
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al confirmar el stock!")
                     this.dialogs.pop()
                 }
@@ -1265,7 +1265,7 @@ export class SaleComponent implements OnInit {
                         this.dialogs = []
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al entregar la venta!")
                     this.dialogs.pop()
                 }
@@ -1289,7 +1289,7 @@ export class SaleComponent implements OnInit {
                         this.dialogs = []
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al asociar la factura!")
                     this.dialogs.pop()
                 }
@@ -1344,7 +1344,7 @@ export class SaleComponent implements OnInit {
                         this.dialogs = []
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al cancelar la venta!")
                     this.dialogs.pop()
                 }

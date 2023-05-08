@@ -77,7 +77,7 @@ export class BuyComponent implements OnInit {
                         this.LoadService.change(false)
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al encontrar la compra!")
                     this.LoadService.change(false)
                 }
@@ -111,7 +111,7 @@ export class BuyComponent implements OnInit {
                         this.buy.provider = this.providers.find(i => i.id == this.buy.provider.id)
                     }
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al encontrar los proveedores!")
                 }
             }).catch((e) => {
@@ -288,7 +288,7 @@ export class BuyComponent implements OnInit {
                 this.articles = res.data
                 this.articlesFiltered = this.articles
             } else {
-                console.error("Response", res.status)
+                console.error("Response:", res.status)
                 this.HeaderService.showError("Error al encontrar los articulos!")
             }
         }).catch((e) => {
@@ -672,7 +672,7 @@ export class BuyComponent implements OnInit {
                         this.dialogs.pop()
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al crear la compra!")
                     this.dialogs.pop()
                 }
@@ -697,7 +697,7 @@ export class BuyComponent implements OnInit {
                         this.dialogs.pop()
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al cancelar la compra!")
                     this.dialogs.pop()
                 }

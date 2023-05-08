@@ -50,7 +50,7 @@ export class HomeComponent implements OnInit {
                 if (res.status == "success") {
                     this.charts = res.data
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al encontrar las metricas!")
                     this.LoadService.change(false)
                 }
@@ -64,7 +64,7 @@ export class HomeComponent implements OnInit {
                     if (res.status == "success") {
                         this.metrics = res.data
                     } else {
-                        console.error("Response", res.status)
+                        console.error("Response:", res.status)
                         this.HeaderService.showError("Error al encontrar las metricas!")
                         this.LoadService.change(false)
                     }

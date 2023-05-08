@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../_shared/service/user.service';
 import { LoadService } from '../_shared/service/load.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-login',
@@ -14,7 +13,6 @@ export class LoginComponent implements OnInit {
     saving: boolean
     error: string
     form: any = {}
-    environment: string = environment.name;
 
     constructor(
         private Router: Router,
@@ -85,7 +83,7 @@ export class LoginComponent implements OnInit {
                         this.saving = false
                         this.error = "Los datos son incorrectos"
                     } else {
-                        console.error("Response", res)
+                        console.error("Response:", res)
                         this.saving = false
                         this.error = "Error en la respuesta"
                     }
