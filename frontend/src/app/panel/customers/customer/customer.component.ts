@@ -88,7 +88,7 @@ export class CustomerComponent implements OnInit {
                         this.changePage(this.page)
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al encontrar el cliente!")
                     this.LoadService.change(false)
                 }
@@ -111,7 +111,7 @@ export class CustomerComponent implements OnInit {
                     if (res.status == "success") {
                         this.users = res.data
                     } else {
-                        console.error("Response", res.status)
+                        console.error("Response:", res.status)
                         this.HeaderService.showError("Error al encontrar los usuarios!")
                     }
                 }).catch((e) => {
@@ -342,7 +342,7 @@ export class CustomerComponent implements OnInit {
                         this.dialogs.pop()
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al crear el cliente!")
                     this.dialogs.pop()
                 }
@@ -372,7 +372,7 @@ export class CustomerComponent implements OnInit {
                         this.dialogs.pop()
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al actualizar el cliente!")
                     this.dialogs.pop()
                 }

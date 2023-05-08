@@ -110,6 +110,14 @@
                 transform: none;
             }
 
+            &:focus {
+                border: 2px solid green;
+            }
+
+            &:focus-within {
+                border: 2px solid blue;
+            }
+
             &:focus ul, &:focus-within ul {
                 padding-bottom: 1rem;
 
@@ -184,12 +192,20 @@
 
         @include respond(phone) {
             flex-direction: column;
+
+            & > span {
+                display: none;
+            }
         }
 
         &-active {
             background: var(--primary);
             color: white;
             font-weight: 600;
+
+            @include respond(phone) {
+                color: var(--secondary);
+            }
         }
 
         &:hover {
