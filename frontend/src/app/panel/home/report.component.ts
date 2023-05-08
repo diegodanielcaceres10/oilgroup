@@ -104,7 +104,7 @@ export class ReportComponent implements OnInit {
                         this.changePage(this.page)
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al encontrar las metricas!")
                     this.paging = false
                     this.LoadService.change(false)
@@ -138,7 +138,7 @@ export class ReportComponent implements OnInit {
                         this.changePage(this.page)
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al encontrar las metricas!")
                     this.paging = false
                     this.LoadService.change(false)

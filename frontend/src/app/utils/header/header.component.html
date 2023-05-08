@@ -6,7 +6,6 @@
                 <strong>{{ access.lastname }}</strong> {{ access.firstname }}
             </div>
         </div>
-        <span *ngIf="environment" [ngClass]="{ 'environment-dev' : environment == 'DEV', 'environment-qua' : environment == 'QUA', 'environment-hom' : environment == 'HOM' }" class="environment">Ambiente: <strong>{{ environment }}</strong></span>
         <a (click)="show = !show" class="header__icon click">
             <i class="fas fa-bell"></i>
         </a>

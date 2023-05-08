@@ -74,7 +74,7 @@ export class ProviderComponent implements OnInit {
                         this.setList(this.tab)
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al encontrar el proveedor!")
                     this.LoadService.change(false)
                 }
@@ -276,7 +276,7 @@ export class ProviderComponent implements OnInit {
                         this.dialogs.pop()
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al crear el proveedor!")
                     this.dialogs.pop()
                 }
@@ -306,7 +306,7 @@ export class ProviderComponent implements OnInit {
                         this.dialogs.pop()
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al actualizar el proveedor!")
                     this.dialogs.pop()
                 }
