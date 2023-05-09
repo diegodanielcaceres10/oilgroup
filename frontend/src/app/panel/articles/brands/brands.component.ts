@@ -69,7 +69,7 @@ export class BrandsComponent implements OnInit {
                     this.pages = Math.ceil(this.brandsFiltered.length / this.maxitems)
                     this.changePage(this.page)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al encontrar las marcas!")
                     this.paging = false
                     this.LoadService.change(false)
@@ -249,7 +249,7 @@ export class BrandsComponent implements OnInit {
                         this.dialogs.pop()
                     }, 100)
                 } else {
-                    console.error("Response", res.status)
+                    console.error("Response:", res.status)
                     this.HeaderService.showError("Error al actualizar la marca!")
                     this.dialogs.pop()
                 }
