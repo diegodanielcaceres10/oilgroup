@@ -230,7 +230,7 @@ exports.payment = async (req, res) => {
                 datetime = moment(payment.payment_date).format("YYYY-MM-DD");
             }
             if (payments >= total) {
-                await storage.run_query(req, res, session, "update license set datetime='" + datetime + "',total='" + payments + "',current=0,status='Aprobado'where id=" + license.id);
+                await storage.run_query(req, res, session, "update license set datetime='" + datetime + "',total='" + payments + "',coefficient_validate=null,current=0,status='Aprobado'where id=" + license.id);
                 // Get nexy payment license
                 const currentlicense = await storage.get_row(req, res, session, "select*from license where status='Pendiente'group by month order by month limit 1");
                 if (currentlicense) {
