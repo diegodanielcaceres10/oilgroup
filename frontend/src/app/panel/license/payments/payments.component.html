@@ -16,7 +16,7 @@
                         </div>
                     </div>
                     <div class="card__box card__box-full">
-                        <div class="card__info">
+                        <div *ngIf="license.coefficient" class="card__info">
                             <div class="card__legend">
                                 <span>Coeficiente de cotización</span>
                                 <span>{{ license.coefficient }}</span>
@@ -27,7 +27,7 @@
                             </div>
                             <div class="card__legend">
                                 <span>Fecha de vencimiento</span>
-                                <span>{{ license.coefficient_validate | date:"dd/MM/yyyy, HH:mm" }}</span>
+                                <span>{{ license.coefficient_validate ? (license.coefficient_validate | date:"dd/MM/yyyy, HH:mm") : "Vencida" }}</span>
                             </div>
                         </div>
                         <div *ngIf="license.current && license.status != 'Aprobado'" class="card__info">
@@ -35,13 +35,13 @@
                                 <span>Total pagado</span>
                                 <span>{{ license.totalpayments | currency:"ARS" }}</span>
                             </div>
-                            <div class="card__legend">
+                            <div *ngIf="license.coefficient" class="card__legend">
                                 <span>Valor convertido</span>
-                                <span>{{ license.coefficient ? ((license.coefficient * license.value) | currency:"ARS" ) : "N/A" }}</span>
+                                <span>{{ license.coefficient_validate ? ((license.coefficient * license.value) | currency:"ARS" ) : "N/A" }}</span>
                             </div>
-                            <div class="card__legend">
+                            <div *ngIf="license.coefficient" class="card__legend">
                                 <span>Saldo Pendiente</span>
-                                <span>{{ license.coefficient ? (((license.coefficient * license.value) - license.totalpayments) | currency:"ARS" ) : "N/A" }}</span>
+                                <span>{{ license.coefficient_validate ? (((license.coefficient * license.value) - license.totalpayments) | currency:"ARS" ) : "N/A" }}</span>
                             </div>
                         </div>
                         <div *ngIf="license.status == 'Aprobado'" class="card__info">
@@ -51,7 +51,7 @@
                             </div>
                             <div class="card__legend">
                                 <span>Fecha de Pago</span>
-                                <span>{{ license.datetime | date:"dd/MM/yyyy, HH:mm" }}</span>
+                                <span>{{ license.datetime | date:"dd/MM/yyyy" }}</span>
                             </div>
                         </div>
                         <div class="card__info">

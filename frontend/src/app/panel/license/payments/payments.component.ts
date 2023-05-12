@@ -113,6 +113,13 @@ export class PaymentsComponent implements OnInit {
                                     value: data.license,
                                 },
                                 {
+                                    name: "pending",
+                                    type: "text",
+                                    label: "Saldo pendiente",
+                                    disabled: true,
+                                    value: "$ " + ((this.license.coefficient * this.license.value) - this.license.totalpayments).toFixed(2),
+                                },
+                                {
                                     name: "total",
                                     type: "number",
                                     label: "Total",
