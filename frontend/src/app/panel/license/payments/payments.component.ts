@@ -5,6 +5,7 @@ import { NavService } from '../../../_shared/service/nav.service';
 import { HeaderService } from '../../../_shared/service/header.service';
 import { LoadService } from '../../../_shared/service/load.service';
 import { Location } from '@angular/common';
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-payments',
@@ -129,6 +130,7 @@ export class PaymentsComponent implements OnInit {
                                     name: "date",
                                     type: "date",
                                     label: "Fecha de pago",
+                                    max: moment().format("YYYY-MM-DD"),
                                     required: true,
                                 },
                                 {
