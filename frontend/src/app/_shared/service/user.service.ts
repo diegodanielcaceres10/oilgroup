@@ -53,6 +53,15 @@ export class UserService {
     /**
      * isLoggedIn
      */
+    public isSystemAdminLoggedIn(): boolean {
+        if (this.user && this.user.type == "admin" && ["Super Administrador"].indexOf(this.user.role) > -1) {
+            return true
+        }
+        return false
+    }
+    /**
+     * isLoggedIn
+     */
     public isSuperAdminLoggedIn(): boolean {
         if (this.user && ["Super Administrador"].indexOf(this.user.role) > -1) {
             return true
