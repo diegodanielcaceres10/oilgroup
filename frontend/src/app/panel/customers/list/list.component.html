@@ -40,7 +40,7 @@
                     <div class="list__subtitle"><span>{{ item.name }}</span></div>
                 </div>
                 <div class="list__cell list__cell-right">
-                    <div class="list__title"><strong>{{ (item.pending) | currency:"ARS":"symbol-narrow":"1.2" }}</strong></div>
+                    <div class="list__title"><strong>{{ item.pending | currency:"ARS" }}</strong></div>
                     <div class="list__subtitle muted"><span>saldo</span></div>
                 </div>
                 <div *ngIf="['Super Administrador', 'Administrador'].indexOf(access.role) > -1" class="list__cell list__cell-right">

@@ -8,12 +8,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 
-import myLocaleEs from '@angular/common/locales/es'
+import localeEsAr from '@angular/common/locales/es-AR';
 import { LOCALE_ID } from '@angular/core';
 
 import { registerLocaleData } from '@angular/common';
 
-registerLocaleData(myLocaleEs);
+registerLocaleData(localeEsAr);
 
 @NgModule({
     declarations: [
@@ -27,7 +27,7 @@ registerLocaleData(myLocaleEs);
         BrowserAnimationsModule,
         UtilsModule,
     ],
-    providers: [{ provide: LOCALE_ID, useValue: 'es' }],
+    providers: [{ provide: LOCALE_ID, useValue: 'es-AR' }],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

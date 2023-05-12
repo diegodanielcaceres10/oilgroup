@@ -23,7 +23,7 @@
                         <div class="card__info">
                             <div class="card__label">Compra:</div>
                             <div class="card__title"><strong>{{ buy.provider.fantasy_name }}</strong></div>
-                            <div class="card__title"><strong>{{ buy.total | currency:"ARS":"symbol-narrow":"1.2" }}</strong></div>
+                            <div class="card__title"><strong>{{ buy.total | currency:"ARS" }}</strong></div>
                         </div>
                         <div class="card__info">
                             <div class="card__label">Estado:</div>
@@ -56,13 +56,13 @@
                                 <div *ngFor="let item of buy.items" class="list__row list__row-detail">
                                     <div *ngIf="!item.concept" class="list__cell list__cell-full">
                                         <div class="list__title">{{ item.brand }} {{ item.name }}</div>
-                                        <div class="list__subtitle"><span>{{ item.cost | currency:"ARS":"symbol-narrow":"1.2" }} x {{ item.quantity }}</span></div>
+                                        <div class="list__subtitle"><span>{{ item.cost | currency:"ARS" }} x {{ item.quantity }}</span></div>
                                     </div>
                                     <div *ngIf="item.concept" class="list__cell list__cell-full">
                                         <div class="list__title">{{ item.concept }}</div>
                                     </div>
                                     <div class="list__cell list__cell-right">
-                                        <div class="list__title">{{ item.subtotal | currency:"ARS":"symbol-narrow":"1.2" }}</div>
+                                        <div class="list__title">{{ item.subtotal | currency:"ARS" }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -159,12 +159,12 @@
                 <div class="list__cell list__cell-full">
                     <div class="list__subtitle"><span>{{ item.brand }}</span></div>
                     <div class="list__title">{{ item.name }}</div>
-                    <div class="list__subtitle"><span>{{ item.cost | currency:"ARS":"symbol-narrow":"1.2" }}</span></div>
+                    <div class="list__subtitle"><span>{{ item.cost | currency:"ARS" }}</span></div>
                     <div class="list__subtitle"><span>Unidad x {{ item.quantity }}</span></div>
                     <div class="list__subtitle"><span>Stock: {{ item.units }}</span></div>
                 </div>
                 <div class="list__cell list__cell-right">
-                    <div class="list__title">{{ item.subtotal | currency:"ARS":"symbol-narrow":"1.2" }}</div>
+                    <div class="list__title">{{ item.subtotal | currency:"ARS" }}</div>
                 </div>
             </div>
             <div *ngFor="let item of buy.details" class="list__row list__row-info">
@@ -175,7 +175,7 @@
                     <div class="list__subtitle"><span>{{ item.concept }}</span></div>
                 </div>
                 <div class="list__cell list__cell-right">
-                    <div class="list__title">{{ item.subtotal | currency:"ARS":"symbol-narrow":"1.2" }}</div>
+                    <div class="list__title">{{ item.subtotal | currency:"ARS" }}</div>
                 </div>
             </div>
             <div *ngIf="buy.articles.length > 0 || buy.details.length > 0" class="list__row list__row-info">
@@ -183,7 +183,7 @@
                     <div class="list__title">Total</div>
                 </div>
                 <div class="list__cell list__cell-right">
-                    <div class="list__title"><strong>{{ buy.total | currency:"ARS":"symbol-narrow":"1.2" }}</strong></div>
+                    <div class="list__title"><strong>{{ buy.total | currency:"ARS" }}</strong></div>
                 </div>
             </div>
             <div *ngIf="path > 2 && buy.payment.status" class="list__row list__row-info">
@@ -193,7 +193,7 @@
                     <div class="list__subtitle"><span>{{ buy.payment.ticket }}</span></div>
                 </div>
                 <div class="list__cell list__cell-right">
-                    <div class="list__title">-{{ buy.payment.import | currency:"ARS":"symbol-narrow":"1.2" }}</div>
+                    <div class="list__title">-{{ buy.payment.import | currency:"ARS" }}</div>
                 </div>
             </div>
             <div *ngIf="path > 2 && !buy.payment.status" class="list__row list__row-info">
