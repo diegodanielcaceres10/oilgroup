@@ -43,7 +43,7 @@ export class PricesComponent implements OnInit {
             setTimeout(() => {
                 this.NavService.page({ page: "article", subpage: "prices" })
             }, 0)
-            this.access = this.UserService.getUser()
+            this.access = this.UserService.getUser();
             this.page = parseInt(this.ActivatedRoute.snapshot.params["page"])
             let params = this.ActivatedRoute.snapshot.queryParams
             this.filters = [

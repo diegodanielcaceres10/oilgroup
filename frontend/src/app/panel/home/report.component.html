@@ -55,7 +55,7 @@
                     </div>
                 </div>
                 <div class="list__cell list__cell-right">
-                    <div class="list__title"><strong>{{ item.import | currency:"ARS":"symbol-narrow":"1.2" }}</strong></div>
+                    <div class="list__title"><strong>{{ item.import | currency:"ARS" }}</strong></div>
                 </div>
                 <div *ngIf="item.provider" [routerLink]="['/panel/proveedores/pago/' + item.id]" class="list__cell list__cell-button">
                     <i class="fas fa-chevron-circle-right"></i>
@@ -115,7 +115,7 @@
                     </div>
                 </div>
                 <div class="list__cell list__cell-right">
-                    <div class="list__title"><strong>{{ item.total | currency:"ARS":"symbol-narrow":"1.2" }}</strong></div>
+                    <div class="list__title"><strong>{{ item.total | currency:"ARS" }}</strong></div>
                     <div class="list__subtitle">
                         <div *ngIf="item.billing && !item.billing_date" class="list__tag list__tag-pending"><i class="fas fa-thumbtack"></i>Pendiente</div>
                         <div *ngIf="item.billing && item.billing_date" class="list__tag list__tag-success"><i class="fas fa-check"></i>Facturada</div>
