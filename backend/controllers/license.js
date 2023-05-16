@@ -152,11 +152,10 @@ exports.upload = async (req, res) => {
         // Define file
         let file = req.files.ticket;
         // Use the mv() method to place the file in upload directory (i.e. "uploads")
-        const filename = "./uploads/" + moment().format("YYYY-MM-DD") + "-" + file.name.trim();
+        const filename = "./uploads/" + moment().format("YYYY-MM-DD-HH-mm-ss");
         const options = {
             folder: "oilgroup/" + process.env.CLOUDFOLDER + "/",
             use_filename: true,
-            unique_filename: true,
         }
         const config = {
             cloud_name: process.env.CLOUDNAME,
@@ -176,7 +175,6 @@ exports.upload = async (req, res) => {
                 if (err) {
                     console.error(err, "Cloudinary API Error");
                     return res.status(500).send({ status: "error", error: err });
-                    return;
                 }
                 console.log(moment().format(), "file upload to cloudinary | url: ", result.secure_url);
 
