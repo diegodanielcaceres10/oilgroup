@@ -1,7 +1,7 @@
 // Define modules
 const dotenv = require("dotenv");
 const storage = require("../modules/storage");
-const htmlpdf = require("../modules/htmlpdf");
+const pdfcreator = require("../modules/pdfcreator");
 const moment = require("moment");
 const fs = require("fs");
 
@@ -289,9 +289,7 @@ exports.ticket = async (req, res) => {
         sale.items = await storage.get_data(req, res, session, "select s.id,code,concept,brand,name,measure,price,quantity,units,subtotal from sale_detail s left join article a on article=a.id where subtotal and deleted=0 and sale=" + sale.id);
 
         // Read HTML Template
-        let html = fs.readFileSync("./templates/report.html", "utf8");
-        let bodyHTML = fs.readFileSync("./templates/reports/ticket.html", "utf8");
-        html = html.replace("{{HTML}}", bodyHTML);
+        let html = fs.readFileSync("./templates/reports/ticket.html", "utf8");
 
         // Complete Template
         html = html.replace("{{ID}}", sale.id);
@@ -329,7 +327,7 @@ exports.ticket = async (req, res) => {
         html = html.replace("{{ITEMS}}", itemsHTML);
 
         // create PDF
-        const pdf = await htmlpdf.create(html, user.lastname + " " + user.firstname);
+        const pdf = await pdfcreator.create(html, user.lastname + " " + user.firstname);
 
         // Define response
         const data = fs.readFileSync(pdf);

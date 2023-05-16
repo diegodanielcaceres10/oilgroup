@@ -1,7 +1,7 @@
 // Define modules
 const dotenv = require("dotenv");
 const storage = require("../modules/storage");
-const htmlpdf = require("../modules/htmlpdf");
+const pdfcreator = require("../modules/pdfcreator");
 const moment = require("moment");
 const fs = require("fs");
 
@@ -372,9 +372,7 @@ exports.exportPrices = async (req, res) => {
         let articles = await storage.get_data(req, res, session, "select pr.id,article,provider,fantasy_name,code,brand,a.name,size,variety,measure,units,price_list,price_offer from price pr left join article a on article=a.id left join provider p on provider=p.id where a.active and p.active order by brand,a.name,units");
 
         // Read HTML Template
-        let html = fs.readFileSync("./templates/report.html", "utf8");
-        let bodyHTML = fs.readFileSync("./templates/reports/prices.html", "utf8");
-        html = html.replace("{{HTML}}", bodyHTML);
+        let html = fs.readFileSync("./templates/reports/prices.html", "utf8");
 
         // Complete Template
         let itemsHTML = "";
@@ -397,7 +395,7 @@ exports.exportPrices = async (req, res) => {
         html = html.replace("{{ITEMS}}", itemsHTML);
 
         // create PDF
-        const pdf = await htmlpdf.create(html, user.lastname + " " + user.firstname);
+        const pdf = await pdfcreator.create(html, user.lastname + " " + user.firstname);
 
         // Define response
         const data = fs.readFileSync(pdf);
@@ -425,9 +423,7 @@ exports.exportStock = async (req, res) => {
         let articles = await storage.get_data(req, res, session, "select a.id,provider,fantasy_name,brand,category,code,a.name,size,variety,ifnull(sum(s.units),0)stock,a.active from article a left join provider p on provider=p.id left join(select article,units from buy_detail,buy where buy=id and article and status='Aprobada'union all select article,-stock from sale_detail,sale s where sale=s.id and article and review and status!='Cancelada'and status!='Inicial'union all select article,units from stock)s on s.article=a.id group by id order by brand,a.name,description");
 
         // Read HTML Template
-        let html = fs.readFileSync("./templates/report.html", "utf8");
-        let bodyHTML = fs.readFileSync("./templates/reports/stock.html", "utf8");
-        html = html.replace("{{HTML}}", bodyHTML);
+        let html = fs.readFileSync("./templates/reports/stock.html", "utf8");
 
         // Complete Template
         let itemsHTML = "";
@@ -449,7 +445,7 @@ exports.exportStock = async (req, res) => {
         html = html.replace("{{ITEMS}}", itemsHTML);
 
         // create PDF
-        const pdf = await htmlpdf.create(html, user.lastname + " " + user.firstname);
+        const pdf = await pdfcreator.create(html, user.lastname + " " + user.firstname);
 
         // Define response
         const data = fs.readFileSync(pdf);
@@ -479,9 +475,7 @@ exports.exportSales = async (req, res) => {
         article.sales = await storage.get_data(req, res, session, "select sale,datetime,quantity,measure,price,subtotal,fantasy_name from sale_detail,sale s,customer c where sale=s.id and customer=c.id and article=" + article.id + " and status!='Cancelada'and status!='Inicial'and subtotal > 0 order by datetime desc");
 
         // Read HTML Template
-        let html = fs.readFileSync("./templates/report.html", "utf8");
-        let bodyHTML = fs.readFileSync("./templates/reports/sales.html", "utf8");
-        html = html.replace("{{HTML}}", bodyHTML);
+        let html = fs.readFileSync("./templates/reports/sales.html", "utf8");
 
         // Complete Template
         html = html.replace("{{ID}}", article.id);
@@ -509,7 +503,7 @@ exports.exportSales = async (req, res) => {
         html = html.replace("{{ITEMS}}", itemsHTML);
 
         // create PDF
-        const pdf = await htmlpdf.create(html, user.lastname + " " + user.firstname);
+        const pdf = await pdfcreator.create(html, user.lastname + " " + user.firstname);
 
         // Define response
         const data = fs.readFileSync(pdf);
