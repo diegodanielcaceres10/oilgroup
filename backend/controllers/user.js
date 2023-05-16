@@ -1,7 +1,7 @@
 // Define modules
 const dotenv = require("dotenv");
 const storage = require("../modules/storage");
-const htmlpdf = require("../modules/htmlpdf");
+const pdfcreator = require("../modules/pdfcreator");
 const moment = require("moment");
 const fs = require("fs");
 
@@ -259,9 +259,7 @@ exports.summary = async (req, res) => {
         user.customers = await storage.get_data(req, res, session, "select id,fantasy_name,document,name,address,city,sum(case when s.status!='Aprobado'then total else 0 end)sale,sum(case when s.status='Aprobada'then total else 0 end)success,sum(case when billing then total else 0 end)billing,sum(case when s.status='Aprobado'then -(total) else 0 end)payment,ifnull(sum(total),0)pending from customer c left join user on user=username left join(select customer,total,billing,status from sale where status!='Cancelada'and status!='Inicial'union all select customer,-(import),0,status from customer_payment where status='Aprobado')s on customer=id where user='" + user.username + "'group by id order by fantasy_name");
 
         // Read HTML Template
-        let html = fs.readFileSync("./templates/report.html", "utf8");
-        let bodyHTML = fs.readFileSync("./templates/reports/customers.html", "utf8");
-        html = html.replace("{{HTML}}", bodyHTML);
+        let html = fs.readFileSync("./templates/reports/customers.html", "utf8");
 
         // Complete Template
         html = html.replace("{{USERNAME}}", user.username);
@@ -285,7 +283,7 @@ exports.summary = async (req, res) => {
         html = html.replace("{{ITEMS}}", itemsHTML);
 
         // create PDF
-        const pdf = await htmlpdf.create(html, user.lastname + " " + user.firstname);
+        const pdf = await pdfcreator.create(html, user.lastname + " " + user.firstname);
 
         // Define response
         const data = fs.readFileSync(pdf);
@@ -314,7 +312,7 @@ exports.pending = async (req, res) => {
         // Define username
         let username = req.body.username;
         username = username.replace(/'/gi, "");
-        let curretnUser = await storage.get_row(req, res, session, "select*from user where username='" + username + "'");
+        let currentUser = await storage.get_row(req, res, session, "select*from user where username='" + username + "'");
 
         // Define user
         let user = req.body.user;
@@ -323,9 +321,7 @@ exports.pending = async (req, res) => {
         user.customers = await storage.get_data(req, res, session, "select id,fantasy_name,document,name,address,city,sum(case when s.status!='Aprobado'then total else 0 end)sale,sum(case when s.status='Aprobada'then total else 0 end)success,sum(case when billing then total else 0 end)billing,sum(case when s.status='Aprobado'then -(total) else 0 end)payment,ifnull(sum(total),0)pending from customer c left join user on user=username left join(select customer,total,billing,status from sale where status!='Cancelada'and status!='Inicial'union all select customer,-(import),0,status from customer_payment where status='Aprobado')s on customer=id where user='" + user.username + "'group by id order by fantasy_name");
 
         // Read HTML Template
-        let html = fs.readFileSync("./templates/report.html", "utf8");
-        let bodyHTML = fs.readFileSync("./templates/reports/pending.html", "utf8");
-        html = html.replace("{{HTML}}", bodyHTML);
+        let html = fs.readFileSync("./templates/reports/pending.html", "utf8");
 
         // Complete Template
         html = html.replace("{{USERNAME}}", user.username);
@@ -372,7 +368,7 @@ exports.pending = async (req, res) => {
         html = html.replace("{{ITEMS}}", itemsHTML);
 
         // create PDF
-        const pdf = await htmlpdf.create(html, user.lastname + " " + user.firstname);
+        const pdf = await pdfcreator.create(html, currentUser.lastname + " " + currentUser.firstname);
 
         // Define response
         const data = fs.readFileSync(pdf);

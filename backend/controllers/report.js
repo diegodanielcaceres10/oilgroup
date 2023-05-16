@@ -1,7 +1,7 @@
 // Define modules
 const dotenv = require("dotenv");
 const storage = require("../modules/storage");
-const htmlpdf = require("../modules/htmlpdf");
+const pdfcreator = require("../modules/pdfcreator");
 const moment = require("moment");
 const fs = require("fs");
 
@@ -57,9 +57,7 @@ exports.exportPayments = async (req, res) => {
         let payments = await storage.get_data(req, res, session, "select pp.id,datetime,provider,(null)customer,fantasy_name,method,import,status from provider_payment pp left join provider p on provider=p.id " + filter + "union all select cp.id,datetime,null,customer,fantasy_name,method,import,status from customer_payment cp left join customer c on customer=c.id " + filter + "order by datetime desc");
 
         // Read HTML Template
-        let html = fs.readFileSync("./templates/report.html", "utf8");
-        let bodyHTML = fs.readFileSync("./templates/reports/payments.html", "utf8");
-        html = html.replace("{{HTML}}", bodyHTML);
+        let html = fs.readFileSync("./templates/reports/payments.html", "utf8");
 
         // Complete Template
         html = html.replace("{{FROM}}", moment(from.value).format("DD-MM-YYYY"));
@@ -84,7 +82,7 @@ exports.exportPayments = async (req, res) => {
         html = html.replace("{{ITEMS}}", itemsHTML);
 
         // create PDF
-        const pdf = await htmlpdf.create(html, user.lastname + " " + user.firstname);
+        const pdf = await pdfcreator.create(html, user.lastname + " " + user.firstname);
 
         // Define response
         const data = fs.readFileSync(pdf);
@@ -115,9 +113,7 @@ exports.exportActivities = async (req, res) => {
         let activities = await storage.get_data(req, res, session, "select b.id,datetime,provider,(null)customer,fantasy_name,total,status from buy b left join provider p on provider=p.id " + filter + "union all select s.id,datetime,null,customer,fantasy_name,total,status from sale s left join customer c on customer=c.id " + filter + "order by datetime desc");
 
         // Read HTML Template
-        let html = fs.readFileSync("./templates/report.html", "utf8");
-        let bodyHTML = fs.readFileSync("./templates/reports/activities.html", "utf8");
-        html = html.replace("{{HTML}}", bodyHTML);
+        let html = fs.readFileSync("./templates/reports/activities.html", "utf8");
 
         // Complete Template
         html = html.replace("{{FROM}}", moment(from.value).format("DD-MM-YYYY"));
@@ -141,7 +137,7 @@ exports.exportActivities = async (req, res) => {
         html = html.replace("{{ITEMS}}", itemsHTML);
 
         // create PDF
-        const pdf = await htmlpdf.create(html, user.lastname + " " + user.firstname);
+        const pdf = await pdfcreator.create(html, user.lastname + " " + user.firstname);
 
         // Define response
         const data = fs.readFileSync(pdf);
