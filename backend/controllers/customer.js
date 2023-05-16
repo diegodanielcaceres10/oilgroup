@@ -173,75 +173,76 @@ exports.summary = async (req, res) => {
 
         // Define customer
         let customer = req.body.customer;
-        customer = await storage.get_row(req, res, session, "select*,ifnull(sum(total),0)pending from customer left join(select customer,total,billing,status from sale where status!='Cancelada'and status!='Inicial'union all select customer,-(import),0,status from customer_payment where status='Aprobado')s on customer=id where id=" + customer.id);
+        customer = await storage.get_row(req, res, session, "select*,ifnull(sum(total),0)pending from customer left join(select customer,total,billing,status from sale where status!='Inicial'union all select customer,-(import),0,status from customer_payment where status='Aprobado')s on customer=id where id=" + customer.id);
         customer.sales = await storage.get_data(req, res, session, "select id,('sale')typeof,datetime,total,status from sale where customer=" + customer.id + " and status!='Cancelada'and status!='Inicial'union all select id,'payment',datetime,import,status from customer_payment where customer=" + customer.id + " and status!='Cancelado'order by datetime desc,typeof");
 
         // Read HTML Template
-        let html = fs.readFileSync("./templates/summary.html", "utf8");
+        let html = fs.readFileSync("./templates/report.html", "utf8");
+        let bodyHTML = fs.readFileSync("./templates/reports/summary.html", "utf8");
+        html = html.replace("{{HTML}}", bodyHTML);
+
+        // Complete Template
         let summary = customer.pending;
         html = html.replace("{{CUIT}}", customer.document);
         html = html.replace("{{NAME}}", customer.name);
         html = html.replace("{{ADDRESS}}", customer.address + " " + customer.city);
         html = html.replace("{{SCHEDULE}}", customer.schedule);
         html = html.replace("{{PHONE}}", customer.phone);
-        html = html.replace("{{SUMMARY}}", customer.pending.toFixed(2));
-        html = html.replace("{{DATE}}", moment().format("DD-MM-YYYY, HH:mm"));
+        html = html.replace("{{SUMMARY}}", "$ " + customer.pending.toFixed(2));
         let itemsHTML = "";
         let pending = summary;
-        for (let item of customer.sales) {
-            if (item.typeof == "sale") {
-                let description = "Remito N° " + item.id;
-                let validate = moment(item.datetime).add(1, "months").format("DD-MM-YYYY, HH:mm");
-                let color = "";
-                if (pending > 0) {
-                    description += " - Pendiente";
-                    if (item.total > pending) {
-                        description += " parcial ($ " + pending.toFixed(2) + ")";
-                    } else {
-                        description += " total";
+        if (customer.sales.length == 0) {
+            itemsHTML += `
+            <tr>
+                <td colspan="6">No existen registros</td>
+            </tr>`;
+        } else {;
+            for (let item of customer.sales) {
+                if (item.typeof == "sale") {
+                    let expired = "";
+                    let description = "Remito N° " + item.id;
+                    let color = "";
+                    if (item.status == "Aprobada" && pending > 0) {
+                        description += " - Pendiente";
+                        if (item.total > pending) {
+                            description += " parcial ($ " + pending.toFixed(2) + ")";
+                        } else {
+                            description += " total";
+                        }
+                        color = ` style="color: red;"`;
+                        if (moment() > moment(item.datetime).add(1, "months")) {
+                            expired = "Si";
+                        }
+                        pending -= item.total;
                     }
-                    pending -= item.total;
-                    color = "color: red;";
-                    if (moment() > moment(item.datetime).add(1, "months")) {
-                        validate += "<br>Vencido";
-                    }
+                    itemsHTML += `
+                    <tr${color}>
+                        <td>${moment(item.datetime).format("DD-MM-YYYY")}<br>${moment(item.datetime).format("HH:mm")}</td>
+                        <td>${description}</td>
+                        <td style="text-align: right;">$ ${item.total.toFixed(2)}</td>
+                        <td style="text-align: right;">-</td>
+                        <td style="text-align: right;">$ ${summary.toFixed(2)}</td>
+                        <td style="text-align: center;">${expired}</td>
+                    </tr>`;
+                    summary -= item.total;
+                } else {
+                    itemsHTML += `
+                    <tr>
+                        <td>${moment(item.datetime).format("DD-MM-YYYY")}<br>${moment(item.datetime).format("HH:mm")}</td>
+                        <td>Recibo N° ${item.id}</td>
+                        <td style="text-align: right;">-</td>
+                        <td style="text-align: right;">$ ${item.total.toFixed(2)}</td>
+                        <td style="text-align: right;">$ ${summary.toFixed(2)}</td>
+                        <td></td>
+                    </tr>`;
+                    summary += item.total;
                 }
-                itemsHTML += `<tr style="${color}border-bottom: 1px solid black;">
-                <td style="white-space: pre;">${moment(item.datetime).format("DD-MM-YYYY, HH:mm")}</td>
-                <td style="white-space: pre;">${validate}</td>
-                <td>${description}</td>
-                <td style="text-align: right;">$ ${item.total.toFixed(2)}</td>
-                <td style="text-align: right;">-</td>
-                <td style="text-align: right;">$ ${summary.toFixed(2)}</td>
-                </tr>`;
-                summary -= item.total;
-            } else {
-                itemsHTML += `<tr style="border-bottom: 1px solid;">
-                <td style="white-space: pre;">${moment(item.datetime).format("DD-MM-YYYY, HH:mm")}</td>
-                <td style="white-space: pre;"></td>
-                <td>Recibo N° ${item.id}</td>
-                <td style="text-align: right;">-</td>
-                <td style="text-align: right;">$ ${item.total.toFixed(2)}</td>
-                <td style="text-align: right;">$ ${summary.toFixed(2)}</td>
-                </tr>`;
-                summary += item.total;
             }
         }
-        if (customer.sales.length == 0) {
-            itemsHTML += `<tr style="border-bottom: 1px solid;">
-            <td style="white-space: pre;"></td>
-            <td>No existen registros en el periodo consultado</td>
-            <td style="text-align: right;"></td>
-            <td style="text-align: right;"></td>
-            <td style="text-align: right;"></td>
-            </tr>`;
-        }
         html = html.replace("{{ITEMS}}", itemsHTML);
-        html = html.replace("{{USER}}", user.lastname + " " + user.firstname);
-        html = html.replace("{{DATETIME}}", moment().format("DD-MM-YYYY, HH:mm"));
 
         // create PDF
-        const pdf = await htmlpdf.create(req, res, session, html);
+        const pdf = await htmlpdf.create(html, user.lastname + " " + user.firstname);
 
         // Define response
         const data = fs.readFileSync(pdf);

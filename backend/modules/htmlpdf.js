@@ -1,30 +1,41 @@
 // Define modules
-const pdf = require("html-pdf");
+const htmlPDF = require("html-pdf");
+const pdfCreator = require("pdf-creator-node");
 const moment = require("moment");
 
-exports.create = (req, res, session, html) => {
+exports.create = (html, user) => {
     return new Promise((resolve, reject) => {
         try {
-            const options = {
-                "format": "Letter",
-                "border": {
-                    "top": "1cm",
-                    "right": "1cm",
-                    "bottom": "2cm",
-                    "left": "1cm"
-                },
+            const filename = "./uploads/output.pdf";
+            const document = {
+                html,
+                data: {},
+                path: filename,
+                type: "",
             };
-            pdf.create(html, options).toFile("./ticket.pdf", function (err, data) {
-                if (err) {
-                    console.error(moment().format(), session, err);
-                    return res.status(500).send({ status: err });
-                };
-                console.log(moment().format(), session, "pdf create successfully");
-                return resolve(data.filename);
+            const options = {
+                format: "A4",
+                orientation: "portrait",
+                border: "10mm",
+                header: {
+                    height: "50px",
+                    contents: `<div style="display: block;height: 30px;text-align: right;"><img style="border 1px solid blue;height: 25px;" alt="Your Logo" src="https://res.cloudinary.com/octo-mode/image/upload/v1681951247/oilgroup/logo_u42sgn.png" /></div>`,
+                },
+                footer: {
+                    height: "50px",
+                    contents: `<div style="display: block;height: 25px;color: #444;"><span style="margin-top: 10px;">{{page}} de {{pages}} - Generado por ${user} el día ${moment().format("DD/MM/YYYY")} a las ${moment().format("HH:mm")}</span></div>`,
+                }
+            };
+            pdfCreator.create(document, options).then(data => {
+                console.log(moment().format(), "pdf create successfully");
+                resolve(data.filename);
+            }).catch(err => {
+                console.error(moment().format(), err);
+                reject(err);
             });
         } catch (err) {
             console.error(moment().format(), err);
-            throw err;
+            reject(err);
         }
     });
 };

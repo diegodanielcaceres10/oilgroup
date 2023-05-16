@@ -14,6 +14,7 @@ router.post("/update/", auth.superAuth, user.update);
 router.post("/reset/", auth.superAuth, user.reset);
 router.post("/active/", auth.superAuth, user.active);
 router.post("/summary/", auth.superAuth, user.summary);
+router.post("/pending/", auth.superAuth, user.pending);
 
 router.post("/edit/", auth.singleAuth, user.edit);
 router.post("/editPassword/", auth.singleAuth, user.editPassword);

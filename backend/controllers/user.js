@@ -259,30 +259,120 @@ exports.summary = async (req, res) => {
         user.customers = await storage.get_data(req, res, session, "select id,fantasy_name,document,name,address,city,sum(case when s.status!='Aprobado'then total else 0 end)sale,sum(case when s.status='Aprobada'then total else 0 end)success,sum(case when billing then total else 0 end)billing,sum(case when s.status='Aprobado'then -(total) else 0 end)payment,ifnull(sum(total),0)pending from customer c left join user on user=username left join(select customer,total,billing,status from sale where status!='Cancelada'and status!='Inicial'union all select customer,-(import),0,status from customer_payment where status='Aprobado')s on customer=id where user='" + user.username + "'group by id order by fantasy_name");
 
         // Read HTML Template
-        let html = fs.readFileSync("./templates/summarys.html", "utf8");
+        let html = fs.readFileSync("./templates/report.html", "utf8");
+        let bodyHTML = fs.readFileSync("./templates/reports/customers.html", "utf8");
+        html = html.replace("{{HTML}}", bodyHTML);
+
+        // Complete Template
         html = html.replace("{{USERNAME}}", user.username);
         html = html.replace("{{NAME}}", user.lastname + " " + user.firstname);
         let itemsHTML = "";
-        for (let item of user.customers) {
-            itemsHTML += `<tr style="border-bottom: 1px solid;">
-            <td style="white-space: pre;">${item.document}</td>
-            <td><b>${item.fantasy_name}</b><br>${item.name}</b><br>${item.address}${item.address && item.city ? (" - " + item.city) : ""}</td>
-            <td style="text-align: right;">$ ${item.pending.toFixed(2)}</td>
-            </tr>`;
-        }
         if (user.customers.length == 0) {
-            itemsHTML += `<tr style="border-bottom: 1px solid;">
-            <td style="white-space: pre;"></td>
-            <td>No existen registros</td>
-            <td style="text-align: right;"></td>
+            itemsHTML += `
+            <tr>
+                <td colspan="3">No existen registros</td>
+            </tr>`;
+        } else {
+            for (let item of user.customers) {
+                itemsHTML += `
+                <tr>
+                    <td>${item.document}</td>
+                    <td><b>${item.fantasy_name}</b><br>${item.name}</b><br>${item.address}${item.address && item.city ? (" - " + item.city) : ""}</td>
+                    <td style="text-align: right;">$ ${item.pending.toFixed(2)}</td>
+                </tr>`;
+            }
+        }
+        html = html.replace("{{ITEMS}}", itemsHTML);
+
+        // create PDF
+        const pdf = await htmlpdf.create(html, user.lastname + " " + user.firstname);
+
+        // Define response
+        const data = fs.readFileSync(pdf);
+
+        // Remove file
+        fs.unlinkSync(pdf);
+        res.contentType("application/pdf");
+        res.send(data);
+    } catch (err) {
+        console.error(moment().format(), err);
+        return res.status(500).send({ status: "error", error: err.message });
+    };
+};
+
+exports.pending = async (req, res) => {
+    try {
+        let session = "Username: " + (req.body.username || "undefined") + " | API: user/pending |";
+
+        // Verify parameters
+        if (!req.body.user || typeof req.body.user.username != "string" || req.body.user.username == "") {
+            console.error(moment().format(), session, "parameters error");
+            console.log(req.body);
+            return res.status(400).send();
+        };
+
+        // Define username
+        let username = req.body.username;
+        username = username.replace(/'/gi, "");
+        let curretnUser = await storage.get_row(req, res, session, "select*from user where username='" + username + "'");
+
+        // Define user
+        let user = req.body.user;
+        user.username = user.username.replace(/'/gi, "").toLowerCase();
+        user = await storage.get_row(req, res, session, "select username,lastname,firstname,phone,email,role,type,active from user where username='" + user.username + "'and username!='admin'and username!='supervisor'and username!='operator'");
+        user.customers = await storage.get_data(req, res, session, "select id,fantasy_name,document,name,address,city,sum(case when s.status!='Aprobado'then total else 0 end)sale,sum(case when s.status='Aprobada'then total else 0 end)success,sum(case when billing then total else 0 end)billing,sum(case when s.status='Aprobado'then -(total) else 0 end)payment,ifnull(sum(total),0)pending from customer c left join user on user=username left join(select customer,total,billing,status from sale where status!='Cancelada'and status!='Inicial'union all select customer,-(import),0,status from customer_payment where status='Aprobado')s on customer=id where user='" + user.username + "'group by id order by fantasy_name");
+
+        // Read HTML Template
+        let html = fs.readFileSync("./templates/report.html", "utf8");
+        let bodyHTML = fs.readFileSync("./templates/reports/pending.html", "utf8");
+        html = html.replace("{{HTML}}", bodyHTML);
+
+        // Complete Template
+        html = html.replace("{{USERNAME}}", user.username);
+        html = html.replace("{{NAME}}", user.lastname + " " + user.firstname);
+        let itemsHTML = "";
+        if (user.customers.length == 0) {
+            itemsHTML += `
+            <tr>
+                <td colspan="6">No existen registros</td>
+            </tr>`;
+        } else {
+            for (let customer of user.customers) {
+                customer.sales = await storage.get_data(req, res, session, "select*from sale where customer=" + customer.id + " and status='Aprobada'order by datetime desc");
+                let pending = customer.pending;
+                for (let item of customer.sales) {
+                    let expired = "";
+                    let description = "Remito N° " + item.id;
+                    if (pending > 0) {
+                        if (moment() > moment(item.datetime).add(1, "months")) {
+                            expired = "Si";
+                        }
+                        itemsHTML += `
+                        <tr>
+                            <td>${moment(item.datetime).format("DD-MM-YYYY")}<br>${moment(item.datetime).format("HH:mm")}</td>
+                            <td>${customer.fantasy_name}</td>
+                            <td>${description}</td>
+                            <td style="text-align: right;">$ ${item.total.toFixed(2)}</td>
+                            <td style="text-align: right;">$ ${pending.toFixed(2)}</td>
+                            <td style="text-align: center;">${expired}</td>
+                        </tr>`;
+                        pending -= item.total;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        if (!itemsHTML) {
+            itemsHTML += `
+            <tr>
+                <td colspan="5">No existen registros</td>
             </tr>`;
         }
         html = html.replace("{{ITEMS}}", itemsHTML);
-        html = html.replace("{{USER}}", curretnUser.lastname + " " + curretnUser.firstname);
-        html = html.replace("{{DATETIME}}", moment().format("DD-MM-YYYY, HH:mm"));
 
         // create PDF
-        const pdf = await htmlpdf.create(req, res, session, html);
+        const pdf = await htmlpdf.create(html, user.lastname + " " + user.firstname);
 
         // Define response
         const data = fs.readFileSync(pdf);

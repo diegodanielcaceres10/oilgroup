@@ -263,6 +263,19 @@ export class UserComponent implements OnInit {
         }
     }
 
+    printPendingDialogConfirm() {
+        try {
+            this.dialogs.push({
+                type: "confirm",
+                title: "Generar resúmen de remitos pendientes",
+                message: "¿Estas seguro de continuar?",
+                event: "printPending",
+            })
+        } catch (e) {
+            console.error("Error", e)
+        }
+    }
+
     // Define response dialog events
     responseDialog(data) {
         try {
@@ -275,6 +288,8 @@ export class UserComponent implements OnInit {
                     this.resetUser()
                 } else if (data.event == "printSummary") {
                     this.printSummary()
+                } else if (data.event == "printPending") {
+                    this.printPending()
                 } else {
                     setTimeout(() => {
                         this.HeaderService.showError("Error en el proceso")
@@ -381,6 +396,36 @@ export class UserComponent implements OnInit {
         try {
             let user = { ...this.user }
             this.UserService.summary({ user: user, }).catch((e) => {
+                console.error("Error", e)
+                this.HeaderService.showError("Error en la conectividad")
+                this.dialogs.pop()
+            })
+            this.suscription = this.UserService.progress.subscribe((data: any) => {
+                if (data.body && data.status) {
+                    let blob: any = new Blob([data.body], { type: 'application/pdf' });
+                    const objectUrl = URL.createObjectURL(blob);
+                    window.open(objectUrl, '_blank');
+                    this.dialogs = []
+                    this.suscription.unsubscribe();
+                } else if (data.error) {
+                    console.error("Response ", data)
+                    this.HeaderService.showError("Error en la conectividad")
+                    this.dialogs.pop()
+                }
+            }), (e) => {
+                console.error("Error", e)
+                this.HeaderService.showError("Error en la conectividad")
+                this.dialogs.pop()
+            }
+        } catch (e) {
+            console.error("Error", e)
+        }
+    }
+
+    printPending() {
+        try {
+            let user = { ...this.user }
+            this.UserService.pending({ user: user, }).catch((e) => {
                 console.error("Error", e)
                 this.HeaderService.showError("Error en la conectividad")
                 this.dialogs.pop()

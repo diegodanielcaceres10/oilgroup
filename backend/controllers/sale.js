@@ -277,6 +277,11 @@ exports.ticket = async (req, res) => {
             return res.status(400).send();
         };
 
+        // Define username
+        let username = req.body.username;
+        username = username.replace(/'/gi, "");
+        let user = await storage.get_row(req, res, session, "select*from user where username='" + username + "'");
+
         // Define sale
         let sale = req.body.sale;
         sale = await storage.get_row(req, res, session, "select*from sale where id=" + sale.id);
@@ -284,7 +289,11 @@ exports.ticket = async (req, res) => {
         sale.items = await storage.get_data(req, res, session, "select s.id,code,concept,brand,name,measure,price,quantity,units,subtotal from sale_detail s left join article a on article=a.id where subtotal and deleted=0 and sale=" + sale.id);
 
         // Read HTML Template
-        let html = fs.readFileSync("./templates/ticket.html", "utf8");
+        let html = fs.readFileSync("./templates/report.html", "utf8");
+        let bodyHTML = fs.readFileSync("./templates/reports/ticket.html", "utf8");
+        html = html.replace("{{HTML}}", bodyHTML);
+
+        // Complete Template
         html = html.replace("{{ID}}", sale.id);
         html = html.replace("{{DATE}}", moment(sale.datetime).format("DD-MM-YYYY, HH:mm"));
         html = html.replace("{{CUIT}}", sale.customer.document);
@@ -298,28 +307,29 @@ exports.ticket = async (req, res) => {
         let itemsHTML = "";
         for (let item of sale.items) {
             if (item.quantity != undefined && item.quantity != null && item.code && item.price) {
-                itemsHTML += `<tr style="border-bottom: 1px solid;">
-                <td>${item.quantity}</td>
-                <td>${item.code}</td>
-                <td>${item.brand} ${item.name} ${item.measure} </td>
-                <td style="text-align: right;">$ ${item.price.toFixed(2)}</td>
-                <td style="text-align: right;">$ ${item.subtotal.toFixed(2)}</td>
+                itemsHTML += `
+                <tr>
+                    <td>${item.quantity}</td>
+                    <td>${item.code}</td>
+                    <td>${item.brand} ${item.name} ${item.measure} </td>
+                    <td style="text-align: right;">$ ${item.price.toFixed(2)}</td>
+                    <td style="text-align: right;">$ ${item.subtotal.toFixed(2)}</td>
     	        </tr>`;
             } else {
-                itemsHTML += `<tr style="border-bottom: 1px solid;">
-                <td>1</td>
-                <td></td>
-                <td>${item.concept}</td>
-                <td style="text-align: right;">$ ${item.subtotal.toFixed(2)}</td>
-                <td style="text-align: right;">$ ${item.subtotal.toFixed(2)}</td>
+                itemsHTML += `
+                <tr>
+                    <td>1</td>
+                    <td></td>
+                    <td>${item.concept}</td>
+                    <td style="text-align: right;">$ ${item.subtotal.toFixed(2)}</td>
+                    <td style="text-align: right;">$ ${item.subtotal.toFixed(2)}</td>
             	</tr>`;
             }
         }
         html = html.replace("{{ITEMS}}", itemsHTML);
-        html = html.replace("{{DATETIME}}", moment().format("DD-MM-YYYY, HH:mm"));
 
         // create PDF
-        const pdf = await htmlpdf.create(req, res, session, html);
+        const pdf = await htmlpdf.create(html, user.lastname + " " + user.firstname);
 
         // Define response
         const data = fs.readFileSync(pdf);

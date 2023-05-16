@@ -1,0 +1,77 @@
+<div style="text-align: center;font-size: 12px;">
+    <pre>Documento no valido como factura</pre>
+</div>
+<div style="position: absolute;left: 432px;top: 39px;text-align: center;">
+    <div style="height: 25px;background: whitesmoke;border: 1px solid lightgrey;display: inline-block;font-size: 20px;padding: 10px;">
+        <strong>X</strong>
+    </div>
+</div>
+<div style="font-size: 10px;">
+    <div class="box" style="vertical-align: top;display: inline-block;height: 150px;width: 415px;margin-right: 5px;">
+        <img style="height: 60px;padding: 5px 0;" src="https://res.cloudinary.com/octo-mode/image/upload/v1681951247/oilgroup/logo_u42sgn.png">
+        <div style="padding: 5px 0;">
+            <div style="display: inline-block;vertical-align: top;">Razón Social: <strong>GERARDO RAUL CERUTTI Y MATIAS NAHUEL CERUTTI</strong></div>
+        </div>
+        <div style="padding: 5px 0;">
+            <div style="display: inline-block;vertical-align: top;">Domicilio Comercial: <strong>Presidente Perón 1219, Villa Maria</strong></div>
+        </div>
+        <div style="padding: 5px 0;">
+            <div style="display: inline-block;vertical-align: top;">Condición frente al IVA: <strong>IVA Responsable Inscripto</strong></div>
+        </div>
+    </div>
+    <div class="box" style="vertical-align: top;display: inline-block;height: 150px;width: 414px;margin-right: 0;">
+        <h1 style="text-align: center;">PRESUPUESTO</h1>
+        <div style="padding: 5px 0;">
+            <div style="display: inline-block;vertical-align: top;">Nro: <strong>{{ID}}</strong></div>
+        </div>
+        <div style="padding: 5px 0;">
+            <div style="display: inline-block;vertical-align: top;">Fecha de Emisión: <strong>{{DATE}}</strong></div>
+        </div>
+        <div style="padding: 5px 0;">
+            <div style="display: inline-block;vertical-align: top;">CUIT: <strong>30715362461</strong></div>
+        </div>
+        <div style="padding: 5px 0;">
+            <div style="display: inline-block;vertical-align: top;">Fecha de Inicio de Actividades: <strong>16/09/2016</strong></div>
+        </div>
+    </div>
+</div>
+<div class="box">
+    <div style="padding: 5px 0;">
+        <div style="display: inline-block;vertical-align: top;">CUIT: <strong>{{CUIT}}</strong></div>
+    </div>
+    <div style="padding: 5px 0;">
+        <div style="display: inline-block;vertical-align: top;">Razón Social: <strong>{{NAME}}</strong></div>
+    </div>
+    <div style="padding: 5px 0;">
+        <div style="display: inline-block;vertical-align: top;">Domicilio: <strong>{{ADDRESS}}</strong></div>
+    </div>
+    <div style="padding: 5px 0;">
+        <div style="display: inline-block;vertical-align: top;">Teléfono: <strong>{{PHONE}}</strong></div>
+    </div>
+    <div style="padding: 5px 0;">
+        <div style="display: inline-block;vertical-align: top;">Horarios: <strong>{{SCHEDULE}}</strong></div>
+    </div>
+    <div style="padding: 5px 0;">
+        <div style="display: inline-block;vertical-align: top;">Vendedor: <strong>{{USER}}</strong></div>
+    </div>
+    <div style="padding: 5px 0;">
+        <div style="display: inline-block;vertical-align: top;">Observaciones: <strong>{{DESCRIPTION}}</strong></div>
+    </div>
+</div>
+<table>
+    <tr>
+        <th style="text-align: left;width: 80px;">Cant</th>
+        <th style="text-align: left;width: 80px;">Código</th>
+        <th style="text-align: left;">Producto / Servicio</th>
+        <th style="text-align: right;width: 80px;">Precio Unit.</th>
+        <th style="text-align: right;width: 80px;">Subtotal</th>
+    </tr>
+    {{ITEMS}}
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><strong>TOTAL</strong></td>
+        <td style="text-align: right;"><strong>$ {{TOTAL}}</strong></td>
+    </tr>
+</table>
