@@ -31,12 +31,12 @@ exports.create = (html, user) => {
                 orientation: "portrait",
                 border: "10mm",
                 header: {
-                    height: "50px",
-                    contents: `<div style="display: block;height: 20px;text-align: right;"><img style="height: 15px;" alt="Your Logo" src="https://res.cloudinary.com/octo-mode/image/upload/v1681951247/oilgroup/logo_u42sgn.png" /></div>`,
+                    height: "70px",
+                    contents: `<div style="display: block;border-bottom: 1px solid #efefef;${process.env.ENVIRONMENT != "Local" ? "height: 20px;" : "height: 30px;"}text-align: right;"><img style="${process.env.ENVIRONMENT != "Local" ? "height: 15px;" : "height: 25px;"}" alt="Your Logo" src="https://res.cloudinary.com/octo-mode/image/upload/v1681951247/oilgroup/logo_u42sgn.png" /></div>`,
                 },
                 footer: {
-                    height: "50px",
-                    contents: `<div style="display: block;height: 25px;color: #444;"><span style="margin-top: 10px;">{{page}} de {{pages}} - Generado por ${user} el día ${moment().format("DD/MM/YYYY")} a las ${moment().format("HH:mm")}</span></div>`,
+                    height: "70px",
+                    contents: `<div style="border-top: 1px solid #efefef;color: #444;display: block;${process.env.ENVIRONMENT != "Local" ? "font-size: 5px;padding-top: 10px;" : "font-size: 9px;padding-top: 15px;"}"><span style="height: 25px;">{{page}} de {{pages}} - Generado por ${user} el día ${moment().format("DD/MM/YYYY")} a las ${moment().format("HH:mm")}</span></div>`,
                 }
             };
             pdfCreator.create(document, options).then(data => {
