@@ -32,7 +32,7 @@ exports.create = (html, user) => {
                 border: "10mm",
                 header: {
                     height: "50px",
-                    contents: `<div style="display: block;height: 30px;text-align: right;"><img style="border 1px solid blue;height: 25px;" alt="Your Logo" src="https://res.cloudinary.com/octo-mode/image/upload/v1681951247/oilgroup/logo_u42sgn.png" /></div>`,
+                    contents: `<div style="display: block;height: 20px;text-align: right;"><img style="height: 15px;" alt="Your Logo" src="https://res.cloudinary.com/octo-mode/image/upload/v1681951247/oilgroup/logo_u42sgn.png" /></div>`,
                 },
                 footer: {
                     height: "50px",
