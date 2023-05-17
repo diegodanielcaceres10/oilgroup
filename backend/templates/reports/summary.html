@@ -1,0 +1,32 @@
+<h1>RESÚMEN DE CUENTA</h1>
+<div class="box">
+    <div style="padding: 5px 0;">
+        <div style="display: inline-block;vertical-align: top;">CUIT: <strong>{{CUIT}}</strong></div>
+    </div>
+    <div style="padding: 5px 0;">
+        <div style="display: inline-block;vertical-align: top;">Razón Social: <strong>{{NAME}}</strong></div>
+    </div>
+    <div style="padding: 5px 0;">
+        <div style="display: inline-block;vertical-align: top;">Domicilio: <strong>{{ADDRESS}}</strong></div>
+    </div>
+    <div style="padding: 5px 0;">
+        <div style="display: inline-block;vertical-align: top;">Teléfono: <strong>{{PHONE}}</strong></div>
+    </div>
+    <div style="padding: 5px 0;">
+        <div style="display: inline-block;vertical-align: top;">Horarios: <strong>{{SCHEDULE}}</strong></div>
+    </div>
+    <div style="padding: 5px 0;">
+        <div style="display: inline-block;vertical-align: top;">Saldo pendiente: <strong>{{SUMMARY}}</strong></div>
+    </div>
+</div>
+<table>
+    <tr>
+        <th style="text-align: left;width: 60px;">Fecha</th>
+        <th style="text-align: left;">Tipo</th>
+        <th style="text-align: right;width: 80px;">Venta</th>
+        <th style="text-align: right;width: 80px;">Cobro</th>
+        <th style="text-align: right;width: 80px;">Saldo pendiente</th>
+        <th style="width: 40px;">Vencido</th>
+    </tr>
+    {{ITEMS}}
+</table>
