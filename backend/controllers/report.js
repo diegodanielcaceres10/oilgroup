@@ -1,7 +1,7 @@
 // Define modules
 const dotenv = require("dotenv");
 const storage = require("../modules/storage");
-const htmlpdf = require("../modules/htmlpdf");
+const pdfcreator = require("../modules/pdfcreator");
 const moment = require("moment");
 const fs = require("fs");
 
@@ -57,33 +57,32 @@ exports.exportPayments = async (req, res) => {
         let payments = await storage.get_data(req, res, session, "select pp.id,datetime,provider,(null)customer,fantasy_name,method,import,status from provider_payment pp left join provider p on provider=p.id " + filter + "union all select cp.id,datetime,null,customer,fantasy_name,method,import,status from customer_payment cp left join customer c on customer=c.id " + filter + "order by datetime desc");
 
         // Read HTML Template
-        let html = fs.readFileSync("./templates/payments.html", "utf8");
+        let html = fs.readFileSync("./templates/reports/payments.html", "utf8");
+
+        // Complete Template
         html = html.replace("{{FROM}}", moment(from.value).format("DD-MM-YYYY"));
         html = html.replace("{{TO}}", moment(to.value).format("DD-MM-YYYY"));
         let itemsHTML = "";
-        for (let item of payments) {
-            itemsHTML += `<tr style="border-bottom: 1px solid;">
-            <td style="white-space: pre;">${moment(item.datetime).format("DD-MM-YYYY, HH:mm")}</td>
-            <td>${item.provider ? "Pago" : "Cobro"} N° ${item.id}<br>${item.fantasy_name}</td>
-            <td style="text-align: right;">${item.method}</td>
-            <td style="text-align: right;">$ ${item.import.toFixed(2)}</td>
-            </tr>`;
-        }
         if (payments.length == 0) {
-            itemsHTML += `<tr style="border-bottom: 1px solid;">
-            <td style="white-space: pre;"></td>
-            <td>No existen registros en el periodo consultado</td>
-            <td style="text-align: right;"></td>
-            <td style="text-align: right;"></td>
-            <td style="text-align: right;"></td>
+            itemsHTML += `
+            <tr>
+                <td colspan="4">No existen registros</td>
             </tr>`;
+        } else {
+            for (let item of payments) {
+                itemsHTML += `
+                <tr>
+                    <td>${moment(item.datetime).format("DD-MM-YYYY")}<br>${moment(item.datetime).format("HH:mm")}</td>
+                    <td>${item.provider ? "Pago" : "Cobro"} N° ${item.id}<br>${item.fantasy_name}</td>
+                    <td style="text-align: right;">${item.method}</td>
+                    <td style="text-align: right;">$ ${item.import.toFixed(2)}</td>
+                </tr>`;
+            }
         }
         html = html.replace("{{ITEMS}}", itemsHTML);
-        html = html.replace("{{USER}}", user.lastname + " " + user.firstname);
-        html = html.replace("{{DATETIME}}", moment().format("DD-MM-YYYY, HH:mm"));
 
         // create PDF
-        const pdf = await htmlpdf.create(req, res, session, html);
+        const pdf = await pdfcreator.create(html, user.lastname + " " + user.firstname);
 
         // Define response
         const data = fs.readFileSync(pdf);
@@ -114,31 +113,31 @@ exports.exportActivities = async (req, res) => {
         let activities = await storage.get_data(req, res, session, "select b.id,datetime,provider,(null)customer,fantasy_name,total,status from buy b left join provider p on provider=p.id " + filter + "union all select s.id,datetime,null,customer,fantasy_name,total,status from sale s left join customer c on customer=c.id " + filter + "order by datetime desc");
 
         // Read HTML Template
-        let html = fs.readFileSync("./templates/activities.html", "utf8");
+        let html = fs.readFileSync("./templates/reports/activities.html", "utf8");
+
+        // Complete Template
         html = html.replace("{{FROM}}", moment(from.value).format("DD-MM-YYYY"));
         html = html.replace("{{TO}}", moment(to.value).format("DD-MM-YYYY"));
         let itemsHTML = "";
-        for (let item of activities) {
-            itemsHTML += `<tr style="border-bottom: 1px solid;">
-            <td style="white-space: pre;">${moment(item.datetime).format("DD-MM-YYYY, HH:mm")}</td>
-            <td>${item.provider ? "Compra" : "Venta"} N° ${item.id}<br>${item.fantasy_name}</td>
-            <td style="text-align: right;">$ ${item.total.toFixed(2)}</td>
-            </tr>`;
-        }
         if (activities.length == 0) {
-            itemsHTML += `<tr style="border-bottom: 1px solid;">
-            <td style="white-space: pre;"></td>
-            <td>No existen registros en el periodo consultado</td>
-            <td style="text-align: right;"></td>
-            <td style="text-align: right;"></td>
+            itemsHTML += `
+            <tr>
+                <td colspan="3">No existen registros</td>
             </tr>`;
+        } else {
+            for (let item of activities) {
+                itemsHTML += `
+                <tr>
+                    <td>${moment(item.datetime).format("DD-MM-YYYY")}<br>${moment(item.datetime).format("HH:mm")}</td>
+                    <td>${item.provider ? "Compra" : "Venta"} N° ${item.id}<br>${item.fantasy_name}</td>
+                    <td style="text-align: right;">$ ${item.total.toFixed(2)}</td>
+                </tr>`;
+            }
         }
         html = html.replace("{{ITEMS}}", itemsHTML);
-        html = html.replace("{{USER}}", user.lastname + " " + user.firstname);
-        html = html.replace("{{DATETIME}}", moment().format("DD-MM-YYYY, HH:mm"));
 
         // create PDF
-        const pdf = await htmlpdf.create(req, res, session, html);
+        const pdf = await pdfcreator.create(html, user.lastname + " " + user.firstname);
 
         // Define response
         const data = fs.readFileSync(pdf);

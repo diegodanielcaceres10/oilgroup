@@ -63,7 +63,7 @@ createMail = html => {
 exports.notification = async (data) => {
     try {
         // Read HTML Template
-        let html = fs.readFileSync("./templates/email/license/payment.html", "utf8");
+        let html = fs.readFileSync("./templates/email/payment.html", "utf8");
 
         // Complete html
         html = html.replace("{{PAYMENT-MONTH}}", data.month);

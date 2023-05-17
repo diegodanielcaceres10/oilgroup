@@ -185,4 +185,15 @@ export class UserService {
             this.progress.emit(error)
         })
     }
+
+    /**
+     * pending
+     */
+    public async pending(data) {
+        return this.api.download("user/pending/", data).subscribe(data => {
+            this.progress.emit(data)
+        }, error => {
+            this.progress.emit(error)
+        })
+    }
 }
