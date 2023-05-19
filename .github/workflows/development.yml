@@ -69,6 +69,7 @@ jobs:
           [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
           cd ${{ secrets.ROOT_BACKEND }}development/oilgroup/
           cd backend/
+          [ ! -d "${{ secrets.ROOT_LOGS }}development/oilgroup/" ] && mkdir "${{ secrets.ROOT_LOGS }}development/oilgroup/"
           forever --uid ${{ secrets.DEV_FOREVER_ID }} start -o ${{ secrets.ROOT_LOGS }}development/oilgroup/out-$(data +"%Y-%m-%d-%H-%M-%S").log -e ${{ secrets.ROOT_LOGS }}development/oilgroup/err-$(data +"%Y-%m-%d-%H-%M-%S").log server.js
           echo "UPDATE AND RESTART DEVELOPMENT BACKEND SUCCESSFUL"
 
