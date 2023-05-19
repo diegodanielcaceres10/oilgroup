@@ -10,6 +10,7 @@ dotenv.config({ path: "./config.env" });
 // Define connection test
 storage.test();
 
-// Define port
-const port = process.env.PORT || 7000;
-app.listen(port, () => console.log(moment().format(), `API listening on port ${port}`));
+// Define listeners and ports
+const portapi = process.env.PORT || 5000;
+const pathapi = `${process.env.ROOT}/api`;
+app.listen(portapi, () => console.log(moment().format(), process.env.ENV == "Local" ? `API listening on http://localhost:${portapi}` : `API listening on ${pathapi}`));
