@@ -126,6 +126,12 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     opacity: 0;
 }
 
+input[type="time"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    margin: -1rem;
+    opacity: 0;
+}
+
 input[type="button"] {
     text-align: left;
 }

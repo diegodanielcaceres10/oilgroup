@@ -24,15 +24,14 @@ export class LicenseService {
     }
 
     /**
-     * getDollar
+     * find
      */
-    public async getDollar() {
+    public async find(data) {
         return new Promise((resolve, reject) => {
-            this.api.get("https://api.bluelytics.com.ar/v2/latest").toPromise().then((data: any) => {
-                const dollar = data && data.blue && data.blue.value_sell;
-                resolve(dollar);
+            this.api.post("license/find/", data).toPromise().then((data: any) => {
+                resolve(data)
             }).catch((error) => {
-                reject(error);
+                reject(error)
             })
         })
     }
@@ -72,6 +71,46 @@ export class LicenseService {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
+            })
+        })
+    }
+
+    /**
+     * payment
+     */
+    public async payment(data) {
+        return new Promise((resolve, reject) => {
+            this.api.post("license/payment/", data).toPromise().then((data: any) => {
+                resolve(data)
+            }).catch((error) => {
+                reject(error)
+            })
+        })
+    }
+
+    /**
+     * cancel
+     */
+    public async cancel(data) {
+        return new Promise((resolve, reject) => {
+            this.api.post("license/cancel/", data).toPromise().then((data: any) => {
+                resolve(data)
+            }).catch((error) => {
+                reject(error)
+            })
+        })
+    }
+
+    /**
+     * getDollar
+     */
+    public async getDollar() {
+        return new Promise((resolve, reject) => {
+            this.api.get("https://api.bluelytics.com.ar/v2/latest").toPromise().then((data: any) => {
+                const dollar = data && data.blue && data.blue.value_sell;
+                resolve(dollar);
+            }).catch((error) => {
+                reject(error);
             })
         })
     }

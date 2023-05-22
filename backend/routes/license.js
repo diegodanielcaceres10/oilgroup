@@ -6,8 +6,11 @@ const auth = require("../controllers/auth");
 // Define route app
 const router = express.Router();
 router.post("/getAll/", auth.singleAuth, license.getAll);
+router.post("/find/", auth.singleAuth, license.find);
 router.post("/price/", auth.singleAuth, license.price);
 router.post("/remove/", auth.singleAuth, license.remove);
 router.post("/upload/", auth.singleAuth, license.upload);
+router.post("/payment/", auth.singleAuth, license.payment);
+router.post("/cancel/", auth.singleAuth, license.cancel);
 
 module.exports = router;

@@ -40,17 +40,17 @@
                     <div class="list__title"><strong>{{ item.name }}</strong></div>
                     <div class="list__subtitle"><span>{{ item.measure }} x {{ item.units }}</span></div>
                     <div class="list__subtitle"><span>{{ item.size }} {{ item.variety }}</span></div>
-                    <div class="list__subtitle">Costo: <strong>{{ (item.cost | currency:"ARS":"symbol-narrow":"1.2") || "$-" }}</strong></div>
+                    <div class="list__subtitle">Costo: <strong>{{ (item.cost | currency:"ARS") || "$-" }}</strong></div>
                 </div>
                 <div *ngIf="item.price_list" class="list__cell list__cell-right">
-                    <div class="list__title"><strong>{{ item.price_list | currency:"ARS":"symbol-narrow":"1.2" }}</strong></div>
+                    <div class="list__title"><strong>{{ item.price_list | currency:"ARS" }}</strong></div>
                     <div class="list__subtitle muted"><span>precio de lista</span></div>
-                    <div *ngIf="item.cost" class="list__subtitle">Rentabilidad: <strong>{{ ((item.price_list / item.units) - item.cost) | currency:"ARS":"symbol-narrow":"1.2" }}</strong></div>
+                    <div *ngIf="item.cost" class="list__subtitle">Rentabilidad: <strong>{{ ((item.price_list / item.units) - item.cost) | currency:"ARS" }}</strong></div>
                 </div>
                 <div *ngIf="item.price_offer" class="list__cell list__cell-right">
-                    <div class="list__title"><strong>{{ item.price_offer | currency:"ARS":"symbol-narrow":"1.2" }}</strong></div>
+                    <div class="list__title"><strong>{{ item.price_offer | currency:"ARS" }}</strong></div>
                     <div class="list__subtitle muted"><span>precio de oferta</span></div>
-                    <div *ngIf="item.cost" class="list__subtitle">Rentabilidad: <strong>{{ ((item.price_offer / item.units) - item.cost) | currency:"ARS":"symbol-narrow":"1.2" }}</strong></div>
+                    <div *ngIf="item.cost" class="list__subtitle">Rentabilidad: <strong>{{ ((item.price_offer / item.units) - item.cost) | currency:"ARS" }}</strong></div>
                 </div>
                 <div *ngIf="['Super Administrador', 'Administrador'].indexOf(access.role) > -1" (click)="updatePriceDialogForm(item)" class="list__cell list__cell-button">
                     <i class="fas fa-pen"></i>

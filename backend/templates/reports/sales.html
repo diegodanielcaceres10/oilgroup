@@ -1,0 +1,24 @@
+<h1>LISTA DE VENTAS DE ARTICULO N° {{ID}}</h1>
+<div class="box">
+    <div style="padding: 5px 0;">
+        <div style="display: inline-block;vertical-align: top;">Marca: <strong>{{BRAND}}</strong></div>
+    </div>
+    <div style="padding: 5px 0;">
+        <div style="display: inline-block;vertical-align: top;">Categoría: <strong>{{CATEGORY}}</strong></div>
+    </div>
+    <div style="padding: 5px 0;">
+        <div style="display: inline-block;vertical-align: top;">Nombre: <strong>{{NAME}}</strong></div>
+    </div>
+    <div style="padding: 5px 0;">
+        <div style="display: inline-block;vertical-align: top;">Código: <strong>{{CODE}}</strong></div>
+    </div>
+</div>
+<table>
+    <tr>
+        <th style="text-align: left;width: 60px;">Fecha</th>
+        <th style="text-align: left;">Cliente</th>
+        <th style="text-align: left;">Unidades</th>
+        <th style="text-align: right;width: 80px;">Total</th>
+    </tr>
+    {{ITEMS}}
+</table>

@@ -16,8 +16,9 @@
             <span *ngIf="field.type == 'password' && field.show" (click)="field.show = false" class="form__icon form__icon-action"><i class="fas fa-eye-slash"></i></span>
             <span *ngIf="field.type == 'password' && !field.show" (click)="field.show = true" class="form__icon form__icon-action"><i class="fas fa-eye"></i></span>
             <span *ngIf="field.type == 'date'" class="form__icon form__icon-off"><i class="fas fa-calendar-alt"></i></span>
+            <span *ngIf="field.type == 'time'" class="form__icon form__icon-off"><i class="fas fa-clock"></i></span>
             <span *ngIf="field.type == 'select'" class="form__icon form__icon-off"><i class="fas fa-chevron-down"></i></span>
-            <input *ngIf="field.type != 'radio' && field.type != 'checkbox' && field.type != 'file' && field.type != 'textarea'" [formControlName]="field.name" [type]="field.type == 'select' && !field.creatable ? 'button' : field.type == 'password' && field.show ? 'text' : field.type" [autocomplete]="field.autocomplete ? 'auto' : 'off'" (focus)="selectedInput = field.name" (blur)="selectedInput = ''" (ngModelChange)="changed(field)" [ngClass]="{ 'form__focus' : field.options && selectedInput == field.name }" onclick="this.focus()" maxlength="100" spellcheck="false">
+            <input *ngIf="field.type != 'radio' && field.type != 'checkbox' && field.type != 'file' && field.type != 'textarea' && field.type != 'date' && field.type != 'time'" [formControlName]="field.name" [type]="field.type == 'select' && !field.creatable ? 'button' : field.type == 'password' && field.show ? 'text' : field.type" [autocomplete]="field.autocomplete ? 'auto' : 'off'" (focus)="selectedInput = field.name" (blur)="selectedInput = ''" (ngModelChange)="changed(field)" [ngClass]="{ 'form__focus' : field.options && selectedInput == field.name }" onclick="this.focus()" [step]="field.type == 'time' && 1" maxlength="100" spellcheck="false">
             <ul *ngIf="field.options" class="form__options">
                 <ul *ngIf="field.type == 'select' && field.id && field.nameLabel" class="form__list scrollbar-custom">
                     <li *ngIf="!field.optionsView || field.optionsView.length == 0" class="form__option form__option-empty">No se encontraron registros</li>
@@ -39,6 +40,12 @@
 
             <!-- Input hidden for id select type -->
             <input *ngIf="field.type == 'select' && field.id" [formControlName]="field.id" type="hidden">
+
+            <!-- Input date type -->
+            <input *ngIf="field.type == 'date'" [formControlName]="field.name" type="date" (ngModelChange)="changed(field)" [ngClass]="{ 'form__focus' : field.options && selectedInput == field.name }" [min]="field.min" [max]="field.max">
+
+            <!-- Input date type -->
+            <input *ngIf="field.type == 'time'" [formControlName]="field.name" type="time" (ngModelChange)="changed(field)" [ngClass]="{ 'form__focus' : field.options && selectedInput == field.name }" step="1">
 
             <!-- Input checbox type -->
             <input *ngIf="field.type == 'checkbox'" [formControlName]="field.name" (change)="changed(field)" type="checkbox">

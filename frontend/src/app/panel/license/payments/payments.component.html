@@ -1,0 +1,153 @@
+<div class="title">
+    <div class="title__info">
+        <h2>Cuota</h2>
+    </div>
+</div>
+<div class="section__info">
+    <div class="section__box">
+        <div class="card">
+            <div class="card__content">
+                <div class="card__item">
+                    <div class="card__box card__box-primary">
+                        <div class="card__info">
+                            <div class="card__label">Cuota:</div>
+                            <div class="card__title"><strong>{{ license.value | currency }}</strong></div>
+                            <div class="card__title">{{ license.month | date:"MMMM 'de' yyyy" }}</div>
+                        </div>
+                    </div>
+                    <div class="card__box card__box-full">
+                        <div *ngIf="license.coefficient" class="card__info">
+                            <div class="card__legend">
+                                <span>Coeficiente de cotización</span>
+                                <span>{{ license.coefficient }}</span>
+                            </div>
+                            <div class="card__legend">
+                                <span>Fecha de cotización</span>
+                                <span>{{ license.coefficient_date | date:"dd/MM/yyyy, HH:mm" }}</span>
+                            </div>
+                            <div class="card__legend">
+                                <span>Fecha de vencimiento</span>
+                                <span>{{ license.coefficient_validate ? (license.coefficient_validate | date:"dd/MM/yyyy, HH:mm") : "Vencida" }}</span>
+                            </div>
+                        </div>
+                        <div *ngIf="license.current && license.status != 'Aprobado'" class="card__info">
+                            <div class="card__legend">
+                                <span>Total pagado</span>
+                                <span>{{ license.totalpayments | currency:"ARS" }}</span>
+                            </div>
+                            <div *ngIf="license.coefficient" class="card__legend">
+                                <span>Valor convertido</span>
+                                <span>{{ license.coefficient_validate ? ((license.coefficient * license.value) | currency:"ARS" ) : "N/A" }}</span>
+                            </div>
+                            <div *ngIf="license.coefficient" class="card__legend">
+                                <span>Saldo Pendiente</span>
+                                <span>{{ license.coefficient_validate ? (((license.coefficient * license.value) - license.totalpayments) | currency:"ARS" ) : "N/A" }}</span>
+                            </div>
+                        </div>
+                        <div *ngIf="license.status == 'Aprobado'" class="card__info">
+                            <div class="card__legend">
+                                <span>Pago</span>
+                                <span>{{ license.total | currency:"ARS" }}</span>
+                            </div>
+                            <div class="card__legend">
+                                <span>Fecha de Pago</span>
+                                <span>{{ license.datetime | date:"dd/MM/yyyy" }}</span>
+                            </div>
+                        </div>
+                        <div class="card__info">
+                            <div class="card__legend">
+                                <span>Estado</span>
+                                <span>{{ license.status }}</span>
+                            </div>
+                        </div>
+                        <div class="card__info">
+                            <div class="list">
+                                <div class="list__row">
+                                    <div class="list__cell list__cell-full muted">Detalle</div>
+                                    <div class="list__cell list__cell-right muted">Subtotal</div>
+                                </div>
+                                <div *ngFor="let item of license.items" class="list__row list__row-detail">
+                                    <div class="list__cell list__cell-full">
+                                        <div class="list__title">{{ item.name }}</div>
+                                    </div>
+                                    <div class="list__cell list__cell-right">
+                                        <div class="list__title">{{ item.value | currency }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="section__info">
+    <div class="section__box">
+        <div class="list">
+            <div class="sectiontitle">Comprabantes de pago</div>
+            <div *ngIf="paging" class="list__row">
+                <div class="list__cell list__cell-load"><i class="fas fa-spinner spin"></i></div>
+            </div>
+            <div *ngIf="!paging && view.length == 0" class="list__row">
+                <div class="list__cell list__cell-full"><i class="fas fa-exclamation-circle"></i>No se encontraron registros</div>
+            </div>
+            <div *ngIf="!paging && view.length > 0" class="list__row">
+                <div class="list__cell list__cell-full muted">Mostrando {{ (page - 1) * maxitems + 1 }} - {{ (page - 1) * maxitems + view.length }} de {{ filtered.length }}</div>
+            </div>
+            <div *ngFor="let item of view" class="list__row list__row-cells">
+                <div class="list__cell list__cell-date">
+                    <div class="list__subtitle"><span><strong>{{ (item.payment_date || item.datetime) | date:"dd/MM/yyyy" }}</strong></span></div>
+                    <div class="list__subtitle"><span>{{ (item.payment_date || item.datetime) | date:"HH:mm" }}</span></div>
+                </div>
+                <div class="list__cell list__cell-full">
+                    <div class="list__title"><strong>{{ item.total | currency:"ARS" }}</strong></div>
+                </div>
+                <div class="list__cell">
+                    <div class="list__subtitle">
+                        <div [ngClass]="{ 'list__tag-pending' : item.status == 'Pendiente', 'list__tag-success' : item.status == 'Aprobado', 'list__tag-cancel' : item.status == 'Cancelado' }" class="list__tag"><strong>{{ item.status }}</strong></div>
+                    </div>
+                </div>
+                <div *ngIf="item.status == 'Pendiente'" (click)="setPaymentDialogForm(item)" class="list__cell list__cell-button">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div *ngIf="item.status == 'Pendiente'" (click)="cancelPaymentDialogConfirm(item)" class="list__cell list__cell-button">
+                    <i class="fas fa-times-circle"></i>
+                </div>
+                <div *ngIf="item.link" class="list__cell list__cell-button">
+                    <a [href]="item.link" target="_blank">
+                        <i class='fas fa-image'></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="section__info">
+    <div class="section__box">
+        <div *ngIf="pages > 1" class="pagination">
+            <div *ngIf="page > 3" (click)="changePage(1)" class="pagination__page">
+                <div class="pagination__number"><i class="fas fa-chevron-left"></i></div>
+            </div>
+            <div *ngIf="page > 2" (click)="changePage(page - 2)" class="pagination__page">
+                <div class="pagination__number">{{ page - 2 }}</div>
+            </div>
+            <div *ngIf="page > 1" (click)="changePage(page - 1)" class="pagination__page">
+                <div class="pagination__number">{{ page - 1 }}</div>
+            </div>
+            <div class="pagination__current">
+                <div class="pagination__number">{{ page }}</div>
+            </div>
+            <div *ngIf="pages > page" (click)="changePage(page + 1)" class="pagination__page">
+                <div class="pagination__number">{{ page + 1 }}</div>
+            </div>
+            <div *ngIf="pages > page + 1" (click)="changePage(page + 2)" class="pagination__page">
+                <div class="pagination__number">{{ page + 2 }}</div>
+            </div>
+            <div *ngIf="pages > page + 2" (click)="changePage(pages)" class="pagination__page">
+                <div class="pagination__number"><i class="fas fa-chevron-right"></i></div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-dialog-modal *ngFor="let dialog of dialogs" [dialog]="dialog" (responseDialogModal)="responseDialog($event)"></app-dialog-modal>

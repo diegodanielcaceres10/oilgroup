@@ -53,6 +53,15 @@ export class UserService {
     /**
      * isLoggedIn
      */
+    public isSystemAdminLoggedIn(): boolean {
+        if (this.user && this.user.type == "admin" && ["Super Administrador"].indexOf(this.user.role) > -1) {
+            return true
+        }
+        return false
+    }
+    /**
+     * isLoggedIn
+     */
     public isSuperAdminLoggedIn(): boolean {
         if (this.user && ["Super Administrador"].indexOf(this.user.role) > -1) {
             return true
@@ -171,6 +180,17 @@ export class UserService {
      */
     public async summary(data) {
         return this.api.download("user/summary/", data).subscribe(data => {
+            this.progress.emit(data)
+        }, error => {
+            this.progress.emit(error)
+        })
+    }
+
+    /**
+     * pending
+     */
+    public async pending(data) {
+        return this.api.download("user/pending/", data).subscribe(data => {
             this.progress.emit(data)
         }, error => {
             this.progress.emit(error)

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { UserService } from '../../../_shared/service/user.service';
 import { LicenseService } from '../../../_shared/service/license.service';
 import { NavService } from '../../../_shared/service/nav.service';
 import { HeaderService } from '../../../_shared/service/header.service';
@@ -14,6 +15,7 @@ import * as moment from 'moment';
 })
 export class ListComponent implements OnInit {
 
+    access: any = {}
     paging: boolean
     licenses: any = []
     licensesFiltered: any = []
@@ -21,12 +23,12 @@ export class ListComponent implements OnInit {
     page: number = 1
     pages: number = 1
     maxitems: number = 20
-    filters: any = []
     dialogs: any = []
     priceCoefficientValidate: number = environment.priceCoefficientValidate;
 
     constructor(
         private ActivatedRoute: ActivatedRoute,
+        private UserService: UserService,
         private LicenseService: LicenseService,
         private NavService: NavService,
         private HeaderService: HeaderService,
@@ -40,10 +42,8 @@ export class ListComponent implements OnInit {
             setTimeout(() => {
                 this.NavService.page({ page: "license", subpage: "licenses" })
             }, 0)
-            this.page = parseInt(this.ActivatedRoute.snapshot.params["page"])
-            let params = this.ActivatedRoute.snapshot.queryParams
-            this.filters = [
-            ]
+            this.access = this.UserService.getUser();
+            this.page = parseInt(this.ActivatedRoute.snapshot.params["page"]);
             this.getAll(this.page)
         } catch (e) {
             console.error("Error", e)
@@ -57,7 +57,7 @@ export class ListComponent implements OnInit {
             this.licensesFiltered = []
             this.licensesView = []
             this.page = page
-            this.LicenseService.getAll({ filter: this.filters }).then((res: any) => {
+            this.LicenseService.getAll({}).then((res: any) => {
                 if (res.status == "success") {
                     this.licenses = res.data
                     this.licensesFiltered = res.data
@@ -102,15 +102,7 @@ export class ListComponent implements OnInit {
             this.paging = true
             this.licensesView = []
             this.page = value > this.pages ? 1 : value
-            let params = ""
-            for (let filter of this.filters) {
-                if (filter.type != "hidden" && filter.id && filter.value && filter.value[filter.nameLabel] && filter.value[filter.nameLabel] != "") {
-                    params += params == "" ? "?" + filter.label.replace(/ /gi, "").toLowerCase() + "=" + filter.value[filter.nameLabel] : "&" + filter.label.replace(/ /gi, "").toLowerCase() + "=" + filter.value[filter.nameLabel];
-                } else if (filter.type != "hidden" && !filter.id && filter.value && filter.value != "") {
-                    params += params == "" ? "?" + filter.label.replace(/ /gi, "").toLowerCase() + "=" + filter.value : "&" + filter.label.replace(/ /gi, "").toLowerCase() + "=" + filter.value;
-                }
-            }
-            this.Location.replaceState("/panel/licencia/" + this.page + params)
+            this.Location.replaceState("/panel/licencia/" + this.page)
             let list = this.licensesFiltered.slice(this.maxitems * (this.page - 1), this.maxitems * this.page)
             setTimeout(() => {
                 this.paging = false
@@ -125,33 +117,6 @@ export class ListComponent implements OnInit {
     }
 
     // Define dialogs
-    filterDialogForm() {
-        try {
-            this.dialogs.push({
-                type: "form",
-                title: "Buscar usuarios",
-                form: {
-                    full: true,
-                    event: "getAll",
-                    groups: [
-                        {
-                            fields: this.filters,
-                        },
-                    ],
-                    buttons: [
-                        {
-                            icon: "fas fa-search",
-                            text: "Buscar",
-                            type: "submit",
-                        },
-                    ],
-                },
-            })
-        } catch (e) {
-            console.error("Error", e)
-        }
-    }
-
     setPriceDialogConfirm(data) {
         try {
             this.dialogs.push({
@@ -225,15 +190,6 @@ export class ListComponent implements OnInit {
         try {
             if (data) {
                 if (data.event == "getAll") {
-                    this.filters.map((i) => {
-                        if (i.type == "select" && i.id) {
-                            i.value = {}
-                            i.value[i.nameValue] = data.values[i.id]
-                            i.value[i.nameLabel] = data.values[i.name]
-                        } else {
-                            i.value = data.values[i.name] || ""
-                        }
-                    })
                     this.getAll(1)
                     this.dialogs.pop()
                 } else if (data.event == "setPrice") {
@@ -285,8 +241,8 @@ export class ListComponent implements OnInit {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.HeaderService.showSuccess("Cotización reservada con exito. Deberá adjuntar el comprobante durante las proximas " + this.priceCoefficientValidate + " horas");
-                        data.calc = false;
                         this.dialogs.pop();
+                        data.calc = false;
                         let validatetime = moment(data.coefficient_validate).format("YYYY-MM-DD, HH:mm:ss");
                         const timeout = moment(validatetime).diff(moment());
                         this.removePrice(data, timeout + (1000 * 60));
