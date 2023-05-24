@@ -327,7 +327,7 @@ exports.ticket = async (req, res) => {
         html = html.replace("{{ITEMS}}", itemsHTML);
 
         // create PDF
-        const pdf = await pdfcreator.create(html, user.lastname + " " + user.firstname);
+        const pdf = await pdfcreator.create(html, user.lastname + " " + user.firstname, false);
 
         // Define response
         const data = fs.readFileSync(pdf);

@@ -20,6 +20,7 @@ exports.test = () => {
     con.getConnection((err) => {
         if (err) {
             console.log(moment().format(), "Connect Error!😵");
+            console.log(moment().format(), err);
         } else {
             console.log(moment().format(), "Connected!😎");
         };
