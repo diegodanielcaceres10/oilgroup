@@ -31,11 +31,11 @@ exports.create = (html, user, header = true) => {
                 orientation: "portrait",
                 border: "5mm",
                 header: header && {
-                    height: "70px",
+                    height: "50px",
                     contents: `<div style="display: block;border-bottom: 1px solid #efefef;${process.env.ENVIRONMENT != "Local" ? "height: 20px;" : "height: 30px;"}text-align: right;"><img style="${process.env.ENVIRONMENT != "Local" ? "height: 15px;" : "height: 25px;"}" alt="Your Logo" src="https://res.cloudinary.com/octo-mode/image/upload/v1681951247/oilgroup/logo_u42sgn.png" /></div>`,
                 },
                 footer: header && {
-                    height: "70px",
+                    height: "50px",
                     contents: `<div style="border-top: 1px solid #efefef;color: #444;display: block;${process.env.ENVIRONMENT != "Local" ? "font-size: 5px;padding-top: 10px;" : "font-size: 9px;padding-top: 15px;"}"><span style="height: 25px;">{{page}} de {{pages}} - Generado por ${user} el día ${moment().format("DD/MM/YYYY")} a las ${moment().format("HH:mm")}</span></div>`,
                 }
             };
