@@ -70,7 +70,7 @@ jobs:
           cd ${{ secrets.ROOT_BACKEND }}quality/oilgroup/
           cd backend/
           [ ! -d "${{ secrets.ROOT_LOGS }}quality/oilgroup/" ] && mkdir "${{ secrets.ROOT_LOGS }}quality/oilgroup/"
-          forever --uid ${{ secrets.QUA_FOREVER_ID }} start -o ${{ secrets.ROOT_LOGS }}quality/oilgroup/out-$(date +"%Y-%m-%d-%H-%M-%S").log -e ${{ secrets.ROOT_LOGS }}quality/oilgroup/err-$(date +"%Y-%m-%d-%H-%M-%S").log server.js
+          forever --uid ${{ secrets.QUA_FOREVER_ID }} start -o ${{ secrets.ROOT_LOGS }}quality/oilgroup/$(date +"%Y-%m-%d-%H-%M-%S")-out.log -e ${{ secrets.ROOT_LOGS }}quality/oilgroup/$(date +"%Y-%m-%d-%H-%M-%S")-err.log server.js
           echo "UPDATE AND RESTART QUALITY BACKEND SUCCESSFUL"
 
   build_frontend:

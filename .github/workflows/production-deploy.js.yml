@@ -70,7 +70,7 @@ jobs:
           cd ${{ secrets.ROOT_BACKEND }}production/oilgroup/
           cd backend/
           [ ! -d "${{ secrets.ROOT_LOGS }}production/oilgroup/" ] && mkdir "${{ secrets.ROOT_LOGS }}production/oilgroup/"
-          forever --uid ${{ secrets.PRD_FOREVER_ID }} start -o ${{ secrets.ROOT_LOGS }}production/oilgroup/out-$(date +"%Y-%m-%d-%H-%M-%S").log -e ${{ secrets.ROOT_LOGS }}production/oilgroup/err-$(date +"%Y-%m-%d-%H-%M-%S").log server.js
+          forever --uid ${{ secrets.PRD_FOREVER_ID }} start -o ${{ secrets.ROOT_LOGS }}production/oilgroup/$(date +"%Y-%m-%d-%H-%M-%S")-out.log -e ${{ secrets.ROOT_LOGS }}production/oilgroup/$(date +"%Y-%m-%d-%H-%M-%S")-err.log server.js
           echo "UPDATE AND RESTART PRODUCTION BACKEND SUCCESSFUL"
 
   build_frontend:

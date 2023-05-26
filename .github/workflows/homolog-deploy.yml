@@ -70,7 +70,7 @@ jobs:
           cd ${{ secrets.ROOT_BACKEND }}homolog/oilgroup/
           cd backend/
           [ ! -d "${{ secrets.ROOT_LOGS }}homolog/oilgroup/" ] && mkdir "${{ secrets.ROOT_LOGS }}homolog/oilgroup/"
-          forever --uid ${{ secrets.HOM_FOREVER_ID }} start -o ${{ secrets.ROOT_LOGS }}homolog/oilgroup/out-$(date +"%Y-%m-%d-%H-%M-%S").log -e ${{ secrets.ROOT_LOGS }}homolog/oilgroup/err-$(date +"%Y-%m-%d-%H-%M-%S").log server.js
+          forever --uid ${{ secrets.HOM_FOREVER_ID }} start -o ${{ secrets.ROOT_LOGS }}homolog/oilgroup/$(date +"%Y-%m-%d-%H-%M-%S")-out.log -e ${{ secrets.ROOT_LOGS }}homolog/oilgroup/$(date +"%Y-%m-%d-%H-%M-%S")-err.log server.js
           echo "UPDATE AND RESTART HOMOLOG BACKEND SUCCESSFUL"
 
   build_frontend:
