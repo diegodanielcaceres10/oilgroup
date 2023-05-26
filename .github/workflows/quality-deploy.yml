@@ -69,7 +69,8 @@ jobs:
           [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
           cd ${{ secrets.ROOT_BACKEND }}quality/oilgroup/
           cd backend/
-          forever --uid ${{ secrets.QUA_FOREVER_ID }} start server.js
+          [ ! -d "${{ secrets.ROOT_LOGS }}quality/oilgroup/" ] && mkdir "${{ secrets.ROOT_LOGS }}quality/oilgroup/"
+          forever --uid ${{ secrets.QUA_FOREVER_ID }} start -o ${{ secrets.ROOT_LOGS }}quality/oilgroup/$(date +"%Y-%m-%d-%H-%M-%S")-out.log -e ${{ secrets.ROOT_LOGS }}quality/oilgroup/$(date +"%Y-%m-%d-%H-%M-%S")-err.log server.js
           echo "UPDATE AND RESTART QUALITY BACKEND SUCCESSFUL"
 
   build_frontend:
