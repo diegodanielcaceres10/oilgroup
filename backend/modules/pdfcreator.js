@@ -32,10 +32,10 @@ exports.create = (html, user, header = true) => {
                 border: "5mm",
                 header: header ? {
                     height: "50px",
-                    contents: `<div style="display: block;border-bottom: 1px solid #efefef;${process.env.ENVIRONMENT != "Local" ? "height: 20px;" : "height: 30px;"}text-align: right;">${process.env.ENVIRONMENT ? "<span style='background: whitesmoke;display: inline-block;margin-right: 10px;padding: 7px 10px;vertical-align: top;'>Ambiente: " + process.env.ENVIRONMENT + "</span>" : ""}<img style="display: inline-block;${process.env.ENVIRONMENT != "Local" ? "height: 15px;" : "height: 25px;"}" alt="Your Logo" src="https://res.cloudinary.com/octo-mode/image/upload/v1681951247/oilgroup/logo_u42sgn.png" /></div>`,
+                    contents: `<div style="display: block;border-bottom: 1px solid #efefef;${process.env.ENVIRONMENT != "Local" ? "height: 20px;" : "height: 30px;"}text-align: right;">${process.env.ENVIRONMENT ? "<span style='background: whitesmoke;display: inline-block;margin-right: 10px;padding: 5px 10px;vertical-align: top;'>Ambiente: " + process.env.ENVIRONMENT + "</span>" : ""}<img style="display: inline-block;${process.env.ENVIRONMENT != "Local" ? "height: 15px;" : "height: 25px;"}" alt="Your Logo" src="https://res.cloudinary.com/octo-mode/image/upload/v1681951247/oilgroup/logo_u42sgn.png" /></div>`,
                 } : process.env.ENVIRONMENT && {
                     height: "50px",
-                    contents: `<div style="display: block;${process.env.ENVIRONMENT != "Local" ? "height: 20px;" : "height: 30px;"}text-align: right;"><span style='background: whitesmoke;display: inline-block;margin-right: 10px;padding: 7px 10px;vertical-align: top;'>Ambiente: ${process.env.ENVIRONMENT}</span></div>`,
+                    contents: `<div style="display: block;${process.env.ENVIRONMENT != "Local" ? "height: 20px;" : "height: 30px;"}text-align: right;"><span style='background: whitesmoke;display: inline-block;margin-right: 10px;padding: 5px 10px;vertical-align: top;'>Ambiente: ${process.env.ENVIRONMENT}</span></div>`,
                 },
                 footer: header && {
                     height: "50px",
