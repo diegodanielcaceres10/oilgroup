@@ -55,7 +55,7 @@ exports.exportPayments = async (req, res) => {
         filter += filter == "" ? "where status='Aprobado'" : "and status='Aprobado'";
         let from = req.body.filter.find(i => i.name == "from");
         let to = req.body.filter.find(i => i.name == "to");
-        let payments = await storage.get_data(req, res, session, "select pp.id,datetime,provider,(null)customer,fantasy_name,method,import,status from provider_payment pp left join provider p on provider=p.id " + filter + " where status='Aprobada'union all select cp.id,datetime,null,customer,fantasy_name,method,import,status from customer_payment cp left join customer c on customer=c.id " + filter + " where status='Aprobada'order by datetime desc");
+        let payments = await storage.get_data(req, res, session, "select pp.id,datetime,provider,(null)customer,fantasy_name,method,import,status from provider_payment pp left join provider p on provider=p.id " + filter + " union all select cp.id,datetime,null,customer,fantasy_name,method,import,status from customer_payment cp left join customer c on customer=c.id " + filter + " order by datetime desc");
 
         // Read HTML Template
         let html = fs.readFileSync("./templates/reports/payments.html", "utf8");
