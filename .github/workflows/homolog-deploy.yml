@@ -69,7 +69,8 @@ jobs:
           [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
           cd ${{ secrets.ROOT_BACKEND }}homolog/oilgroup/
           cd backend/
-          forever --uid ${{ secrets.HOM_FOREVER_ID }} start server.js
+          [ ! -d "${{ secrets.ROOT_LOGS }}homolog/oilgroup/" ] && mkdir "${{ secrets.ROOT_LOGS }}homolog/oilgroup/"
+          forever --uid ${{ secrets.HOM_FOREVER_ID }} start -o ${{ secrets.ROOT_LOGS }}homolog/oilgroup/$(date +"%Y-%m-%d-%H-%M-%S")-out.log -e ${{ secrets.ROOT_LOGS }}homolog/oilgroup/$(date +"%Y-%m-%d-%H-%M-%S")-err.log server.js
           echo "UPDATE AND RESTART HOMOLOG BACKEND SUCCESSFUL"
 
   build_frontend:
