@@ -1,15 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './_shared/auth/auth.guard';
 import { NoAuthGuard } from './_shared/auth/no-auth.guard';
 
 import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
     {
-        path: "login", component: LoginComponent, canActivate: [NoAuthGuard],
+        path: "login", canActivate: [NoAuthGuard], component: LoginComponent,
     },
     {
-        path: "panel", loadChildren: () => import("./panel/panel.module").then(m => m.PanelModule),
+        path: "panel", canActivate: [AuthGuard], loadChildren: () => import("./panel/panel.module").then(m => m.PanelModule),
     },
     { path: "**", redirectTo: "login", pathMatch: "full" }
 ];

@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from '../../_shared/auth/auth.guard';
 import { AdminAuthGuard } from '../../_shared/auth/admin-auth.guard';
 
 import { ArticlesComponent } from './articles.component';
@@ -13,27 +12,27 @@ import { ArticleComponent } from './article/article.component';
 
 const routes: Routes = [
     {
-        path: "", component: ArticlesComponent, canActivate: [AuthGuard], children: [
+        path: "", component: ArticlesComponent, children: [
             {
-                path: ":page", component: ListComponent, canActivate: [AdminAuthGuard],
+                path: ":page", canActivate: [AdminAuthGuard], component: ListComponent,
             },
             {
-                path: "marcas/:page", component: BrandsComponent, canActivate: [AdminAuthGuard],
+                path: "marcas/:page", canActivate: [AdminAuthGuard], component: BrandsComponent,
             },
             {
-                path: "categorias/:page", component: CategoriesComponent, canActivate: [AdminAuthGuard],
+                path: "categorias/:page", canActivate: [AdminAuthGuard], component: CategoriesComponent,
             },
             {
-                path: "precios/:page", component: PricesComponent, canActivate: [AuthGuard],
+                path: "precios/:page", component: PricesComponent,
             },
             {
-                path: "stock/:page", component: StockComponent, canActivate: [AuthGuard],
+                path: "stock/:page", component: StockComponent,
             },
             {
-                path: "nuevo/1", component: ArticleComponent, canActivate: [AdminAuthGuard],
+                path: "nuevo/1", canActivate: [AdminAuthGuard], component: ArticleComponent,
             },
             {
-                path: ":id/:page", component: ArticleComponent, canActivate: [AdminAuthGuard],
+                path: ":id/:page", canActivate: [AdminAuthGuard], component: ArticleComponent,
             },
         ],
     },

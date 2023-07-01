@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from '../../_shared/auth/auth.guard';
 import { AdminAuthGuard } from '../../_shared/auth/admin-auth.guard';
 
 import { CustomersComponent } from './customers.component';
@@ -12,30 +11,30 @@ import { CustomerComponent } from './customer/customer.component';
 
 const routes: Routes = [
     {
-        path: "", component: CustomersComponent, canActivate: [AuthGuard], children: [
+        path: "", component: CustomersComponent, children: [
             {
-                path: ":page", component: ListComponent, canActivate: [AuthGuard],
+                path: ":page", component: ListComponent,
             },
             {
-                path: "venta/:id", component: SaleComponent, canActivate: [AuthGuard],
+                path: "venta/:id", component: SaleComponent,
             },
             {
-                path: "cobro/:id", component: PaymentComponent, canActivate: [AuthGuard],
+                path: "cobro/:id", component: PaymentComponent,
             },
             {
-                path: "ventas/pendientes/:page", component: SalesComponent, canActivate: [AdminAuthGuard],
+                path: "ventas/pendientes/:page", canActivate: [AdminAuthGuard], component: SalesComponent,
             },
             {
-                path: "ventas/listas/:page", component: SalesComponent, canActivate: [AdminAuthGuard],
+                path: "ventas/listas/:page", canActivate: [AdminAuthGuard], component: SalesComponent,
             },
             {
-                path: "ventas/facturacion/:page", component: SalesComponent, canActivate: [AdminAuthGuard],
+                path: "ventas/facturacion/:page", canActivate: [AdminAuthGuard], component: SalesComponent,
             },
             {
-                path: "nuevo/1", component: CustomerComponent, canActivate: [AdminAuthGuard],
+                path: "nuevo/1", canActivate: [AdminAuthGuard], component: CustomerComponent,
             },
             {
-                path: ":id/:page", component: CustomerComponent, canActivate: [AuthGuard],
+                path: ":id/:page", component: CustomerComponent,
             },
         ],
     },

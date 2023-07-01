@@ -4,7 +4,7 @@ const moment = require("moment");
 
 exports.getAll = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: metric/getAll |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: metric/getAll |";
 
         // Define user
         let user = req.body.user;
@@ -33,7 +33,7 @@ exports.getAll = async (req, res) => {
 
 exports.getAllExtend = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: metric/getAllExtend |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: metric/getAllExtend |";
 
         // Define metric
         let metric = {};

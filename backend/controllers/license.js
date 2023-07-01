@@ -11,7 +11,7 @@ dotenv.config({ path: "./config.env" });
 
 exports.getAll = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: license/getAll |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: license/getAll |";
 
         // Define filter
         let filter = await storage.whereObj(req.body.filter || []);
@@ -45,7 +45,7 @@ exports.getAll = async (req, res) => {
 
 exports.find = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: license/find |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: license/find |";
 
         // Verify parameters
         if (!req.body.license || typeof req.body.license.id != "number") {
@@ -70,7 +70,7 @@ exports.find = async (req, res) => {
 
 exports.price = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: license/price |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: license/price |";
 
         // Verify parameters
         if (!req.body.license || typeof req.body.license.id != "number" || typeof req.body.license.coefficient != "number" || typeof req.body.license.coefficient_date != "string" || typeof req.body.license.coefficient_validate != "string") {
@@ -98,7 +98,7 @@ exports.price = async (req, res) => {
 
 exports.remove = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: license/remove |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: license/remove |";
 
         // Verify parameters
         if (!req.body.license || typeof req.body.license.id != "number") {
@@ -130,7 +130,7 @@ exports.remove = async (req, res) => {
 
 exports.upload = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: license/upload |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: license/upload |";
 
         // Verify parameters
         if (!req.body.id) {
@@ -196,7 +196,7 @@ exports.upload = async (req, res) => {
 
 exports.payment = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: license/payment |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: license/payment |";
 
         // Verify parameters
         if (!req.body.payment || typeof req.body.payment.id != "number" || typeof req.body.payment.license != "number" || typeof req.body.payment.total != "number" || typeof req.body.payment.date != "string" || typeof req.body.payment.time != "string") {
@@ -218,7 +218,7 @@ exports.payment = async (req, res) => {
         license.payments = await storage.get_data(req, res, session, "select*from license_payment where license=" + license.id + " and status='Aprobado'and total>0 order by payment_date");
         if (license && license.value && license.coefficient) {
             // Get total convert
-            const total = license.value * license.coefficient;
+            const total = (license.value * license.coefficient).toFixed(2);
             // Get last payment date
             let datetime = moment(payment.datetime).format("YYYY-MM-DD");
             // Get all payments
@@ -260,7 +260,7 @@ exports.payment = async (req, res) => {
 
 exports.cancel = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: license/cancel |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: license/cancel |";
 
         // Verify parameters
         if (!req.body.payment || typeof req.body.payment.id != "number") {
