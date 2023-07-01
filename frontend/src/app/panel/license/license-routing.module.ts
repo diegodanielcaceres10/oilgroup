@@ -9,12 +9,12 @@ import { PaymentsComponent } from './payments/payments.component';
 
 const routes: Routes = [
     {
-        path: "", component: LicenseComponent, canActivate: [SuperAdminAuthGuard], children: [
+        path: "", canActivate: [SuperAdminAuthGuard], component: LicenseComponent, children: [
             {
-                path: ":page", component: ListComponent, canActivate: [SuperAdminAuthGuard],
+                path: ":page", component: ListComponent,
             },
             {
-                path: ":id/:page", component: PaymentsComponent, canActivate: [SystemGuard],
+                path: ":id/:page", canActivate: [SystemGuard], component: PaymentsComponent,
             },
         ],
     },

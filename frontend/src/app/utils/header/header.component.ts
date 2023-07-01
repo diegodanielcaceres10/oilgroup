@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../_shared/service/user.service';
+import { AuthService } from '../../_shared/service/auth.service';
 import { HeaderService } from 'src/app/_shared/service/header.service';
-import { trigger, state, style, animate, transition } from '@angular/animations';
+import { trigger, style, animate, transition } from '@angular/animations';
 import * as moment from 'moment';
 
 @Component({
@@ -32,43 +32,43 @@ export class HeaderComponent implements OnInit {
     show: boolean
 
     constructor(
-        private UserService: UserService,
+        private AuthService: AuthService,
         private HeaderService: HeaderService,
     ) { }
 
     ngOnInit(): void {
-        this.HeaderService.showSuccessAlert.subscribe(data => {
-            this.alerts.push({
-                time: moment().format("HH:mm"),
-                type: "success",
-                text: data,
-            })
-            this.alert.type = "success"
-            this.alert.text = data
-            setTimeout(() => {
-                this.alert = {}
-            }, 5000)
-        })
-        this.HeaderService.showErrorAlert.subscribe(data => {
-            this.alerts.push({
-                type: "error",
-                text: data,
-            })
-            this.alert.type = "error"
-            this.alert.text = data
-            setTimeout(() => {
-                this.alert = {}
-            }, 5000)
-        })
         try {
-            this.access = this.UserService.getUser()
+            this.HeaderService.showSuccessAlert.subscribe(data => {
+                this.alerts.push({
+                    time: moment().format("HH:mm"),
+                    type: "success",
+                    text: data,
+                });
+                this.alert.type = "success";
+                this.alert.text = data;
+                setTimeout(() => {
+                    this.alert = {};
+                }, 5000);
+            });
+            this.HeaderService.showErrorAlert.subscribe(data => {
+                this.alerts.push({
+                    type: "error",
+                    text: data,
+                });
+                this.alert.type = "error";
+                this.alert.text = data;
+                setTimeout(() => {
+                    this.alert = {};
+                }, 5000);
+            });
+            this.access = this.AuthService.getUser();
         } catch (e) {
-            console.error("Error", e)
+            console.error("Error", e);
         }
     }
 
     async logout() {
-        this.UserService.logOut()
+        this.AuthService.logOut();
     }
 
 }

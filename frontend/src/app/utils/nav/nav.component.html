@@ -6,18 +6,18 @@
     <div class="nav__list scrollbar-custom">
         <ul class="nav__box">
             <li *ngFor="let item of items" class="nav__item">
-                <a *ngIf="(!item.access || item.access.indexOf(access.role) > -1) && item.link" (click)="redirect(item.link, item.name)" class="nav__link">
+                <a *ngIf="(!item.license || (access.license && access.license.active)) && (!item.access || item.access.indexOf(access.role) >= 0) && item.link" (click)="redirect(item.link, item.name)" class="nav__link">
                     <div [ngClass]="{ 'nav__legend-active' : menuselected == item.name }" class="nav__legend">
                         <i class="{{ item.icon }}"></i><span>{{ item.label }}</span>
                     </div>
                 </a>
-                <button *ngIf="(!item.access || item.access.indexOf(access.role) > -1) && !item.link" onclick="this.focus()" class="nav__link">
+                <button *ngIf="(!item.license || (access.license && access.license.active)) && (!item.access || item.access.indexOf(access.role) >= 0) && !item.link" onclick="this.focus()" class="nav__link">
                     <div [ngClass]="{ 'nav__legend-active' : menuselected == item.name }" class="nav__legend">
                         <i class="{{ item.icon }}"></i><span>{{ item.label }}</span><i class="fas fa-plus"></i>
                     </div>
-                    <ul *ngIf="(!item.access || item.access.indexOf(access.role) > -1) && item.subs && item.subs.length > 0" class="nav__dropdown">
+                    <ul *ngIf="(!item.access || item.access.indexOf(access.role) >= 0) && item.subs && item.subs.length > 0" class="nav__dropdown">
                         <span *ngFor="let sub of item.subs">
-                            <li *ngIf="!sub.access || sub.access.indexOf(access.role) > -1" class="nav__subitem">
+                            <li *ngIf="!sub.access || sub.access.indexOf(access.role) >= 0" class="nav__subitem">
                                 <a [ngClass]="{ 'nav__sublink-active' : menuselected == item.name && pageselected == sub.name }" (click)="redirect(sub.link, item.name, sub.name)" class="nav__sublink">- {{ sub.label }}</a>
                             </li>
                         </span>

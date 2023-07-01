@@ -21,6 +21,23 @@
         overflow: hidden;
     }
 
+    &__license {
+        background: whitesmoke;
+        border-radius: .3rem;
+        color: var(--primary);
+        font-weight: bold;
+        padding: .5rem 1rem;
+
+        &-expired {
+            background: gold;
+        }
+
+        &-cancel {
+            background: red;
+            color: white;
+        }
+    }
+
     &__user {
         white-space: nowrap;
     }

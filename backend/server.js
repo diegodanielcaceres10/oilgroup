@@ -12,5 +12,5 @@ storage.test();
 
 // Define listeners and ports
 const portapi = process.env.PORT || 5000;
-const pathapi = `${process.env.ROOT}/api`;
-app.listen(portapi, () => console.log(moment().format(), process.env.ENV == "Local" ? `API listening on http://localhost:${portapi}` : `API listening on ${pathapi}`));
+const pathapi = `${process.env.ROOT}/api/`;
+app.listen(portapi, () => console.log(moment().format(), process.env.ENVIRONMENT == "Local" ? `API listening on http://localhost:${portapi}${pathapi}` : `API listening on ${pathapi}`));

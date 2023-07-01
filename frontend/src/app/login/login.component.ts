@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserService } from '../_shared/service/user.service';
+import { AuthService } from '../_shared/service/auth.service';
 import { LoadService } from '../_shared/service/load.service';
 
 @Component({
@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
 
     constructor(
         private Router: Router,
-        private UserService: UserService,
+        private AuthService: AuthService,
         private LoadService: LoadService,
     ) { }
 
@@ -75,10 +75,10 @@ export class LoginComponent implements OnInit {
     login(data) {
         try {
             this.saving = true
-            this.UserService.logIn(data.values).then((res: any) => {
+            this.AuthService.logIn(data.values).then((res: any) => {
                 setTimeout(() => {
                     if (res == "success") {
-                        this.Router.navigateByUrl("panel")
+                        this.Router.navigateByUrl("panel");
                     } else if (res == "not found") {
                         this.saving = false
                         this.error = "Los datos son incorrectos"

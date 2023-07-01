@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { UserService } from '../../../_shared/service/user.service';
+import { AuthService } from '../../../_shared/service/auth.service';
 import { LicenseService } from '../../../_shared/service/license.service';
 import { NavService } from '../../../_shared/service/nav.service';
 import { HeaderService } from '../../../_shared/service/header.service';
@@ -28,7 +28,7 @@ export class ListComponent implements OnInit {
 
     constructor(
         private ActivatedRoute: ActivatedRoute,
-        private UserService: UserService,
+        private AuthService: AuthService,
         private LicenseService: LicenseService,
         private NavService: NavService,
         private HeaderService: HeaderService,
@@ -42,7 +42,7 @@ export class ListComponent implements OnInit {
             setTimeout(() => {
                 this.NavService.page({ page: "license", subpage: "licenses" })
             }, 0)
-            this.access = this.UserService.getUser();
+            this.access = this.AuthService.getUser();
             this.page = parseInt(this.ActivatedRoute.snapshot.params["page"]);
             this.getAll(this.page)
         } catch (e) {

@@ -8,15 +8,15 @@ import { UserComponent } from './user/user.component';
 
 const routes: Routes = [
     {
-        path: "", component: UsersComponent, canActivate: [SuperAdminAuthGuard], children: [
+        path: "", canActivate: [SuperAdminAuthGuard], component: UsersComponent, children: [
             {
-                path: ":page", component: ListComponent, canActivate: [SuperAdminAuthGuard],
+                path: ":page", canActivate: [SuperAdminAuthGuard], component: ListComponent,
             },
             {
-                path: "nuevo/1", component: UserComponent, canActivate: [SuperAdminAuthGuard],
+                path: "nuevo/1", canActivate: [SuperAdminAuthGuard], component: UserComponent,
             },
             {
-                path: ":username/:page", component: UserComponent, canActivate: [SuperAdminAuthGuard],
+                path: ":username/:page", canActivate: [SuperAdminAuthGuard], component: UserComponent,
             },
         ],
     },
