@@ -4,7 +4,7 @@ const moment = require("moment");
 
 exports.find = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: payment/find |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: payment/find |";
 
         // Verify parameters
         if (!req.body.payment || typeof req.body.payment.id != "number") {
@@ -30,7 +30,7 @@ exports.find = async (req, res) => {
 
 exports.create = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: payment/create |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: payment/create |";
 
         // Verify parameters
         if (!req.body.payment || typeof req.body.payment.customer != "number" || typeof req.body.payment.import != "number" || typeof req.body.payment.method != "string" || req.body.payment.method == "") {
@@ -40,7 +40,7 @@ exports.create = async (req, res) => {
         };
 
         // Define username
-        let username = req.body.username;
+        let username = req.headers.username;
         username = username.replace(/'/gi, "");
         await storage.exists_row(req, res, session, "select*from user where username='" + username + "'");
 
@@ -69,7 +69,7 @@ exports.create = async (req, res) => {
 
 exports.cancel = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: payment/cancel |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: payment/cancel |";
 
         // Verify parameters
         if (!req.body.payment || typeof req.body.payment.id != "number") {

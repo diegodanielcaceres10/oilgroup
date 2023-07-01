@@ -4,7 +4,7 @@ const moment = require("moment");
 
 exports.updates = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: script/updates |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: script/updates |";
 
         // Define data
 

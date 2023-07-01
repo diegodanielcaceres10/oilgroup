@@ -10,7 +10,7 @@ dotenv.config({ path: "./config.env" });
 
 exports.getPayments = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: report/getPayments |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: report/getPayments |";
 
         // Define filter
         let filter = await storage.whereObj(req.body.filter || []);
@@ -26,7 +26,7 @@ exports.getPayments = async (req, res) => {
 
 exports.getActivity = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: report/getActivity |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: report/getActivity |";
 
         // Define filter
         let filter = await storage.whereObj(req.body.filter || []);
@@ -43,10 +43,10 @@ exports.getActivity = async (req, res) => {
 
 exports.exportPayments = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: report/exportPayments |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: report/exportPayments |";
 
         // Define username
-        let username = req.body.username;
+        let username = req.headers.username;
         username = username.replace(/'/gi, "");
         let user = await storage.get_row(req, res, session, "select*from user where username='" + username + "'");
 
@@ -100,10 +100,10 @@ exports.exportPayments = async (req, res) => {
 
 exports.exportActivities = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: report/exportActivities |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: report/exportActivities |";
 
         // Define username
-        let username = req.body.username;
+        let username = req.headers.username;
         username = username.replace(/'/gi, "");
         let user = await storage.get_row(req, res, session, "select*from user where username='" + username + "'");
 

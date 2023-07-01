@@ -10,21 +10,21 @@ import { ProviderComponent } from './provider/provider.component';
 
 const routes: Routes = [
     {
-        path: "", component: ProvidersComponent, canActivate: [AdminAuthGuard], children: [
+        path: "", canActivate: [AdminAuthGuard], component: ProvidersComponent, children: [
             {
-                path: ":page", component: ListComponent, canActivate: [AdminAuthGuard],
+                path: ":page", canActivate: [AdminAuthGuard], component: ListComponent,
             },
             {
-                path: "compra/:id", component: BuyComponent, canActivate: [AdminAuthGuard],
+                path: "compra/:id", canActivate: [AdminAuthGuard], component: BuyComponent,
             },
             {
-                path: "pago/:id", component: PaymentComponent, canActivate: [AdminAuthGuard],
+                path: "pago/:id", canActivate: [AdminAuthGuard], component: PaymentComponent,
             },
             {
-                path: "nuevo/1", component: ProviderComponent, canActivate: [AdminAuthGuard],
+                path: "nuevo/1", canActivate: [AdminAuthGuard], component: ProviderComponent,
             },
             {
-                path: ":id/:page", component: ProviderComponent, canActivate: [AdminAuthGuard],
+                path: ":id/:page", canActivate: [AdminAuthGuard], component: ProviderComponent,
             },
         ],
     },

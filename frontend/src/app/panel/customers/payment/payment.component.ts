@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { UserService } from '../../../_shared/service/user.service';
+import { AuthService } from '../../../_shared/service/auth.service';
 import { CustomerPaymentService } from '../../../_shared/service/customer_payment.service';
 import { CustomerService } from '../../../_shared/service/customer.service';
 import { NavService } from '../../../_shared/service/nav.service';
@@ -26,7 +26,7 @@ export class PaymentComponent implements OnInit {
 
     constructor(
         private ActivatedRoute: ActivatedRoute,
-        private UserService: UserService,
+        private AuthService: AuthService,
         private CustomerPaymentService: CustomerPaymentService,
         private CustomerService: CustomerService,
         private NavService: NavService,
@@ -41,7 +41,7 @@ export class PaymentComponent implements OnInit {
             setTimeout(() => {
                 this.NavService.page({ page: "customer", subpage: "" })
             }, 0)
-            this.access = this.UserService.getUser()
+            this.access = this.AuthService.getUser()
             const id = this.ActivatedRoute.snapshot.params["id"]
             if (id == "nuevo") {
                 this.payment.customer.id = this.ActivatedRoute.snapshot.queryParams["cliente"] || 0

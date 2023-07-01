@@ -6,6 +6,14 @@
                 <strong>{{ access.lastname }}</strong> {{ access.firstname }}
             </div>
         </div>
+        <span *ngIf="access.license && access.license.active && access.license.days < 6 && access.license.days > 1 && !access.license.expired" class="header__license">Licencia vence en {{ access.license.days }} días</span>
+        <span *ngIf="access.license && access.license.active && access.license.days == 1 && !access.license.expired" class="header__license">Licencia vence mañana</span>
+        <span *ngIf="access.license && access.license.active && access.license.days == 0 && !access.license.expired" class="header__license">Licencia vence hoy</span>
+        <span *ngIf="access.license && access.license.active && access.license.days > 5 && access.license.expired" class="header__license header__license-expired">Licencia vencida</span>
+        <span *ngIf="access.license && access.license.active && access.license.days < 6 && access.license.days > 1 && access.license.expired" class="header__license header__license-expired">Licencia se suspende en {{ access.license.days }} días</span>
+        <span *ngIf="access.license && access.license.active && access.license.days == 1 && access.license.expired" class="header__license header__license-expired">Licencia se suspende mañana</span>
+        <span *ngIf="access.license && access.license.active && access.license.days == 0 && access.license.expired" class="header__license header__license-expired">Licencia se suspende hoy</span>
+        <span *ngIf="!access.license || !access.license.active" class="header__license header__license-cancel">Licencia suspendida</span>
         <a (click)="show = !show" class="header__icon click">
             <i class="fas fa-bell"></i>
         </a>

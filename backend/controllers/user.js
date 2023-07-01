@@ -10,7 +10,7 @@ dotenv.config({ path: "./config.env" });
 
 exports.getAll = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: user/getAll |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: user/getAll |";
 
         // Define filter
         let filter = await storage.whereObj(req.body.filter || []);
@@ -31,7 +31,7 @@ exports.getAll = async (req, res) => {
 
 exports.find = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: user/find |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: user/find |";
 
         // Verify parameters
         if (!req.body.user || typeof req.body.user.username != "string" || req.body.user.username == "") {
@@ -56,7 +56,7 @@ exports.find = async (req, res) => {
 
 exports.create = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: user/create |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: user/create |";
 
         // Verify parameters
         if (!req.body.user || typeof req.body.user.lastname != "string" || req.body.user.lastname == "" || typeof req.body.user.firstname != "string" || req.body.user.firstname == "" || ["Administrador", "Vendedor"].indexOf(req.body.user.role) == -1) {
@@ -90,7 +90,7 @@ exports.create = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: user/update |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: user/update |";
 
         // Verify parameters
         if (!req.body.user || typeof req.body.user.username != "string" || req.body.user.username == "" || typeof req.body.user.lastname != "string" || req.body.user.lastname == "" || typeof req.body.user.firstname != "string" || req.body.user.firstname == "" || ["Administrador", "Vendedor"].indexOf(req.body.user.role) == -1) {
@@ -121,7 +121,7 @@ exports.update = async (req, res) => {
 
 exports.reset = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: user/reset |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: user/reset |";
 
         // Verify parameters
         if (!req.body.user || typeof req.body.user.username != "string" || req.body.user.username == "") {
@@ -153,7 +153,7 @@ exports.reset = async (req, res) => {
 
 exports.active = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: user/active |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: user/active |";
 
         // Verify parameters
         if (!req.body.user || typeof req.body.user.username != "string" || req.body.user.username == "") {
@@ -180,7 +180,7 @@ exports.active = async (req, res) => {
 
 exports.edit = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: user/edit |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: user/edit |";
 
         // Verify parameters
         if (!req.body.user || typeof req.body.user.username != "string" || req.body.user.username == "" || typeof req.body.user.phone != "string" || req.body.user.phone == "" || typeof req.body.user.email != "string" || req.body.user.email == "") {
@@ -209,7 +209,7 @@ exports.edit = async (req, res) => {
 
 exports.editPassword = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: user/editPassword |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: user/editPassword |";
 
         // Verify parameters
         if (!req.body.user || typeof req.body.user.username != "string" || req.body.user.username == "" || typeof req.body.user.pass != "string" || req.body.user.pass == "" || typeof req.body.user.value != "string" || req.body.user.value == "") {
@@ -238,7 +238,7 @@ exports.editPassword = async (req, res) => {
 
 exports.summary = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: user/summary |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: user/summary |";
 
         // Verify parameters
         if (!req.body.user || typeof req.body.user.username != "string" || req.body.user.username == "") {
@@ -248,9 +248,9 @@ exports.summary = async (req, res) => {
         };
 
         // Define username
-        let username = req.body.username;
+        let username = req.headers.username;
         username = username.replace(/'/gi, "");
-        let curretnUser = await storage.get_row(req, res, session, "select*from user where username='" + username + "'");
+        let currentUser = await storage.get_row(req, res, session, "select*from user where username='" + username + "'");
 
         // Define user
         let user = req.body.user;
@@ -283,7 +283,7 @@ exports.summary = async (req, res) => {
         html = html.replace("{{ITEMS}}", itemsHTML);
 
         // create PDF
-        const pdf = await pdfcreator.create(html, user.lastname + " " + user.firstname);
+        const pdf = await pdfcreator.create(html, currentUser.lastname + " " + currentUser.firstname);
 
         // Define response
         const data = fs.readFileSync(pdf);
@@ -300,7 +300,7 @@ exports.summary = async (req, res) => {
 
 exports.pending = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: user/pending |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: user/pending |";
 
         // Verify parameters
         if (!req.body.user || typeof req.body.user.username != "string" || req.body.user.username == "") {
@@ -310,7 +310,7 @@ exports.pending = async (req, res) => {
         };
 
         // Define username
-        let username = req.body.username;
+        let username = req.headers.username;
         username = username.replace(/'/gi, "");
         let currentUser = await storage.get_row(req, res, session, "select*from user where username='" + username + "'");
 

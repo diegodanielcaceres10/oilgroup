@@ -11,7 +11,7 @@ dotenv.config({ path: "./config.env" });
 exports.getAll = async (req, res) => {
     try {
 
-        let session = "Username: " + (req.body.username || "undefined") + " | API: customer/getAll |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: customer/getAll |";
 
         // Define filter
         let filter = await storage.whereObj(req.body.filter || []);
@@ -29,7 +29,7 @@ exports.getAll = async (req, res) => {
 
 exports.find = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: customer/find |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: customer/find |";
 
         // Verify parameters
         if (!req.body.customer || typeof req.body.customer.id != "number") {
@@ -54,7 +54,7 @@ exports.find = async (req, res) => {
 
 exports.create = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: customer/create |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: customer/create |";
 
         // Verify parameters
         if (!req.body.customer || typeof req.body.customer.user != "string" || req.body.customer.user == "" || typeof req.body.customer.fantasy_name != "string" || req.body.customer.fantasy_name == "" || typeof req.body.customer.name != "string" || req.body.customer.name == "" || typeof req.body.customer.tax_condition != "string" || req.body.customer.tax_condition == "") {
@@ -91,7 +91,7 @@ exports.create = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: customer/update |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: customer/update |";
 
         // Verify parameters
         if (!req.body.customer || typeof req.body.customer.id != "number" || typeof req.body.customer.user != "string" || req.body.customer.user == "" || typeof req.body.customer.fantasy_name != "string" || req.body.customer.fantasy_name == "" || typeof req.body.customer.name != "string" || req.body.customer.name == "" || typeof req.body.customer.tax_condition != "string" || req.body.customer.tax_condition == "") {
@@ -131,7 +131,7 @@ exports.update = async (req, res) => {
 
 exports.active = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: customer/active |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: customer/active |";
 
         // Verify parameters
         if (!req.body.customer || typeof req.body.customer.id != "number") {
@@ -157,7 +157,7 @@ exports.active = async (req, res) => {
 
 exports.summary = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: customer/summary |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: customer/summary |";
 
         // Verify parameters
         if (!req.body.customer || typeof req.body.customer.id != "number") {
@@ -167,7 +167,7 @@ exports.summary = async (req, res) => {
         };
 
         // Define username
-        let username = req.body.username;
+        let username = req.headers.username;
         username = username.replace(/'/gi, "");
         let user = await storage.get_row(req, res, session, "select*from user where username='" + username + "'");
 
@@ -184,7 +184,7 @@ exports.summary = async (req, res) => {
         html = html.replace("{{CUIT}}", customer.document);
         html = html.replace("{{NAME}}", customer.name);
         html = html.replace("{{ADDRESS}}", customer.address + " " + customer.city);
-        html = html.replace("{{SCHEDULE}}", customer.schedule || "");
+        html = html.replace("{{SCHEDULE}}", customer.schedule);
         html = html.replace("{{PHONE}}", customer.phone);
         html = html.replace("{{SUMMARY}}", "$ " + customer.pending.toFixed(2));
         let itemsHTML = "";

@@ -2,16 +2,16 @@
     <div class="title__info">
         <h2>INICIO</h2>
     </div>
-    <div class="group">
+    <div *ngIf="access.license && access.license.active" class="group">
         <div class="group__box group__box-icon">
             <div routerLink="/panel/clientes/venta/nueva" class="group__tool"><i class="fas fa-shopping-basket"></i><span>Nueva Venta</span></div>
         </div>
-        <div *ngIf="['Super Administrador', 'Administrador'].indexOf(access.role) > -1" class="group__box group__box-icon">
+        <div *ngIf="['Super Administrador', 'Administrador'].indexOf(access.role) >= 0" class="group__box group__box-icon">
             <div routerLink="/panel/proveedores/compra/nueva" class="group__tool"><i class="fas fa-shopping-cart"></i><span>Nueva Compra</span></div>
         </div>
     </div>
 </div>
-<div *ngIf="['Super Administrador', 'Administrador'].indexOf(access.role) > -1" class="section__info">
+<div *ngIf="access.license && access.license.active && ['Super Administrador', 'Administrador'].indexOf(access.role) >= 0" class="section__info">
     <div class="section__box">
         <div class="card">
             <div class="card__content">
@@ -71,7 +71,7 @@
         </div>
     </div>
 </div>
-<div class="section__info">
+<div *ngIf="access.license && access.license.active && ['Super Administrador', 'Administrador'].indexOf(access.role) >= 0" class="section__info">
     <div class="section__box">
         <div class="chart">
             <div class="chart__box">
@@ -84,7 +84,7 @@
                 <div *ngIf="charts.sales && charts.sales.length > 0" class="chart__item">
                     <article id="sales-chart"></article>
                 </div>
-                <a *ngIf="['Super Administrador', 'Administrador'].indexOf(access.role) > -1" routerLink="/panel/reporte/actividades/1">Ver mas</a>
+                <a routerLink="/panel/reporte/actividades/1">Ver mas</a>
             </div>
             <div class="chart__box">
                 <div class="chart__title">Cobros de los últimos 3 meses</div>
@@ -96,10 +96,10 @@
                 <div *ngIf="charts.payments && charts.payments.length > 0" class="chart__item">
                     <article id="payments-chart"></article>
                 </div>
-                <a *ngIf="['Super Administrador', 'Administrador'].indexOf(access.role) > -1" routerLink="/panel/reporte/pagos/1">Ver mas</a>
+                <a routerLink="/panel/reporte/pagos/1">Ver mas</a>
             </div>
         </div>
-        <div *ngIf="['Super Administrador', 'Administrador'].indexOf(access.role) > -1" class="chart">
+        <div class="chart">
             <div class="chart__box">
                 <div class="chart__title">Tipo de documentos del mes</div>
                 <div *ngIf="!charts.documents || charts.documents.length == 0" class="list">
@@ -125,7 +125,7 @@
         </div>
     </div>
 </div>
-<div *ngIf="['Super Administrador', 'Administrador'].indexOf(access.role) > -1" class="section__info">
+<div *ngIf="access.license && access.license.active && ['Super Administrador', 'Administrador'].indexOf(access.role) >= 0" class="section__info">
     <div class="section__box">
         <div class="chart">
             <div class="chart__box">
@@ -187,6 +187,14 @@
                     <article id="providers-chart"></article>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="!access.license || !access.license.active" class="section_info">
+    <div class="section__box">
+        <div class="section__image">
+            <img src="./assets/img/expired.png" alt="Expired image">
+            <span>La licencia del sistema ha sido suspendida, regularizar el pago de la licena o contactar a su administrador</span>
         </div>
     </div>
 </div>
