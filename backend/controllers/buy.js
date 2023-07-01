@@ -4,7 +4,7 @@ const moment = require("moment");
 
 exports.find = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: buy/find |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: buy/find |";
 
         // Verify parameters
         if (!req.body.buy || typeof req.body.buy.id != "number") {
@@ -29,7 +29,7 @@ exports.find = async (req, res) => {
 
 exports.create = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: buy/create |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: buy/create |";
 
         // Verify parameters
         if (!req.body.buy || !req.body.buy.provider || typeof req.body.buy.provider.id != "number" || typeof req.body.buy.total != "number" || ((!req.body.buy.articles || req.body.buy.articles.length == 0) && (!req.body.buy.details || req.body.buy.details.length == 0))) {
@@ -108,7 +108,7 @@ exports.create = async (req, res) => {
 
 exports.cancel = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: buy/cancel |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: buy/cancel |";
 
         // Verify parameters
         if (!req.body.buy || typeof req.body.buy.id != "number") {

@@ -10,7 +10,7 @@ dotenv.config({ path: "./config.env" });
 
 exports.getAll = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: sale/getAll |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: sale/getAll |";
 
         // Define filter
         let filter = await storage.whereObj(req.body.filter || []);
@@ -31,7 +31,7 @@ exports.getAll = async (req, res) => {
 
 exports.find = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: sale/find |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: sale/find |";
 
         // Verify parameters
         if (!req.body.sale || typeof req.body.sale.id != "number") {
@@ -62,17 +62,17 @@ exports.find = async (req, res) => {
 
 exports.create = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: sale/create |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: sale/create |";
 
         // Verify parameters
-        if (typeof req.body.username != "string" || req.body.username == "" || !req.body.sale || !req.body.sale.customer || typeof req.body.sale.customer.id != "number" || typeof req.body.sale.total != "number" || ((!req.body.sale.articles || req.body.sale.articles.length == 0) && (!req.body.sale.details || req.body.sale.details.length == 0))) {
+        if (typeof req.headers.username != "string" || req.headers.username == "" || !req.body.sale || !req.body.sale.customer || typeof req.body.sale.customer.id != "number" || typeof req.body.sale.total != "number" || ((!req.body.sale.articles || req.body.sale.articles.length == 0) && (!req.body.sale.details || req.body.sale.details.length == 0))) {
             console.error(moment().format(), session, "parameters error");
             console.log(req.body);
             return res.status(400).send();
         };
 
         // Define username
-        let username = req.body.username;
+        let username = req.headers.username;
         username = username.replace(/'/gi, "");
         await storage.exists_row(req, res, session, "select*from user where username='" + username + "'");
 
@@ -173,7 +173,7 @@ exports.create = async (req, res) => {
 
 exports.review = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: sale/review |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: sale/review |";
 
         // Verify parameters
         if (!req.body.sale || typeof req.body.sale.id != "number" || !req.body.sale.articles || req.body.sale.articles.length == 0) {
@@ -244,7 +244,7 @@ exports.review = async (req, res) => {
 
 exports.deliver = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: sale/deliver |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: sale/deliver |";
 
         // Verify parameters
         if (!req.body.sale || typeof req.body.sale.id != "number") {
@@ -268,7 +268,7 @@ exports.deliver = async (req, res) => {
 
 exports.ticket = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: sale/ticket |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: sale/ticket |";
 
         // Verify parameters
         if (!req.body.sale || typeof req.body.sale.id != "number") {
@@ -278,7 +278,7 @@ exports.ticket = async (req, res) => {
         };
 
         // Define username
-        let username = req.body.username;
+        let username = req.headers.username;
         username = username.replace(/'/gi, "");
         let user = await storage.get_row(req, res, session, "select*from user where username='" + username + "'");
 
@@ -344,7 +344,7 @@ exports.ticket = async (req, res) => {
 
 exports.billing = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: sale/billing |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: sale/billing |";
 
         // Verify parameters
         if (!req.body.sale || typeof req.body.sale.id != "number" || typeof req.body.sale.ticket != "string" || req.body.sale.ticket == "") {
@@ -369,7 +369,7 @@ exports.billing = async (req, res) => {
 
 exports.cancel = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: sale/cancel |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: sale/cancel |";
 
         // Verify parameters
         if (!req.body.sale || typeof req.body.sale.id != "number") {

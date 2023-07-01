@@ -87,4 +87,20 @@
             }
         }
     }
+
+    &__image {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+
+        & > img {
+            width: 400px;
+        }
+
+        & > span {
+            font-size: 1.8rem;
+            width: 400px;
+        }
+    }
 }

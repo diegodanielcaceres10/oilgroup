@@ -4,7 +4,7 @@ const moment = require("moment");
 
 exports.getAll = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: provider/getAll |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: provider/getAll |";
 
         // Define filter
         let filter = await storage.whereObj(req.body.filter || []);
@@ -22,7 +22,7 @@ exports.getAll = async (req, res) => {
 
 exports.find = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: provider/find |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: provider/find |";
 
         // Verify parameters
         if (!req.body.provider || typeof req.body.provider.id != "number") {
@@ -47,7 +47,7 @@ exports.find = async (req, res) => {
 
 exports.create = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: provider/create |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: provider/create |";
 
         // Verify parameters
         if (!req.body.provider || typeof req.body.provider.fantasy_name != "string" || req.body.provider.fantasy_name == "" || typeof req.body.provider.name != "string" || req.body.provider.name == "" || typeof req.body.provider.tax_condition != "string" || req.body.provider.tax_condition == "") {
@@ -79,7 +79,7 @@ exports.create = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: provider/update |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: provider/update |";
 
         // Verify parameters
         if (!req.body.provider || typeof req.body.provider.id != "number" || typeof req.body.provider.fantasy_name != "string" || req.body.provider.fantasy_name == "" || typeof req.body.provider.name != "string" || req.body.provider.name == "" || typeof req.body.provider.tax_condition != "string" || req.body.provider.tax_condition == "") {
@@ -114,7 +114,7 @@ exports.update = async (req, res) => {
 
 exports.active = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: provider/active |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: provider/active |";
 
         // Verify parameters
         if (!req.body.provider || typeof req.body.provider.id != "number") {

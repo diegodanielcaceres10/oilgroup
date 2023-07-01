@@ -7,6 +7,7 @@ const dotenv = require("dotenv");
 // Define env
 dotenv.config({ path: "./config.env" });
 
+const auth = require("./routes/auth");
 const user = require("./routes/user");
 const article = require("./routes/article");
 const brand = require("./routes/brand");
@@ -29,7 +30,7 @@ app.use(express.urlencoded({ extended: true }));
 const environment = `${process.env.ROOT}/api`;
 app.use(`${environment}`, (req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Content-Type,Authorization");
+    res.header("Access-Control-Allow-Headers", "Content-Type,Authorization,username");
     res.header("Access-Control-Allow-Methods", "GET,PUT,POST");
     next();
 });
@@ -47,6 +48,7 @@ const limiter = rateLimit({
 app.use("/", limiter);
 
 // Define routes
+app.use(`${environment}/auth/`, auth);
 app.use(`${environment}/user/`, user);
 app.use(`${environment}/article/`, article);
 app.use(`${environment}/brand/`, brand);

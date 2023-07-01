@@ -8,6 +8,8 @@ import { environment } from '../../../environments/environment';
 })
 export class ApiService {
 
+    headers: any;
+
     /**
      * Base URL for all requests made through this
      * service.
@@ -20,6 +22,10 @@ export class ApiService {
     constructor(
         public httpClient: HttpClient,
     ) { }
+
+    public setToken(token, username) {
+        this.headers = new HttpHeaders({ "Authorization": token, "username": username });
+    }
 
     /**
      *
@@ -40,8 +46,6 @@ export class ApiService {
      * @return An `Observable` of the response, with the response body as a JSON object.
      */
     public post(path: string, values?: any, raw?: string): Observable<Object> {
-        const auth = JSON.parse(sessionStorage.getItem("oilgroupAccessToken")) || {}
-        const headers = new HttpHeaders().set('Authorization', `Bearer ${auth.token}`)
         let body: any = {};
         if (raw == "form-data") {
             const formData = new FormData();
@@ -52,13 +56,11 @@ export class ApiService {
                     }
                 } else if (values[key] !== undefined && values[key] !== null) formData.append(key, values[key]);
             });
-            formData.append("username", auth.username);
             body = formData;
         } else {
             body = values;
-            if (body && !body.username) body.username = auth.username;
         }
-        return this.httpClient.post(this.apiUrl + path, body, { headers: headers })
+        return this.httpClient.post(this.apiUrl + path, body, { headers: this.headers })
     }
 
     /**
@@ -69,15 +71,6 @@ export class ApiService {
      * @return An `Observable` of the response, with the response body as a JSON object.
      */
     public download(path: string, body?: any): Observable<Object> {
-        const auth = JSON.parse(sessionStorage.getItem("oilgroupAccessToken")) || {}
-        const headers = new HttpHeaders().set('Authorization', `Bearer ${auth.token}`)
-        if (!body) {
-            body = {
-                username: auth.username
-            }
-        } else if (!body.username) {
-            body.username = auth.username
-        }
-        return this.httpClient.post(this.apiUrl + path, body, { responseType: "blob", reportProgress: true, observe: "events", headers: headers });
+        return this.httpClient.post(this.apiUrl + path, body, { responseType: "blob", reportProgress: true, observe: "events", headers: this.headers });
     }
 }
