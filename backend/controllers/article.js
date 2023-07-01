@@ -10,7 +10,7 @@ dotenv.config({ path: "./config.env" });
 
 exports.getAll = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: article/getAll |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: article/getAll |";
 
         // Define filter
         let filter = await storage.whereObj(req.body.filter || []);
@@ -28,7 +28,7 @@ exports.getAll = async (req, res) => {
 
 exports.getPrices = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: article/getPrices |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: article/getPrices |";
 
         // Get articles
         let articles = await storage.get_data(req, res, session, "select a.id,fantasy_name,brand,code,a.name,size,variety,measure,p.units,price_list,price_offer,ifnull(sum(s.units),0)stock from price p left join article a on p.article=a.id left join provider pr on provider=pr.id left join(select article,units from buy_detail,buy where buy=id and article and status='Aprobada'union all select article,-stock from sale_detail,sale s where sale=s.id and article and review and status!='Cancelada'and status!='Inicial'union all select article,units from stock)s on s.article=a.id where price_list or price_offer and a.active and pr.active group by concat(a.id,measure)order by brand,a.name,units");
@@ -43,7 +43,7 @@ exports.getPrices = async (req, res) => {
 
 exports.getAllPrices = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: article/getAllPrices |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: article/getAllPrices |";
 
         // Define filter
         let filter = await storage.whereObj(req.body.filter || []);
@@ -62,7 +62,7 @@ exports.getAllPrices = async (req, res) => {
 
 exports.find = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: article/find |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: article/find |";
 
         // Verify parameters
         if (!req.body.article || typeof req.body.article.id != "number") {
@@ -91,7 +91,7 @@ exports.find = async (req, res) => {
 
 exports.create = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: article/create |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: article/create |";
 
         // Verify parameters
         if (!req.body.article || typeof req.body.article.provider != "number" || typeof req.body.article.brand != "string" || req.body.article.brand == "" || typeof req.body.article.category != "string" || req.body.article.category == "" || typeof req.body.article.code != "string" || req.body.article.code == "" || typeof req.body.article.name != "string" || req.body.article.name == "" || typeof req.body.article.stock_code != "string" || req.body.article.stock_code == "") {
@@ -148,7 +148,7 @@ exports.create = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: article/update |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: article/update |";
 
         // Verify parameters
         if (!req.body.article || typeof req.body.article.id != "number" || typeof req.body.article.provider != "number" || typeof req.body.article.brand != "string" || req.body.article.brand == "" || typeof req.body.article.category != "string" || req.body.article.category == "" || typeof req.body.article.code != "string" || req.body.article.code == "" || typeof req.body.article.name != "string" || req.body.article.name == "" || typeof req.body.article.stock_code != "string" || req.body.article.stock_code == "") {
@@ -203,7 +203,7 @@ exports.update = async (req, res) => {
 
 exports.active = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: article/active |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: article/active |";
 
         // Verify parameters
         if (!req.body.article || typeof req.body.article.id != "number") {
@@ -229,7 +229,7 @@ exports.active = async (req, res) => {
 
 exports.addMeasure = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: article/addMeasure |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: article/addMeasure |";
 
         // Verify parameters
         if (!req.body.price || typeof req.body.price.article != "number" || typeof req.body.price.measure != "string" || req.body.price.measure == "" || typeof req.body.price.units != "number") {
@@ -255,7 +255,7 @@ exports.addMeasure = async (req, res) => {
 
 exports.updateMeasure = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: article/updateMeasure |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: article/updateMeasure |";
 
         // Verify parameters
         if (!req.body.price || typeof req.body.price.id != "number" || typeof req.body.price.article != "number" || typeof req.body.price.measure != "string" || req.body.price.measure == "") {
@@ -281,7 +281,7 @@ exports.updateMeasure = async (req, res) => {
 
 exports.deleteMeasure = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: article/deleteMeasure |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: article/deleteMeasure |";
 
         // Verify parameters
         if (!req.body.price || typeof req.body.price.id != "number") {
@@ -305,7 +305,7 @@ exports.deleteMeasure = async (req, res) => {
 
 exports.updatePrices = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: article/updatePrices |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: article/updatePrices |";
 
         // Verify parameters
         if (!req.body.price || typeof req.body.price.id != "number") {
@@ -331,17 +331,17 @@ exports.updatePrices = async (req, res) => {
 
 exports.updateStock = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: article/updateStock |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: article/updateStock |";
 
         // Verify parameters
-        if (typeof req.body.username != "string" || req.body.username == "" || !req.body.article || typeof req.body.article.id != "number" || typeof req.body.article.units != "number" || typeof req.body.article.description != "string" || req.body.article.description == "") {
+        if (typeof req.headers.username != "string" || req.headers.username == "" || !req.body.article || typeof req.body.article.id != "number" || typeof req.body.article.units != "number" || typeof req.body.article.description != "string" || req.body.article.description == "") {
             console.error(moment().format(), session, "parameters error");
             console.log(req.body);
             return res.status(400).send();
         };
 
         // Define username
-        let username = req.body.username;
+        let username = req.headers.username;
         username = username.replace(/'/gi, "");
         await storage.exists_row(req, res, session, "select*from user where username='" + username + "'");
 
@@ -361,10 +361,10 @@ exports.updateStock = async (req, res) => {
 
 exports.exportPrices = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: customer/exportPrices |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: customer/exportPrices |";
 
         // Define username
-        let username = req.body.username;
+        let username = req.headers.username;
         username = username.replace(/'/gi, "");
         let user = await storage.get_row(req, res, session, "select*from user where username='" + username + "'");
 
@@ -412,10 +412,10 @@ exports.exportPrices = async (req, res) => {
 
 exports.exportStock = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: customer/exportStock |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: customer/exportStock |";
 
         // Define username
-        let username = req.body.username;
+        let username = req.headers.username;
         username = username.replace(/'/gi, "");
         let user = await storage.get_row(req, res, session, "select*from user where username='" + username + "'");
 
@@ -462,10 +462,10 @@ exports.exportStock = async (req, res) => {
 
 exports.exportSales = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: customer/exportSales |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: customer/exportSales |";
 
         // Define username
-        let username = req.body.username;
+        let username = req.headers.username;
         username = username.replace(/'/gi, "");
         let user = await storage.get_row(req, res, session, "select*from user where username='" + username + "'");
 

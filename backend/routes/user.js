@@ -5,7 +5,6 @@ const auth = require("../controllers/auth");
 
 // Define route app
 const router = express.Router();
-router.post("/login/", auth.login);
 
 router.post("/getAll/", auth.singleAuth, user.getAll);
 router.post("/find/", auth.superAuth, user.find);

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { UserService } from '../service/user.service';
+import { AuthService } from '../service/auth.service';
 
 @Injectable({
     providedIn: 'root'
@@ -11,7 +11,7 @@ export class SuperAdminAuthGuard implements CanActivate {
 
     constructor(
         private Router: Router,
-        private userService: UserService,
+        private AuthService: AuthService,
     ) { }
 
     canActivate(
@@ -21,7 +21,7 @@ export class SuperAdminAuthGuard implements CanActivate {
     }
 
     checkUserisSuperAdminLoggedIn() {
-        if (this.userService.isSuperAdminLoggedIn()) {
+        if (this.AuthService.isSuperAdminLoggedIn()) {
             return true;
         }
         this.Router.navigateByUrl('login');

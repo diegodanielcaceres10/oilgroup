@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { UserService } from '../../../_shared/service/user.service';
+import { AuthService } from '../../../_shared/service/auth.service';
 import { SaleService } from '../../../_shared/service/sale.service';
 import { NavService } from '../../../_shared/service/nav.service';
 import { HeaderService } from '../../../_shared/service/header.service';
@@ -30,7 +30,7 @@ export class SalesComponent implements OnInit {
 
     constructor(
         private ActivatedRoute: ActivatedRoute,
-        private UserService: UserService,
+        private AuthService: AuthService,
         private SaleService: SaleService,
         private NavService: NavService,
         private HeaderService: HeaderService,
@@ -44,7 +44,7 @@ export class SalesComponent implements OnInit {
             setTimeout(() => {
                 this.NavService.page({ page: "customer", subpage: this.filter[this.path] })
             }, 0)
-            this.access = this.UserService.getUser()
+            this.access = this.AuthService.getUser()
             this.path = this.ActivatedRoute.snapshot.url[1].path
             this.page = parseInt(this.ActivatedRoute.snapshot.params["page"])
             this.LoadService.change(true)

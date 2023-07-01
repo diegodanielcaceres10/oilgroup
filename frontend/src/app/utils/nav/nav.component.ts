@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserService } from '../../_shared/service/user.service';
+import { AuthService } from '../../_shared/service/auth.service';
 import { NavService } from 'src/app/_shared/service/nav.service';
 import { LoadService } from '../../_shared/service/load.service';
 
@@ -58,6 +58,7 @@ export class NavComponent implements OnInit {
                     label: "Categorías",
                 },
             ],
+            license: true,
         },
         {
             name: "customer",
@@ -90,6 +91,7 @@ export class NavComponent implements OnInit {
                     label: "Facturas Pendientes",
                 },
             ],
+            license: true,
         },
         {
             access: ["Super Administrador", "Administrador"],
@@ -97,6 +99,7 @@ export class NavComponent implements OnInit {
             icon: "fas fa-truck",
             label: "Proveedores",
             link: "/panel/proveedores/1",
+            license: true,
         },
         {
             access: ["Super Administrador"],
@@ -104,6 +107,7 @@ export class NavComponent implements OnInit {
             icon: "fas fa-user-shield",
             label: "Usuarios",
             link: "/panel/usuarios/1",
+            license: true,
         },
         {
             access: ["Super Administrador"],
@@ -118,7 +122,7 @@ export class NavComponent implements OnInit {
 
     constructor(
         private Router: Router,
-        private UserService: UserService,
+        private AuthService: AuthService,
         private NavService: NavService,
         private LoadService: LoadService,
     ) { }
@@ -129,7 +133,7 @@ export class NavComponent implements OnInit {
                 this.menuselected = data.page
                 this.pageselected = data.subpage
             })
-            this.access = this.UserService.getUser()
+            this.access = this.AuthService.getUser()
         } catch (e) {
             console.error("Error", e)
         }

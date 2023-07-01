@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../_shared/service/user.service';
+import { AuthService } from '../../_shared/service/auth.service';
 import { MetricService } from '../../_shared/service/metric.service';
 import { NavService } from '../../_shared/service/nav.service';
 import { HeaderService } from '../../_shared/service/header.service';
@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit {
     access: any = {}
 
     constructor(
-        private UserService: UserService,
+        private AuthService: AuthService,
         private MetricService: MetricService,
         private NavService: NavService,
         private HeaderService: HeaderService,
@@ -35,8 +35,12 @@ export class HomeComponent implements OnInit {
             setTimeout(() => {
                 this.NavService.page({ page: "home", subpage: "home" })
             }, 0)
-            this.access = this.UserService.getUser()
-            this.getData()
+            this.access = this.AuthService.getUser();
+            if (this.access.license && this.access.license.active) {
+                this.getData();
+            } else {
+                this.LoadService.change(false)
+            }
         } catch (e) {
             console.error("Error", e)
             this.LoadService.change(false)

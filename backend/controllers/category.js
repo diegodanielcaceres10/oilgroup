@@ -4,7 +4,7 @@ const moment = require("moment");
 
 exports.getAll = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: category/getAll |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: category/getAll |";
 
         // Define filter
         let filter = await storage.whereObj(req.body.filter || []);
@@ -22,7 +22,7 @@ exports.getAll = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        let session = "Username: " + (req.body.username || "undefined") + " | API: category/update |";
+        let session = "Username: " + (req.headers.username || "undefined") + " | API: category/update |";
 
         // Verify parameters
         if (!req.body.category || typeof req.body.category.name != "string" || req.body.category.name == "" || typeof req.body.category.value != "string" || req.body.category.value == "") {

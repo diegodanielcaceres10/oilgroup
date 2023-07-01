@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { UserService } from '../../../_shared/service/user.service';
+import { AuthService } from '../../../_shared/service/auth.service';
 import { CustomerService } from '../../../_shared/service/customer.service';
+import { UserService } from '../../../_shared/service/user.service';
 import { NavService } from '../../../_shared/service/nav.service';
 import { HeaderService } from '../../../_shared/service/header.service';
 import { LoadService } from '../../../_shared/service/load.service';
@@ -35,8 +36,9 @@ export class CustomerComponent implements OnInit {
 
     constructor(
         private ActivatedRoute: ActivatedRoute,
-        private UserService: UserService,
+        private AuthService: AuthService,
         private CustomerService: CustomerService,
+        private UserService: UserService,
         private NavService: NavService,
         private HeaderService: HeaderService,
         private LoadService: LoadService,
@@ -49,7 +51,7 @@ export class CustomerComponent implements OnInit {
             setTimeout(() => {
                 this.NavService.page({ page: "customer", subpage: "" })
             }, 0)
-            this.access = this.UserService.getUser()
+            this.access = this.AuthService.getUser()
             const path = this.ActivatedRoute.snapshot.url[0].path
             if (path == "nuevo") {
                 setTimeout(() => {
