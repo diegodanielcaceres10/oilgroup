@@ -17,7 +17,7 @@ exports.find = async (req, res) => {
         let buy = req.body.buy;
         buy = await storage.get_row(req, res, session, "select*from buy where id=" + buy.id);
         buy.provider = await storage.get_row(req, res, session, "select*from provider where id=" + buy.provider);
-        buy.items = await storage.get_data(req, res, session, "select*from buy_detail left join article on article=id where buy=" + buy.id);
+        buy.items = await storage.get_data(req, res, session, "select b.*,brand,name from buy_detail b left join article on article=id where buy=" + buy.id);
 
         // Define response
         return res.status(200).send({ status: "success", data: buy });

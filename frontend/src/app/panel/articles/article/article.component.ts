@@ -36,7 +36,7 @@ export class ArticleComponent implements OnInit {
     providers: any = []
     brands: any = []
     categories: any = []
-    tab: string = "profitability"
+    tab: string = "rentabilidad"
     dialogs: any = []
     form: any = {}
     suscription: any
@@ -253,7 +253,7 @@ export class ArticleComponent implements OnInit {
             }
             this.LoadService.change(false)
             setTimeout(() => {
-                if (this.article.profitability && this.article.profitability.length > 0) this.profitabilityChart(this.article.profitability);
+                if (this.tab == "rentabilidad" && this.article.profitability && this.article.profitability.length > 0) this.profitabilityChart(this.article.profitability);
             }, 100);
         } catch (e) {
             console.error("Error", e)
@@ -309,7 +309,7 @@ export class ArticleComponent implements OnInit {
             this.tab = value
             this.filtered = value == "medidas" ? this.article.prices : value == "ventas" ? this.article.sales : this.article.history
             this.changePage(1);
-            if (value == "profitability") {
+            if (value == "rentabilidad") {
                 setTimeout(() => {
                     if (this.article.profitability && this.article.profitability.length > 0) this.profitabilityChart(this.article.profitability);
                 }, 100);
