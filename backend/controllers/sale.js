@@ -48,7 +48,7 @@ exports.find = async (req, res) => {
         sale.items = await storage.get_data(req, res, session, "select s.id,article,concept,brand,name,measure,price,quantity,units,stock,subtotal from sale_detail s left join article a on article=a.id where sale=" + sale.id + " and deleted=0 and subtotal");
         if (sale.status == "Pendiente") {
             for (let i in sale.items) {
-                sale.items[i].available = await storage.get_value(req, res, session, "select ifnull(sum(s.stock),0)value from article a left join(select article,units,(units)stock,(1)review from buy_detail,buy where buy=id and article and status='Aprobada'union all select article,-units,-stock,review from sale_detail,sale s where sale=s.id and article and review and status!='Cancelada'and status!='Inicial'union all select article,units,units,1 from stock)s on article=id where id=" + sale.items[i].article);
+                sale.items[i].available = await storage.get_value(req, res, session, "select ifnull(sum(s.stock),0)value from article a left join(select article,units,(units)stock,(1)review from buy_detail,buy where buy=buy.id and article and status='Aprobada'union all select article,-units,-stock,review from sale_detail,sale s where sale=s.id and article and review and status!='Cancelada'and status!='Inicial'union all select article,units,units,1 from stock)s on article=id where id=" + sale.items[i].article);
             }
         }
 

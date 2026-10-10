@@ -16,7 +16,7 @@ exports.getAll = async (req, res) => {
         let filter = await storage.whereObj(req.body.filter || []);
 
         // Get articles
-        let articles = await storage.get_data(req, res, session, "select a.id,provider,fantasy_name,brand,category,code,a.name,size,variety,ifnull(sum(s.units),0)stock,a.active from article a left join provider p on provider=p.id left join(select article,units from buy_detail,buy where buy=id and article and status='Aprobada'union all select article,-stock from sale_detail,sale s where sale=s.id and article and review and status!='Cancelada'and status!='Inicial'union all select article,units from stock)s on s.article=a.id " + filter + "group by id order by brand,a.name,description");
+        let articles = await storage.get_data(req, res, session, "select a.id,provider,fantasy_name,brand,category,code,a.name,size,variety,ifnull(sum(s.units),0)stock,a.active from article a left join provider p on provider=p.id left join(select article,units from buy_detail,buy where buy=buy.id and article and status='Aprobada'union all select article,-stock from sale_detail,sale s where sale=s.id and article and review and status!='Cancelada'and status!='Inicial'union all select article,units from stock)s on s.article=a.id " + filter + "group by id order by brand,a.name,description");
 
         // Define response
         return res.status(200).send({ status: "success", data: articles });
@@ -31,7 +31,7 @@ exports.getPrices = async (req, res) => {
         let session = "Username: " + (req.headers.username || "undefined") + " | API: article/getPrices |";
 
         // Get articles
-        let articles = await storage.get_data(req, res, session, "select a.id,fantasy_name,brand,code,a.name,size,variety,measure,p.units,price_list,price_offer,ifnull(sum(s.units),0)stock from price p left join article a on p.article=a.id left join provider pr on provider=pr.id left join(select article,units from buy_detail,buy where buy=id and article and status='Aprobada'union all select article,-stock from sale_detail,sale s where sale=s.id and article and review and status!='Cancelada'and status!='Inicial'union all select article,units from stock)s on s.article=a.id where price_list or price_offer and a.active and pr.active group by concat(a.id,measure)order by brand,a.name,units");
+        let articles = await storage.get_data(req, res, session, "select a.id,fantasy_name,brand,code,a.name,size,variety,measure,p.units,price_list,price_offer,ifnull(sum(s.units),0)stock from price p left join article a on p.article=a.id left join provider pr on provider=pr.id left join(select article,units from buy_detail,buy where buy=buy.id and article and status='Aprobada'union all select article,-stock from sale_detail,sale s where sale=s.id and article and review and status!='Cancelada'and status!='Inicial'union all select article,units from stock)s on s.article=a.id where price_list or price_offer and a.active and pr.active group by concat(a.id,measure)order by brand,a.name,units");
 
         // Define response
         return res.status(200).send({ status: "success", data: articles });
@@ -73,7 +73,7 @@ exports.find = async (req, res) => {
 
         // Get article
         let article = req.body.article;
-        article = await storage.get_row(req, res, session, "select a.*,ifnull(sum(s.units),0)required,ifnull(sum(s.stock),0)stock from article a left join(select article,units,(units)stock,(1)review from buy_detail,buy where buy=id and article and status='Aprobada'union all select article,-units,-stock,review from sale_detail,sale s where sale=s.id and article and review and status!='Cancelada'and status!='Inicial'union all select article,0,units,1 from stock)s on article=id where id=" + article.id);
+        article = await storage.get_row(req, res, session, "select a.*,ifnull(sum(s.units),0)required,ifnull(sum(s.stock),0)stock from article a left join(select article,units,(units)stock,(1)review from buy_detail,buy where buy=buy.id and article and status='Aprobada'union all select article,-units,-stock,review from sale_detail,sale s where sale=s.id and article and review and status!='Cancelada'and status!='Inicial'union all select article,0,units,1 from stock)s on article=id where id=" + article.id);
         article.provider = await storage.get_row(req, res, session, "select*from provider where id=" + article.provider);
         article.prices = await storage.get_data(req, res, session, "select*from price where article=" + article.id + " order by units");
         article.history = await storage.get_data(req, res, session, "select('Ajuste')typeof,description,datetime,units from stock where article=" + article.id + " union all select'Compra',null,datetime,units from buy_detail,buy b where buy=b.id and article=" + article.id + " and status='Aprobada'union all select 'Venta',null,datetime,-stock from sale_detail,sale s where sale=s.id and article=" + article.id + " and review and stock > 0 and status!='Cancelada'and status!='Inicial'order by datetime desc");
@@ -420,7 +420,7 @@ exports.exportStock = async (req, res) => {
         let user = await storage.get_row(req, res, session, "select*from user where username='" + username + "'");
 
         // Get articles
-        let articles = await storage.get_data(req, res, session, "select a.id,provider,fantasy_name,brand,category,code,a.name,size,variety,ifnull(sum(s.units),0)stock,a.active from article a left join provider p on provider=p.id left join(select article,units from buy_detail,buy where buy=id and article and status='Aprobada'union all select article,-stock from sale_detail,sale s where sale=s.id and article and review and status!='Cancelada'and status!='Inicial'union all select article,units from stock)s on s.article=a.id group by id order by brand,a.name,description");
+        let articles = await storage.get_data(req, res, session, "select a.id,provider,fantasy_name,brand,category,code,a.name,size,variety,ifnull(sum(s.units),0)stock,a.active from article a left join provider p on provider=p.id left join(select article,units from buy_detail,buy where buy=buy.id and article and status='Aprobada'union all select article,-stock from sale_detail,sale s where sale=s.id and article and review and status!='Cancelada'and status!='Inicial'union all select article,units from stock)s on s.article=a.id group by id order by brand,a.name,description");
 
         // Read HTML Template
         let html = fs.readFileSync("./templates/reports/stock.html", "utf8");
