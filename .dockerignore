@@ -12,3 +12,4 @@
 # Logs and local configuration
 **/*.log
 **/.env
+**/config.env

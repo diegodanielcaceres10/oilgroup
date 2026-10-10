@@ -12,3 +12,53 @@ services:
     init: true
     stdin_open: true
     tty: true
+
+  api:
+    build:
+      context: .
+      dockerfile: docker/api/Dockerfile
+    container_name: oilgroup-api
+    ports:
+      - "6006:5000"
+    environment:
+      PORT: 5000
+      ROOT: /local/oilgroup
+      ENVIRONMENT: Local
+      HOST_DB: db
+      USER_DB: oilgroup
+      PASS_DB: ${MYSQL_PASSWORD:-oilgroup_dev_password}
+      NAME_DB: oilgroup
+      SECRETJWT: ${SECRETJWT:-development-only-change-me}
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      db:
+        condition: service_healthy
+    init: true
+    stdin_open: true
+    tty: true
+
+  db:
+    image: mysql:8.0
+    container_name: oilgroup-db
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    ports:
+      - "3006:3306"
+    environment:
+      MYSQL_DATABASE: oilgroup
+      MYSQL_USER: oilgroup
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-oilgroup_dev_password}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-oilgroup_root_dev_password}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+volumes:
+  mysql_data:
