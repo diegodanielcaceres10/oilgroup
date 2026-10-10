@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --host 0.0.0.0 --port 4200 --watch --poll=2000",
     "build-prd": "ng build --prod",
     "build-hom": "ng build --configuration=hom",
     "build-qua": "ng build --configuration=qua --base-href=/quality/oilgroup/web/",

@@ -1,0 +1,14 @@
+# Dependency and build artifacts
+**/node_modules
+**/dist
+**/.angular
+
+# VCS and editor metadata
+.git
+.github
+**/.idea
+**/.vscode
+
+# Logs and local configuration
+**/*.log
+**/.env
