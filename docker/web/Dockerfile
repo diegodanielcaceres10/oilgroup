@@ -5,7 +5,9 @@ WORKDIR /app
 
 COPY frontend/package.json frontend/package-lock.json ./
 
-RUN npm ci
+RUN npm install --global npm@8
+
+RUN npm ci --legacy-peer-deps
 
 COPY frontend/ ./
 
