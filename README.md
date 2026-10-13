@@ -12,7 +12,9 @@ La base se inicializa automáticamente con el esquema reconstruido desde las con
 
 ### Datos de prueba
 
-El seed idempotente está en `docker/mysql/seed/001-local-development.sql`. Con los contenedores levantados, cargalo manualmente con:
+El seed idempotente está en `docker/mysql/seed/001-local-development.sql` y se carga automáticamente cuando se crea la base local por primera vez (volumen vacío), después del esquema.
+
+Si el volumen de MySQL ya existe, el seed no se vuelve a ejecutar. Con los contenedores levantados, cargalo manualmente con:
 
 ```bash
 docker compose exec -T db sh -c 'mysql -u root -p"$MYSQL_ROOT_PASSWORD" oilgroup < /seed/001-local-development.sql'

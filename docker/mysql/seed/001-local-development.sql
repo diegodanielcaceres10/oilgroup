@@ -1,7 +1,8 @@
 -- Local development data only.
 -- Safe to run multiple times: all records use the DEV-* namespace.
--- Run with:
--- docker compose exec -T db sh -c 'mysql -u root -p"$MYSQL_ROOT_PASSWORD" oilgroup < /docker-entrypoint-initdb.d/../seed/001-local-development.sql'
+-- Loaded automatically when the local database is first created (empty volume).
+-- To load it into an existing database, run:
+-- docker compose exec -T db sh -c 'mysql -u root -p"$MYSQL_ROOT_PASSWORD" oilgroup < /seed/001-local-development.sql'
 
 SET NAMES utf8mb4;
 START TRANSACTION;

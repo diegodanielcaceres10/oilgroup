@@ -52,7 +52,9 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-oilgroup_root_dev_password}
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./docker/mysql/init:/docker-entrypoint-initdb.d:ro
+      - ./docker/mysql/init/001-schema.sql:/docker-entrypoint-initdb.d/001-schema.sql:ro
+      # Local development data: loaded only when the database is first created.
+      - ./docker/mysql/seed/001-local-development.sql:/docker-entrypoint-initdb.d/002-local-development.sql:ro
       - ./docker/mysql/seed:/seed:ro
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root -p$$MYSQL_ROOT_PASSWORD --silent"]
