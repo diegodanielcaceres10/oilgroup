@@ -45,6 +45,12 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "aot": true,
+            "allowedCommonJsDependencies": [
+              "core-js",
+              "raf",
+              "pdfmake/build/pdfmake.js",
+              "xlsx"
+            ],
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": ["src/styles.scss"],
             "scripts": []
