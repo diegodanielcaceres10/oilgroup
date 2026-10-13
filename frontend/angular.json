@@ -46,9 +46,12 @@
             "tsConfig": "tsconfig.app.json",
             "aot": true,
             "allowedCommonJsDependencies": [
+              "@babel/runtime/regenerator",
               "core-js",
-              "raf",
+              "moment",
               "pdfmake/build/pdfmake.js",
+              "raf",
+              "rgbcolor",
               "xlsx"
             ],
             "assets": ["src/favicon.ico", "src/assets"],
@@ -156,7 +159,6 @@
       }
     }
   },
-  "defaultProject": "oilgroup-app",
   "cli": {
     "packageManager": "npm",
     "analytics": false

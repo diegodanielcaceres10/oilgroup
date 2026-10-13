@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Validators, FormGroup, FormControl } from '@angular/forms';
+import { Validators, UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 
 @Component({
     selector: 'app-form',
@@ -11,14 +11,14 @@ export class FormComponent implements OnInit {
     @Input() saving: boolean
     @Output() submitData = new EventEmitter<any>()
 
-    FormGroup: FormGroup;
+    FormGroup: UntypedFormGroup;
     required: boolean
     selectedInput: string = ""
 
     constructor() { }
 
     ngOnInit(): void {
-        this.FormGroup = new FormGroup({});
+        this.FormGroup = new UntypedFormGroup({});
         if (this.form.groups && this.form.groups.length > 0) {
             this.form.groups.map((group) => {
                 group.fields.map((field) => {
@@ -26,9 +26,9 @@ export class FormComponent implements OnInit {
                     if (field.required) validators.push(Validators.required)
                     if (field.max) validators.push(Validators.max(field.max))
                     if (field.type == "select" && field.id) {
-                        this.FormGroup.addControl(field.id, new FormControl(field.value && field.value[field.nameValue] ? field.value[field.nameValue] : "", validators))
+                        this.FormGroup.addControl(field.id, new UntypedFormControl(field.value && field.value[field.nameValue] ? field.value[field.nameValue] : "", validators))
                         if (field.nameLabel) {
-                            this.FormGroup.addControl(field.name, new FormControl({
+                            this.FormGroup.addControl(field.name, new UntypedFormControl({
                                 value: field.value && field.value[field.nameLabel] ? field.value[field.nameLabel] : "",
                                 disabled: field.disabled,
                             }, validators))
@@ -39,20 +39,20 @@ export class FormComponent implements OnInit {
                                     values += field.value[name] + " "
                                 }
                             }
-                            this.FormGroup.addControl(field.name, new FormControl({
+                            this.FormGroup.addControl(field.name, new UntypedFormControl({
                                 value: values,
                                 disabled: field.disabled,
                             }, validators))
                         }
                     } else if (field.type == "checkbox") {
-                        this.FormGroup.addControl(field.name, new FormControl(field.value ? true : false))
+                        this.FormGroup.addControl(field.name, new UntypedFormControl(field.value ? true : false))
                     } else if (field.type == "file") {
-                        this.FormGroup.addControl(field.name, new FormControl({
+                        this.FormGroup.addControl(field.name, new UntypedFormControl({
                             value: field.value,
                             disabled: field.disabled,
                         }, validators))
                     } else {
-                        this.FormGroup.addControl(field.name, new FormControl({
+                        this.FormGroup.addControl(field.name, new UntypedFormControl({
                             value: field.value,
                             disabled: field.disabled,
                         }, validators))
