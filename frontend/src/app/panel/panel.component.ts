@@ -4,6 +4,7 @@ import { LoadService } from '../_shared/service/load.service';
 @Component({
     selector: 'app-panel',
     templateUrl: './panel.component.html',
+    standalone: false
 })
 export class PanelComponent implements OnInit {
 

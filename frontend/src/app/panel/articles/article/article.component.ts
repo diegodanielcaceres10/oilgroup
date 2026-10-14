@@ -19,6 +19,7 @@ import am4themes_dataviz from "@amcharts/amcharts4/themes/dataviz";
 @Component({
     selector: 'app-article',
     templateUrl: './article.component.html',
+    standalone: false
 })
 export class ArticleComponent implements OnInit {
 

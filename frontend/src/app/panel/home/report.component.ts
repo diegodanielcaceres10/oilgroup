@@ -11,6 +11,7 @@ import { HttpEventType } from '@angular/common/http';
 @Component({
     selector: 'app-report',
     templateUrl: './report.component.html',
+    standalone: false
 })
 export class ReportComponent implements OnInit {
 

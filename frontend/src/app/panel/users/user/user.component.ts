@@ -9,6 +9,7 @@ import { Location } from '@angular/common';
 @Component({
     selector: 'app-user',
     templateUrl: './user.component.html',
+    standalone: false
 })
 export class UserComponent implements OnInit {
 

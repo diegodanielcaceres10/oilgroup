@@ -5,6 +5,7 @@ import { LoadService } from '../../_shared/service/load.service';
 @Component({
     selector: 'app-providers',
     templateUrl: './providers.component.html',
+    standalone: false
 })
 export class ProvidersComponent implements OnInit {
 

@@ -12,6 +12,7 @@ import { HttpEventType } from '@angular/common/http';
 @Component({
     selector: 'app-customer',
     templateUrl: './customer.component.html',
+    standalone: false
 })
 export class CustomerComponent implements OnInit {
 

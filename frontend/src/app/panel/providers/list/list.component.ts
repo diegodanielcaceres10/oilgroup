@@ -9,6 +9,7 @@ import { Location } from '@angular/common';
 @Component({
     selector: 'app-list',
     templateUrl: './list.component.html',
+    standalone: false
 })
 export class ListComponent implements OnInit {
 

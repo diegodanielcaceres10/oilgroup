@@ -11,6 +11,7 @@ import { Location } from '@angular/common';
 @Component({
     selector: 'app-payment',
     templateUrl: './payment.component.html',
+    standalone: false
 })
 export class PaymentComponent implements OnInit {
 

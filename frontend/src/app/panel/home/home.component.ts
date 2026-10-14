@@ -14,6 +14,7 @@ import am4themes_dataviz from "@amcharts/amcharts4/themes/dataviz";
 @Component({
     selector: 'app-home',
     templateUrl: './home.component.html',
+    standalone: false
 })
 export class HomeComponent implements OnInit {
 

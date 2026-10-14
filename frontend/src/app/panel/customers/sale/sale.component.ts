@@ -12,6 +12,7 @@ import { Location } from '@angular/common';
 @Component({
     selector: 'app-sale',
     templateUrl: './sale.component.html',
+    standalone: false
 })
 export class SaleComponent implements OnInit {
 

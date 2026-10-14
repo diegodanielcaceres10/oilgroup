@@ -4,7 +4,8 @@ import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-root',
-    templateUrl: './app.component.html'
+    templateUrl: './app.component.html',
+    standalone: false
 })
 export class AppComponent implements OnInit {
 

@@ -11,6 +11,7 @@ import { HttpEventType } from '@angular/common/http';
 @Component({
     selector: 'app-prices',
     templateUrl: './prices.component.html',
+    standalone: false
 })
 export class PricesComponent implements OnInit {
 

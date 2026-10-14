@@ -5,6 +5,7 @@ import { LoadService } from '../../_shared/service/load.service';
 @Component({
     selector: 'app-articles',
     templateUrl: './articles.component.html',
+    standalone: false
 })
 export class ArticlesComponent implements OnInit {
 

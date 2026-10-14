@@ -5,6 +5,7 @@ import { LoadService } from '../../_shared/service/load.service';
 @Component({
     selector: 'app-license',
     templateUrl: './license.component.html',
+    standalone: false
 })
 export class LicenseComponent implements OnInit {
 

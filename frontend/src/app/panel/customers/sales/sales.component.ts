@@ -10,6 +10,7 @@ import { Location } from '@angular/common';
 @Component({
     selector: 'app-sales',
     templateUrl: './sales.component.html',
+    standalone: false
 })
 export class SalesComponent implements OnInit {
 

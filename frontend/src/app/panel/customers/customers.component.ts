@@ -5,6 +5,7 @@ import { LoadService } from '../../_shared/service/load.service';
 @Component({
     selector: 'app-customers',
     templateUrl: './customers.component.html',
+    standalone: false
 })
 export class CustomersComponent implements OnInit {
 

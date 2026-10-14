@@ -10,6 +10,7 @@ import * as moment from 'moment';
 @Component({
     selector: 'app-payments',
     templateUrl: './payments.component.html',
+    standalone: false
 })
 export class PaymentsComponent implements OnInit {
 

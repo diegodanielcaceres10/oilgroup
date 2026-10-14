@@ -6,6 +6,7 @@ import { LoadService } from '../_shared/service/load.service';
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
+    standalone: false
 })
 export class LoginComponent implements OnInit {
 

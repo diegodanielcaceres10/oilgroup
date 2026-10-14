@@ -9,6 +9,7 @@ import { Location } from '@angular/common';
 @Component({
     selector: 'app-categories',
     templateUrl: './categories.component.html',
+    standalone: false
 })
 export class CategoriesComponent implements OnInit {
 

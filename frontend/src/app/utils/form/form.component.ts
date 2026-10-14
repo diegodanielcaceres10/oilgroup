@@ -4,6 +4,7 @@ import { Validators, UntypedFormGroup, UntypedFormControl } from '@angular/forms
 @Component({
     selector: 'app-form',
     templateUrl: './form.component.html',
+    standalone: false
 })
 export class FormComponent implements OnInit {
 

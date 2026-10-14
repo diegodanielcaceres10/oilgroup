@@ -7,6 +7,7 @@ import { LoadService } from '../../_shared/service/load.service';
 @Component({
     selector: 'app-nav',
     templateUrl: './nav.component.html',
+    standalone: false
 })
 export class NavComponent implements OnInit {
 

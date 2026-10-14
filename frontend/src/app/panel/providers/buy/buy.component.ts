@@ -11,6 +11,7 @@ import { Location } from '@angular/common';
 @Component({
     selector: 'app-buy',
     templateUrl: './buy.component.html',
+    standalone: false
 })
 export class BuyComponent implements OnInit {
 

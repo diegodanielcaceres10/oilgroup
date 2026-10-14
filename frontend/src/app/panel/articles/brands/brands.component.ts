@@ -9,6 +9,7 @@ import { Location } from '@angular/common';
 @Component({
     selector: 'app-brands',
     templateUrl: './brands.component.html',
+    standalone: false
 })
 export class BrandsComponent implements OnInit {
 

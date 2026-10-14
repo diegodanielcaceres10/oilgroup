@@ -8,21 +8,16 @@ import * as moment from 'moment';
     selector: 'app-header',
     templateUrl: './header.component.html',
     animations: [
-        trigger('alert',
-            [
-                transition(':enter',
-                    [
-                        style({ transform: "translateX(100%)" }), animate('.5s ease', style({ transform: "none" }))
-                    ]
-                ),
-                transition(':leave',
-                    [
-                        style({ transform: "none" }), animate('.5s ease', style({ transform: "translateX(100%)" }))
-                    ]
-                )
-            ]
-        ),
+        trigger('alert', [
+            transition(':enter', [
+                style({ transform: "translateX(100%)" }), animate('.5s ease', style({ transform: "none" }))
+            ]),
+            transition(':leave', [
+                style({ transform: "none" }), animate('.5s ease', style({ transform: "translateX(100%)" }))
+            ])
+        ]),
     ],
+    standalone: false
 })
 export class HeaderComponent implements OnInit {
 

@@ -3,6 +3,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 @Component({
     selector: 'app-dialog-modal',
     templateUrl: './dialog-modal.component.html',
+    standalone: false
 })
 export class DialogModalComponent implements OnInit {
 
