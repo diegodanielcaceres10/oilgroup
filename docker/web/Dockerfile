@@ -1,5 +1,5 @@
-# Angular CLI 16 supports Node 16.14+ and 18.10+.
-FROM node:18-bullseye
+# Angular CLI 17 supports Node 18.13+ and 20.9+.
+FROM node:20-bullseye
 
 WORKDIR /app
 
