@@ -11,7 +11,7 @@ services:
       - /app/node_modules
     init: true
     stdin_open: true
-    tty: true
+    # No TTY: Angular CLI 20 loops on its progress spinner when the TTY has no size.
 
   api:
     build:
