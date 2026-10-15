@@ -1,30 +1,30 @@
 /* You can add global styles to this file, and also import other style files */
-@import "sass/abstracts/mixins";
-@import "sass/abstracts/variables";
+@use "sass/abstracts/mixins";
+@use "sass/abstracts/variables";
 
-@import "sass/base/animations";
-@import "sass/base/base";
-@import "sass/base/typography";
-@import "sass/base/utilities";
+@use "sass/base/animations";
+@use "sass/base/base";
+@use "sass/base/typography";
+@use "sass/base/utilities";
 
-@import "sass/components/card";
-@import "sass/components/chart";
-@import "sass/components/elements";
-@import "sass/components/dialog";
-@import "sass/components/group";
-@import "sass/components/list";
-@import "sass/components/load";
-@import "sass/components/pagination";
-@import "sass/components/path";
-@import "sass/components/tab";
-@import "sass/components/title";
+@use "sass/components/card";
+@use "sass/components/chart";
+@use "sass/components/elements";
+@use "sass/components/dialog";
+@use "sass/components/group";
+@use "sass/components/list";
+@use "sass/components/load";
+@use "sass/components/pagination";
+@use "sass/components/path";
+@use "sass/components/tab";
+@use "sass/components/title";
 
-@import "sass/layout/form";
-@import "sass/layout/header";
-@import "sass/layout/nav";
-@import "sass/layout/section";
+@use "sass/layout/form";
+@use "sass/layout/header";
+@use "sass/layout/nav";
+@use "sass/layout/section";
 
-@import "sass/pages/login";
+@use "sass/pages/login";
 
-@import "sass/vendors/scroll";
-@import "sass/vendors/spinner";
+@use "sass/vendors/scroll";
+@use "sass/vendors/spinner";

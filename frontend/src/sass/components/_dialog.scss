@@ -1,3 +1,5 @@
+@use "../abstracts/mixins" as *;
+
 
 app-dialog-modal:not(:last-child) {
     display: none;
