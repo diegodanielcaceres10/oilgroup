@@ -1,70 +1,98 @@
 <div class="title">
-    <div class="title__info">
-        <h2>VENTAS</h2>
-    </div>
+  <div class="title__info">
+    <h2>VENTAS</h2>
+  </div>
 </div>
 <div class="section__info">
-    <div class="section__box">
-        <div class="list">
-            <div *ngIf="paging" class="list__row">
-                <div class="list__cell list__cell-load"><i class="fas fa-spinner spin"></i></div>
-            </div>
-            <div *ngIf="!paging && salesView.length == 0" class="list__row">
-                <div class="list__cell list__cell-full"><i class="fas fa-exclamation-circle"></i>No se encontraron registros</div>
-            </div>
-            <div *ngIf="!paging && salesView.length > 0" class="list__row">
-                <div class="list__cell list__cell-full muted">Mostrando {{ (page - 1) * maxitems + 1 }} - {{ (page - 1) * maxitems + salesView.length }} de {{ sales.length }}</div>
-            </div>
-            <div *ngFor="let item of salesView" [ngClass]="{ 'list__row-cancel' : item.status == 'Cancelada' }" class="list__row list__row-cells">
-                <div class="list__cell list__cell-date">
-                    <div class="list__subtitle"><span><strong>{{ item.datetime | date:"dd/MM/yyyy" }}</strong></span></div>
-                    <div class="list__subtitle"><span>{{ item.datetime | date:"HH:mm" }}</span></div>
-                </div>
-                <div class="list__cell list__cell-full">
-                    <div class="list__title">{{ item.fantasy_name }}</div>
-                    <div class="list__subtitle">
-                        <span>
-                            <i *ngIf="item.status == 'Aprobada'" class="fas fa-check"></i>
-                            <i *ngIf="item.status == 'Pendiente'" class="fas fa-thumbtack"></i>
-                            <i *ngIf="item.status == 'Lista'" class="fas fa-bell"></i>
-                            <strong>{{ item.status }}</strong>
-                        </span>
-                    </div>
-                </div>
-                <div class="list__cell list__cell-right">
-                    <div class="list__title"><strong>{{ item.total | currency:"ARS" }}</strong></div>
-                </div>
-                <div [routerLink]="['/panel/clientes/venta/' + item.id]" class="list__cell list__cell-button">
-                    <i class="fas fa-chevron-circle-right"></i>
-                </div>
-            </div>
+  <div class="section__box">
+    <div class="list">
+      @if (paging) {
+        <div class="list__row">
+          <div class="list__cell list__cell-load"><i class="fas fa-spinner spin"></i></div>
         </div>
+      }
+      @if (!paging && salesView.length == 0) {
+        <div class="list__row">
+          <div class="list__cell list__cell-full"><i class="fas fa-exclamation-circle"></i>No se encontraron registros</div>
+        </div>
+      }
+      @if (!paging && salesView.length > 0) {
+        <div class="list__row">
+          <div class="list__cell list__cell-full muted">Mostrando {{ (page - 1) * maxitems + 1 }} - {{ (page - 1) * maxitems + salesView.length }} de {{ sales.length }}</div>
+        </div>
+      }
+      @for (item of salesView; track item) {
+        <div [ngClass]="{ 'list__row-cancel' : item.status == 'Cancelada' }" class="list__row list__row-cells">
+          <div class="list__cell list__cell-date">
+            <div class="list__subtitle"><span><strong>{{ item.datetime | date:"dd/MM/yyyy" }}</strong></span></div>
+            <div class="list__subtitle"><span>{{ item.datetime | date:"HH:mm" }}</span></div>
+          </div>
+          <div class="list__cell list__cell-full">
+            <div class="list__title">{{ item.fantasy_name }}</div>
+            <div class="list__subtitle">
+              <span>
+                @if (item.status == 'Aprobada') {
+                  <i class="fas fa-check"></i>
+                }
+                @if (item.status == 'Pendiente') {
+                  <i class="fas fa-thumbtack"></i>
+                }
+                @if (item.status == 'Lista') {
+                  <i class="fas fa-bell"></i>
+                }
+                <strong>{{ item.status }}</strong>
+              </span>
+            </div>
+          </div>
+          <div class="list__cell list__cell-right">
+            <div class="list__title"><strong>{{ item.total | currency:"ARS" }}</strong></div>
+          </div>
+          <div [routerLink]="['/panel/clientes/venta/' + item.id]" class="list__cell list__cell-button">
+            <i class="fas fa-chevron-circle-right"></i>
+          </div>
+        </div>
+      }
     </div>
+  </div>
 </div>
 <div class="section__info">
-    <div class="section__box">
-        <div *ngIf="pages > 1" class="pagination">
-            <div *ngIf="page > 3" (click)="changePage(1)" class="pagination__page">
-                <div class="pagination__number"><i class="fas fa-chevron-left"></i></div>
-            </div>
-            <div *ngIf="page > 2" (click)="changePage(page - 2)" class="pagination__page">
-                <div class="pagination__number">{{ page - 2 }}</div>
-            </div>
-            <div *ngIf="page > 1" (click)="changePage(page - 1)" class="pagination__page">
-                <div class="pagination__number">{{ page - 1 }}</div>
-            </div>
-            <div class="pagination__current">
-                <div class="pagination__number">{{ page }}</div>
-            </div>
-            <div *ngIf="pages > page" (click)="changePage(page + 1)" class="pagination__page">
-                <div class="pagination__number">{{ page + 1 }}</div>
-            </div>
-            <div *ngIf="pages > page + 1" (click)="changePage(page + 2)" class="pagination__page">
-                <div class="pagination__number">{{ page + 2 }}</div>
-            </div>
-            <div *ngIf="pages > page + 2" (click)="changePage(pages)" class="pagination__page">
-                <div class="pagination__number"><i class="fas fa-chevron-right"></i></div>
-            </div>
+  <div class="section__box">
+    @if (pages > 1) {
+      <div class="pagination">
+        @if (page > 3) {
+          <div (click)="changePage(1)" class="pagination__page">
+            <div class="pagination__number"><i class="fas fa-chevron-left"></i></div>
+          </div>
+        }
+        @if (page > 2) {
+          <div (click)="changePage(page - 2)" class="pagination__page">
+            <div class="pagination__number">{{ page - 2 }}</div>
+          </div>
+        }
+        @if (page > 1) {
+          <div (click)="changePage(page - 1)" class="pagination__page">
+            <div class="pagination__number">{{ page - 1 }}</div>
+          </div>
+        }
+        <div class="pagination__current">
+          <div class="pagination__number">{{ page }}</div>
         </div>
-    </div>
+        @if (pages > page) {
+          <div (click)="changePage(page + 1)" class="pagination__page">
+            <div class="pagination__number">{{ page + 1 }}</div>
+          </div>
+        }
+        @if (pages > page + 1) {
+          <div (click)="changePage(page + 2)" class="pagination__page">
+            <div class="pagination__number">{{ page + 2 }}</div>
+          </div>
+        }
+        @if (pages > page + 2) {
+          <div (click)="changePage(pages)" class="pagination__page">
+            <div class="pagination__number"><i class="fas fa-chevron-right"></i></div>
+          </div>
+        }
+      </div>
+    }
+  </div>
 </div>

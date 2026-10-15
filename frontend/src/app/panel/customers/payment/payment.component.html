@@ -1,71 +1,93 @@
 <div class="title">
-    <div class="title__info">
-        <h2>Cobro</h2>
+  <div class="title__info">
+    <h2>Cobro</h2>
+  </div>
+  @if (['Super Administrador', 'Administrador'].indexOf(access.role) > -1 && !createMode && payment.status == 'Aprobado') {
+    <div class="group">
+      <div class="group__box group__box-icon">
+        <div (click)="cancelCustomerPaymentDialogConfirm()" class="group__tool group__tool-cancel"><i class="fas fa-trash"></i><span>Cancelar</span></div>
+      </div>
     </div>
-    <div *ngIf="['Super Administrador', 'Administrador'].indexOf(access.role) > -1 && !createMode && payment.status == 'Aprobado'" class="group">
-        <div class="group__box group__box-icon">
-            <div (click)="cancelCustomerPaymentDialogConfirm()" class="group__tool group__tool-cancel"><i class="fas fa-trash"></i><span>Cancelar</span></div>
-        </div>
-    </div>
+  }
 </div>
-<div *ngIf="!createMode" class="section__info">
+@if (!createMode) {
+  <div class="section__info">
     <div class="section__box">
-        <div class="card">
-            <div class="card__content">
-                <div class="card__item">
-                    <div class="card__box card__box-primary">
-                        <div class="card__info">
-                            <div class="card__label">Cobro:</div>
-                            <div class="card__title"><strong>{{ payment.customer.fantasy_name }}</strong></div>
-                            <div class="card__title"><strong>{{ payment.import | currency:"ARS" }}</strong></div>
-                        </div>
-                        <div class="card__info">
-                            <div class="card__label">Fecha:</div>
-                            <div class="card__subtitle"><i class="fas fa-calendar-alt"></i>{{ payment.datetime | date:"dd/MM/yyyy, HH:mm" }}</div>
-                            <div class="card__label">Estado:</div>
-                            <div class="card__subtitle">
-                                <i *ngIf="payment.status == 'Aprobado'" class="fas fa-check"></i>
-                                <i *ngIf="payment.status == 'Cancelado'" class="fas fa-times"></i>
-                                {{ payment.status }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card__box card__box-full">
-                        <div class="card__info">
-                            <div class="card__legend">
-                                <span>N° de comprobante</span>
-                                <span>{{ payment.ticket }}</span>
-                            </div>
-                            <div class="card__legend">
-                                <span>Medio de pago</span>
-                                <span>{{ payment.method }}</span>
-                            </div>
-                            <div *ngIf="payment.method == 'Transferencia'" class="card__legend">
-                                <span>Apellido y nombre</span>
-                                <span>{{ payment.account_name }}</span>
-                            </div>
-                            <div *ngIf="payment.method == 'Transferencia' || payment.method == 'Cheque'" class="card__legend">
-                                <span>Banco</span>
-                                <span>{{ payment.account_bank }}</span>
-                            </div>
-                            <div *ngIf="payment.method == 'Cheque'" class="card__legend">
-                                <span>Número de cheque</span>
-                                <span>{{ payment.number }}</span>
-                            </div>
-                            <div *ngIf="payment.method == 'Cheque'" class="card__legend">
-                                <span>Fecha de cobro</span>
-                                <span>{{ payment.cashing_date | date:"dd/MM/yyyy" }}</span>
-                            </div>
-                        </div>
-                    </div>
+      <div class="card">
+        <div class="card__content">
+          <div class="card__item">
+            <div class="card__box card__box-primary">
+              <div class="card__info">
+                <div class="card__label">Cobro:</div>
+                <div class="card__title"><strong>{{ payment.customer.fantasy_name }}</strong></div>
+                <div class="card__title"><strong>{{ payment.import | currency:"ARS" }}</strong></div>
+              </div>
+              <div class="card__info">
+                <div class="card__label">Fecha:</div>
+                <div class="card__subtitle"><i class="fas fa-calendar-alt"></i>{{ payment.datetime | date:"dd/MM/yyyy, HH:mm" }}</div>
+                <div class="card__label">Estado:</div>
+                <div class="card__subtitle">
+                  @if (payment.status == 'Aprobado') {
+                    <i class="fas fa-check"></i>
+                  }
+                  @if (payment.status == 'Cancelado') {
+                    <i class="fas fa-times"></i>
+                  }
+                  {{ payment.status }}
                 </div>
+              </div>
             </div>
+            <div class="card__box card__box-full">
+              <div class="card__info">
+                <div class="card__legend">
+                  <span>N° de comprobante</span>
+                  <span>{{ payment.ticket }}</span>
+                </div>
+                <div class="card__legend">
+                  <span>Medio de pago</span>
+                  <span>{{ payment.method }}</span>
+                </div>
+                @if (payment.method == 'Transferencia') {
+                  <div class="card__legend">
+                    <span>Apellido y nombre</span>
+                    <span>{{ payment.account_name }}</span>
+                  </div>
+                }
+                @if (payment.method == 'Transferencia' || payment.method == 'Cheque') {
+                  <div class="card__legend">
+                    <span>Banco</span>
+                    <span>{{ payment.account_bank }}</span>
+                  </div>
+                }
+                @if (payment.method == 'Cheque') {
+                  <div class="card__legend">
+                    <span>Número de cheque</span>
+                    <span>{{ payment.number }}</span>
+                  </div>
+                }
+                @if (payment.method == 'Cheque') {
+                  <div class="card__legend">
+                    <span>Fecha de cobro</span>
+                    <span>{{ payment.cashing_date | date:"dd/MM/yyyy" }}</span>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
-<div *ngIf="createMode" class="section__info">
+  </div>
+}
+@if (createMode) {
+  <div class="section__info">
     <div class="section__box">
-        <app-form *ngIf="form && form.buttons" [form]="form" (submitData)="sendForm($event)"></app-form>
+      @if (form && form.buttons) {
+        <app-form [form]="form" (submitData)="sendForm($event)"></app-form>
+      }
     </div>
-</div>
-<app-dialog-modal *ngFor="let dialog of dialogs" [dialog]="dialog" (responseDialogModal)="responseDialog($event)"></app-dialog-modal>
+  </div>
+}
+@for (dialog of dialogs; track dialog) {
+  <app-dialog-modal [dialog]="dialog" (responseDialogModal)="responseDialog($event)"></app-dialog-modal>
+}

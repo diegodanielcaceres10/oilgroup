@@ -1,95 +1,141 @@
 <div class="title">
-    <div class="title__info">
-        <h2>Lista de Precios</h2>
+  <div class="title__info">
+    <h2>Lista de Precios</h2>
+  </div>
+  <div class="group">
+    <div class="group__box group__box-icon">
+      <div (click)="exportDialogForm()" class="group__tool"><i class="fas fa-file-pdf"></i><span>Exportar</span></div>
     </div>
-    <div class="group">
-        <div class="group__box group__box-icon">
-            <div (click)="exportDialogForm()" class="group__tool"><i class="fas fa-file-pdf"></i><span>Exportar</span></div>
-        </div>
-        <div class="group__box group__box-icon">
-            <div (click)="filterDialogForm()" class="group__tool"><i class="fas fa-sliders-h"></i><span>Filtro</span></div>
-        </div>
+    <div class="group__box group__box-icon">
+      <div (click)="filterDialogForm()" class="group__tool"><i class="fas fa-sliders-h"></i><span>Filtro</span></div>
     </div>
+  </div>
 </div>
 <div class="section__info">
-    <div class="section__box">
-        <div class="list">
-            <div class="list__row list__row-wrap">
-                <div *ngFor="let filter of filters" class="list__cell list__cell-hidden">
-                    <div *ngIf="filter.type != 'hidden' && filter.value && !filter.id" class="list__filter">
-                        <span>{{ filter.label }}:</span>
-                        <strong>{{ filter.value }}</strong>
-                        <span *ngIf="!filter.required" (click)="filter.value = '';getAll(1)" class="click"><i class="fas fa-times"></i></span>
-                    </div>
-                    <div *ngIf="filter.type != 'hidden' && filter.value && filter.value[filter.nameLabel] && filter.id" class="list__filter">
-                        <span>{{ filter.label }}:</span>
-                        <strong>{{ filter.value[filter.nameLabel] }}</strong>
-                        <span *ngIf="!filter.required" (click)="filter.value = '';getAll(1)" class="click"><i class="fas fa-times"></i></span>
-                    </div>
-                </div>
-            </div>
-            <div *ngIf="paging" class="list__row">
-                <div class="list__cell list__cell-load"><i class="fas fa-spinner spin"></i></div>
-            </div>
-            <div *ngIf="!paging && articlesView.length > 0" class="list__row">
-                <div class="list__cell list__cell-full muted">Mostrando {{ (page - 1) * maxitems + 1 }} - {{ (page - 1) * maxitems + articlesView.length }} de {{ articlesFiltered.length }}</div>
-            </div>
-            <div *ngFor="let item of articlesView" class="list__row list__row-cells">
-                <div class="list__cell list__cell-full">
-                    <div class="list__quote">{{ item.brand }} | {{ item.code }} | {{ item.fantasy_name }}</div>
-                    <div class="list__title"><strong>{{ item.name }}</strong></div>
-                    <div class="list__subtitle"><span>{{ item.measure }} x {{ item.units }}</span></div>
-                    <div class="list__subtitle"><span>{{ item.size }} {{ item.variety }}</span></div>
-                    <div class="list__subtitle">Costo: <strong>{{ (item.cost | currency:"ARS") || "$-" }}</strong></div>
-                </div>
-                <div *ngIf="item.price_list" class="list__cell list__cell-right">
-                    <div class="list__title"><strong>{{ item.price_list | currency:"ARS" }}</strong></div>
-                    <div class="list__subtitle muted"><span>precio de lista</span></div>
-                    <div *ngIf="item.cost" class="list__subtitle">Rentabilidad: <strong>{{ ((item.price_list / item.units) - item.cost) | currency:"ARS" }}</strong></div>
-                </div>
-                <div *ngIf="item.price_offer" class="list__cell list__cell-right">
-                    <div class="list__title"><strong>{{ item.price_offer | currency:"ARS" }}</strong></div>
-                    <div class="list__subtitle muted"><span>precio de oferta</span></div>
-                    <div *ngIf="item.cost" class="list__subtitle">Rentabilidad: <strong>{{ ((item.price_offer / item.units) - item.cost) | currency:"ARS" }}</strong></div>
-                </div>
-                <div *ngIf="['Super Administrador', 'Administrador'].indexOf(access.role) > -1" (click)="updatePriceDialogForm(item)" class="list__cell list__cell-button">
-                    <i class="fas fa-pen"></i>
-                </div>
-                <div *ngIf="['Super Administrador', 'Administrador'].indexOf(access.role) > -1" [routerLink]="['/panel/articulos/' + item.article + '/1']" class="list__cell list__cell-button">
-                    <i class="fas fa-chevron-circle-right"></i>
-                </div>
-            </div>
-            <div *ngIf="!paging && articlesView.length == 0" class="list__row">
-                <div class="list__cell list__cell-full"><i class="fas fa-exclamation-circle"></i>No se encontraron registros</div>
-            </div>
+  <div class="section__box">
+    <div class="list">
+      <div class="list__row list__row-wrap">
+        @for (filter of filters; track filter) {
+          <div class="list__cell list__cell-hidden">
+            @if (filter.type != 'hidden' && filter.value && !filter.id) {
+              <div class="list__filter">
+                <span>{{ filter.label }}:</span>
+                <strong>{{ filter.value }}</strong>
+                @if (!filter.required) {
+                  <span (click)="filter.value = '';getAll(1)" class="click"><i class="fas fa-times"></i></span>
+                }
+              </div>
+            }
+            @if (filter.type != 'hidden' && filter.value && filter.value[filter.nameLabel] && filter.id) {
+              <div class="list__filter">
+                <span>{{ filter.label }}:</span>
+                <strong>{{ filter.value[filter.nameLabel] }}</strong>
+                @if (!filter.required) {
+                  <span (click)="filter.value = '';getAll(1)" class="click"><i class="fas fa-times"></i></span>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+      @if (paging) {
+        <div class="list__row">
+          <div class="list__cell list__cell-load"><i class="fas fa-spinner spin"></i></div>
         </div>
+      }
+      @if (!paging && articlesView.length > 0) {
+        <div class="list__row">
+          <div class="list__cell list__cell-full muted">Mostrando {{ (page - 1) * maxitems + 1 }} - {{ (page - 1) * maxitems + articlesView.length }} de {{ articlesFiltered.length }}</div>
+        </div>
+      }
+      @for (item of articlesView; track item) {
+        <div class="list__row list__row-cells">
+          <div class="list__cell list__cell-full">
+            <div class="list__quote">{{ item.brand }} | {{ item.code }} | {{ item.fantasy_name }}</div>
+            <div class="list__title"><strong>{{ item.name }}</strong></div>
+            <div class="list__subtitle"><span>{{ item.measure }} x {{ item.units }}</span></div>
+            <div class="list__subtitle"><span>{{ item.size }} {{ item.variety }}</span></div>
+            <div class="list__subtitle">Costo: <strong>{{ (item.cost | currency:"ARS") || "$-" }}</strong></div>
+          </div>
+          @if (item.price_list) {
+            <div class="list__cell list__cell-right">
+              <div class="list__title"><strong>{{ item.price_list | currency:"ARS" }}</strong></div>
+              <div class="list__subtitle muted"><span>precio de lista</span></div>
+              @if (item.cost) {
+                <div class="list__subtitle">Rentabilidad: <strong>{{ ((item.price_list / item.units) - item.cost) | currency:"ARS" }}</strong></div>
+              }
+            </div>
+          }
+          @if (item.price_offer) {
+            <div class="list__cell list__cell-right">
+              <div class="list__title"><strong>{{ item.price_offer | currency:"ARS" }}</strong></div>
+              <div class="list__subtitle muted"><span>precio de oferta</span></div>
+              @if (item.cost) {
+                <div class="list__subtitle">Rentabilidad: <strong>{{ ((item.price_offer / item.units) - item.cost) | currency:"ARS" }}</strong></div>
+              }
+            </div>
+          }
+          @if (['Super Administrador', 'Administrador'].indexOf(access.role) > -1) {
+            <div (click)="updatePriceDialogForm(item)" class="list__cell list__cell-button">
+              <i class="fas fa-pen"></i>
+            </div>
+          }
+          @if (['Super Administrador', 'Administrador'].indexOf(access.role) > -1) {
+            <div [routerLink]="['/panel/articulos/' + item.article + '/1']" class="list__cell list__cell-button">
+              <i class="fas fa-chevron-circle-right"></i>
+            </div>
+          }
+        </div>
+      }
+      @if (!paging && articlesView.length == 0) {
+        <div class="list__row">
+          <div class="list__cell list__cell-full"><i class="fas fa-exclamation-circle"></i>No se encontraron registros</div>
+        </div>
+      }
     </div>
+  </div>
 </div>
 <div class="section__info">
-    <div class="section__box">
-        <div *ngIf="pages > 1" class="pagination">
-            <div *ngIf="page > 3" (click)="changePage(1)" class="pagination__page">
-                <div class="pagination__number"><i class="fas fa-chevron-left"></i></div>
-            </div>
-            <div *ngIf="page > 2" (click)="changePage(page - 2)" class="pagination__page">
-                <div class="pagination__number">{{ page - 2 }}</div>
-            </div>
-            <div *ngIf="page > 1" (click)="changePage(page - 1)" class="pagination__page">
-                <div class="pagination__number">{{ page - 1 }}</div>
-            </div>
-            <div class="pagination__current">
-                <div class="pagination__number">{{ page }}</div>
-            </div>
-            <div *ngIf="pages > page" (click)="changePage(page + 1)" class="pagination__page">
-                <div class="pagination__number">{{ page + 1 }}</div>
-            </div>
-            <div *ngIf="pages > page + 1" (click)="changePage(page + 2)" class="pagination__page">
-                <div class="pagination__number">{{ page + 2 }}</div>
-            </div>
-            <div *ngIf="pages > page + 2" (click)="changePage(pages)" class="pagination__page">
-                <div class="pagination__number"><i class="fas fa-chevron-right"></i></div>
-            </div>
+  <div class="section__box">
+    @if (pages > 1) {
+      <div class="pagination">
+        @if (page > 3) {
+          <div (click)="changePage(1)" class="pagination__page">
+            <div class="pagination__number"><i class="fas fa-chevron-left"></i></div>
+          </div>
+        }
+        @if (page > 2) {
+          <div (click)="changePage(page - 2)" class="pagination__page">
+            <div class="pagination__number">{{ page - 2 }}</div>
+          </div>
+        }
+        @if (page > 1) {
+          <div (click)="changePage(page - 1)" class="pagination__page">
+            <div class="pagination__number">{{ page - 1 }}</div>
+          </div>
+        }
+        <div class="pagination__current">
+          <div class="pagination__number">{{ page }}</div>
         </div>
-    </div>
+        @if (pages > page) {
+          <div (click)="changePage(page + 1)" class="pagination__page">
+            <div class="pagination__number">{{ page + 1 }}</div>
+          </div>
+        }
+        @if (pages > page + 1) {
+          <div (click)="changePage(page + 2)" class="pagination__page">
+            <div class="pagination__number">{{ page + 2 }}</div>
+          </div>
+        }
+        @if (pages > page + 2) {
+          <div (click)="changePage(pages)" class="pagination__page">
+            <div class="pagination__number"><i class="fas fa-chevron-right"></i></div>
+          </div>
+        }
+      </div>
+    }
+  </div>
 </div>
-<app-dialog-modal *ngFor="let dialog of dialogs" [dialog]="dialog" (responseDialogModal)="responseDialog($event)"></app-dialog-modal>
+@for (dialog of dialogs; track dialog) {
+  <app-dialog-modal [dialog]="dialog" (responseDialogModal)="responseDialog($event)"></app-dialog-modal>
+}

@@ -1,56 +1,88 @@
 <div class="header">
-    <div class="header__container">
-        <div class="header__info">
-            <i class="fas fa-user"></i>
-            <div class="header__user">
-                <strong>{{ access.lastname }}</strong> {{ access.firstname }}
-            </div>
-        </div>
-        <span *ngIf="access.license && access.license.active && access.license.days < 6 && access.license.days > 1 && !access.license.expired" class="header__license">Licencia vence en {{ access.license.days }} días</span>
-        <span *ngIf="access.license && access.license.active && access.license.days == 1 && !access.license.expired" class="header__license">Licencia vence mañana</span>
-        <span *ngIf="access.license && access.license.active && access.license.days == 0 && !access.license.expired" class="header__license">Licencia vence hoy</span>
-        <span *ngIf="access.license && access.license.active && access.license.days > 5 && access.license.expired" class="header__license header__license-expired">Licencia vencida</span>
-        <span *ngIf="access.license && access.license.active && access.license.days < 6 && access.license.days > 1 && access.license.expired" class="header__license header__license-expired">Licencia se suspende en {{ access.license.days }} días</span>
-        <span *ngIf="access.license && access.license.active && access.license.days == 1 && access.license.expired" class="header__license header__license-expired">Licencia se suspende mañana</span>
-        <span *ngIf="access.license && access.license.active && access.license.days == 0 && access.license.expired" class="header__license header__license-expired">Licencia se suspende hoy</span>
-        <span *ngIf="!access.license || !access.license.active" class="header__license header__license-cancel">Licencia suspendida</span>
-        <a (click)="show = !show" class="header__icon click">
-            <i class="fas fa-bell"></i>
-        </a>
-        <a (click)="logout()" class="header__icon click">
-            <i class="fas fa-power-off"></i>
-        </a>
-        <ul *ngIf="show" class="header__alerts">
-            <div class="header__box scrollbar-custom">
-                <div class="list">
-                    <div *ngFor="let item of alerts" class="list__row">
-                        <div class="list__cell">
-                            <i *ngIf="item.type == 'success'" class="fas fa-check-circle"></i>
-                            <i *ngIf="item.type == 'error'" class="fas fa-times-circle"></i>
-                        </div>
-                        <div class="list__cell list__cell-full">
-                            <div class="list__message">
-                                <strong>{{ item.text }}</strong>
-                            </div>
-                        </div>
-                        <div class="list__cell list__cell-right">
-                            <div class="list__subtitle">
-                                <span>{{ item.time }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div *ngIf="alerts.length == 0" class="list__row">
-                        <div class="list__cell list__cell-full"><i class="fas fa-exclamation-circle"></i>No hay mensajes</div>
-                    </div>
-                </div>
-            </div>
-        </ul>
-        <div class="header__alert">
-            <div [@alert] *ngIf="alert.text" class="header__box header__box-{{ alert.type }} scrollbar-custom">
-                <i *ngIf="alert.type == 'error'" class="fas fa-times-circle"></i>
-                <i *ngIf="alert.type == 'success'" class="fas fa-times-circle"></i>
-                <strong>{{ alert.text }}</strong>
-            </div>
-        </div>
+  <div class="header__container">
+    <div class="header__info">
+      <i class="fas fa-user"></i>
+      <div class="header__user">
+        <strong>{{ access.lastname }}</strong> {{ access.firstname }}
+      </div>
     </div>
+    @if (access.license && access.license.active && access.license.days < 6 && access.license.days > 1 && !access.license.expired) {
+      <span class="header__license">Licencia vence en {{ access.license.days }} días</span>
+    }
+    @if (access.license && access.license.active && access.license.days == 1 && !access.license.expired) {
+      <span class="header__license">Licencia vence mañana</span>
+    }
+    @if (access.license && access.license.active && access.license.days == 0 && !access.license.expired) {
+      <span class="header__license">Licencia vence hoy</span>
+    }
+    @if (access.license && access.license.active && access.license.days > 5 && access.license.expired) {
+      <span class="header__license header__license-expired">Licencia vencida</span>
+    }
+    @if (access.license && access.license.active && access.license.days < 6 && access.license.days > 1 && access.license.expired) {
+      <span class="header__license header__license-expired">Licencia se suspende en {{ access.license.days }} días</span>
+    }
+    @if (access.license && access.license.active && access.license.days == 1 && access.license.expired) {
+      <span class="header__license header__license-expired">Licencia se suspende mañana</span>
+    }
+    @if (access.license && access.license.active && access.license.days == 0 && access.license.expired) {
+      <span class="header__license header__license-expired">Licencia se suspende hoy</span>
+    }
+    @if (!access.license || !access.license.active) {
+      <span class="header__license header__license-cancel">Licencia suspendida</span>
+    }
+    <a (click)="show = !show" class="header__icon click">
+      <i class="fas fa-bell"></i>
+    </a>
+    <a (click)="logout()" class="header__icon click">
+      <i class="fas fa-power-off"></i>
+    </a>
+    @if (show) {
+      <ul class="header__alerts">
+        <div class="header__box scrollbar-custom">
+          <div class="list">
+            @for (item of alerts; track item) {
+              <div class="list__row">
+                <div class="list__cell">
+                  @if (item.type == 'success') {
+                    <i class="fas fa-check-circle"></i>
+                  }
+                  @if (item.type == 'error') {
+                    <i class="fas fa-times-circle"></i>
+                  }
+                </div>
+                <div class="list__cell list__cell-full">
+                  <div class="list__message">
+                    <strong>{{ item.text }}</strong>
+                  </div>
+                </div>
+                <div class="list__cell list__cell-right">
+                  <div class="list__subtitle">
+                    <span>{{ item.time }}</span>
+                  </div>
+                </div>
+              </div>
+            }
+            @if (alerts.length == 0) {
+              <div class="list__row">
+                <div class="list__cell list__cell-full"><i class="fas fa-exclamation-circle"></i>No hay mensajes</div>
+              </div>
+            }
+          </div>
+        </div>
+      </ul>
+    }
+    <div class="header__alert">
+      @if (alert.text) {
+        <div [@alert] class="header__box header__box-{{ alert.type }} scrollbar-custom">
+          @if (alert.type == 'error') {
+            <i class="fas fa-times-circle"></i>
+          }
+          @if (alert.type == 'success') {
+            <i class="fas fa-times-circle"></i>
+          }
+          <strong>{{ alert.text }}</strong>
+        </div>
+      }
+    </div>
+  </div>
 </div>

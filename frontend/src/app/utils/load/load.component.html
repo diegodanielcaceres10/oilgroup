@@ -1,8 +1,10 @@
-<div *ngIf="loading" [ngClass]="{ 'white' : color }" class="spinner">
+@if (loading) {
+  <div [ngClass]="{ 'white' : color }" class="spinner">
     <div class="lds-ellipsis">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
     </div>
-</div>
+  </div>
+}

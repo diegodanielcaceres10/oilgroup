@@ -1,77 +1,107 @@
 <div class="title">
-    <div class="title__info">
-        <h2>Marcas</h2>
+  <div class="title__info">
+    <h2>Marcas</h2>
+  </div>
+  <div class="group">
+    <div class="group__box group__box-icon">
+      <div (click)="filterDialogForm()" class="group__tool"><i class="fas fa-sliders-h"></i><span>Filtro</span></div>
     </div>
-    <div class="group">
-        <div class="group__box group__box-icon">
-            <div (click)="filterDialogForm()" class="group__tool"><i class="fas fa-sliders-h"></i><span>Filtro</span></div>
-        </div>
-    </div>
+  </div>
 </div>
 <div class="section__info">
-    <div class="section__box">
-        <div class="list">
-            <div class="list__row">
-                <div *ngFor="let filter of filters" class="list__cell list__cell-hidden">
-                    <div *ngIf="filter.value" class="list__filter">
-                        <span>{{ filter.label }}:</span>
-                        <strong> {{ filter.value }}</strong>
-                        <span *ngIf="!filter.required" (click)="filter.value = '';getAll(1)" class="click"><i class="fas fa-times"></i></span>
-                    </div>
-                </div>
-            </div>
-            <div *ngIf="paging" class="list__row">
-                <div class="list__cell list__cell-load"><i class="fas fa-spinner spin"></i></div>
-            </div>
-            <div *ngIf="!paging && brandsView.length > 0" class="list__row">
-                <div class="list__cell list__cell-full muted">Mostrando {{ (page - 1) * maxitems + 1 }} - {{ (page - 1) * maxitems + brandsView.length }} de {{ brandsFiltered.length }}</div>
-            </div>
-            <div *ngFor="let item of brandsView" class="list__row list__row-cells">
-                <div class="list__cell list__cell-full">
-                    <div class="list__title">{{ item.name }}</div>
-                </div>
-                <div class="list__cell list__cell-right">
-                    <div class="list__title"><strong>{{ item.count }}</strong></div>
-                    <div class="list__subtitle muted"><span>articulos</span></div>
-                </div>
-                <div class="list__cell list__cell-button">
-                    <i (click)="updateBrandDialogForm(item)" class="fas fa-pen"></i>
-                </div>
-                <div routerLink="/panel/articulos/1" [queryParams]="{ marca: item.name }" class="list__cell list__cell-button">
-                    <i class="fas fa-chevron-circle-right"></i>
-                </div>
-            </div>
-            <div *ngIf="!paging && brandsView.length == 0" class="list__row">
-                <div class="list__cell list__cell-full"><i class="fas fa-exclamation-circle"></i>No se encontraron registros</div>
-            </div>
+  <div class="section__box">
+    <div class="list">
+      <div class="list__row">
+        @for (filter of filters; track filter) {
+          <div class="list__cell list__cell-hidden">
+            @if (filter.value) {
+              <div class="list__filter">
+                <span>{{ filter.label }}:</span>
+                <strong> {{ filter.value }}</strong>
+                @if (!filter.required) {
+                  <span (click)="filter.value = '';getAll(1)" class="click"><i class="fas fa-times"></i></span>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+      @if (paging) {
+        <div class="list__row">
+          <div class="list__cell list__cell-load"><i class="fas fa-spinner spin"></i></div>
         </div>
+      }
+      @if (!paging && brandsView.length > 0) {
+        <div class="list__row">
+          <div class="list__cell list__cell-full muted">Mostrando {{ (page - 1) * maxitems + 1 }} - {{ (page - 1) * maxitems + brandsView.length }} de {{ brandsFiltered.length }}</div>
+        </div>
+      }
+      @for (item of brandsView; track item) {
+        <div class="list__row list__row-cells">
+          <div class="list__cell list__cell-full">
+            <div class="list__title">{{ item.name }}</div>
+          </div>
+          <div class="list__cell list__cell-right">
+            <div class="list__title"><strong>{{ item.count }}</strong></div>
+            <div class="list__subtitle muted"><span>articulos</span></div>
+          </div>
+          <div class="list__cell list__cell-button">
+            <i (click)="updateBrandDialogForm(item)" class="fas fa-pen"></i>
+          </div>
+          <div routerLink="/panel/articulos/1" [queryParams]="{ marca: item.name }" class="list__cell list__cell-button">
+            <i class="fas fa-chevron-circle-right"></i>
+          </div>
+        </div>
+      }
+      @if (!paging && brandsView.length == 0) {
+        <div class="list__row">
+          <div class="list__cell list__cell-full"><i class="fas fa-exclamation-circle"></i>No se encontraron registros</div>
+        </div>
+      }
     </div>
+  </div>
 </div>
 <div class="section__info">
-    <div class="section__box">
-        <div *ngIf="pages > 1" class="pagination">
-            <div *ngIf="page > 3" (click)="changePage(1)" class="pagination__page">
-                <div class="pagination__number"><i class="fas fa-chevron-left"></i></div>
-            </div>
-            <div *ngIf="page > 2" (click)="changePage(page - 2)" class="pagination__page">
-                <div class="pagination__number">{{ page - 2 }}</div>
-            </div>
-            <div *ngIf="page > 1" (click)="changePage(page - 1)" class="pagination__page">
-                <div class="pagination__number">{{ page - 1 }}</div>
-            </div>
-            <div class="pagination__current">
-                <div class="pagination__number">{{ page }}</div>
-            </div>
-            <div *ngIf="pages > page" (click)="changePage(page + 1)" class="pagination__page">
-                <div class="pagination__number">{{ page + 1 }}</div>
-            </div>
-            <div *ngIf="pages > page + 1" (click)="changePage(page + 2)" class="pagination__page">
-                <div class="pagination__number">{{ page + 2 }}</div>
-            </div>
-            <div *ngIf="pages > page + 2" (click)="changePage(pages)" class="pagination__page">
-                <div class="pagination__number"><i class="fas fa-chevron-right"></i></div>
-            </div>
+  <div class="section__box">
+    @if (pages > 1) {
+      <div class="pagination">
+        @if (page > 3) {
+          <div (click)="changePage(1)" class="pagination__page">
+            <div class="pagination__number"><i class="fas fa-chevron-left"></i></div>
+          </div>
+        }
+        @if (page > 2) {
+          <div (click)="changePage(page - 2)" class="pagination__page">
+            <div class="pagination__number">{{ page - 2 }}</div>
+          </div>
+        }
+        @if (page > 1) {
+          <div (click)="changePage(page - 1)" class="pagination__page">
+            <div class="pagination__number">{{ page - 1 }}</div>
+          </div>
+        }
+        <div class="pagination__current">
+          <div class="pagination__number">{{ page }}</div>
         </div>
-    </div>
+        @if (pages > page) {
+          <div (click)="changePage(page + 1)" class="pagination__page">
+            <div class="pagination__number">{{ page + 1 }}</div>
+          </div>
+        }
+        @if (pages > page + 1) {
+          <div (click)="changePage(page + 2)" class="pagination__page">
+            <div class="pagination__number">{{ page + 2 }}</div>
+          </div>
+        }
+        @if (pages > page + 2) {
+          <div (click)="changePage(pages)" class="pagination__page">
+            <div class="pagination__number"><i class="fas fa-chevron-right"></i></div>
+          </div>
+        }
+      </div>
+    }
+  </div>
 </div>
-<app-dialog-modal *ngFor="let dialog of dialogs" [dialog]="dialog" (responseDialogModal)="responseDialog($event)"></app-dialog-modal>
+@for (dialog of dialogs; track dialog) {
+  <app-dialog-modal [dialog]="dialog" (responseDialogModal)="responseDialog($event)"></app-dialog-modal>
+}

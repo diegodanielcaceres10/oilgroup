@@ -1,80 +1,161 @@
 <form [formGroup]="FormGroup" (ngSubmit)="submitForm()" [ngClass]="{ 'form-full' : form.full }" class="form">
-    <div *ngIf="form.title" class="form__title">{{ form.title }}</div>
+  @if (form.title) {
+    <div class="form__title">{{ form.title }}</div>
+  }
 
-    <div *ngFor="let group of form.groups" class="form__group">
-        <div *ngIf="group.section" class="form__section">{{ group.section }}</div>
-        <div *ngFor="let field of group.fields" [ngClass]="{ 'form__box-options' : field.type == 'checkbox' || field.type == 'radio', 'form__box-hidden' : field.type == 'hidden' }" class="form__box">
-            <label *ngIf="field.type != 'hidden' && field.type != 'checkbox' && field.label" class="form__label">
-                <span>{{ field.label }}</span>
-                <span *ngIf="field.required">*</span>
-                <span *ngIf="required && FormGroup.controls[field.name].errors && FormGroup.controls[field.name].errors.required" class="form__required"> Campo obligatorio</span>
-                <span *ngIf="required && FormGroup.controls[field.name].errors && FormGroup.controls[field.name].errors.max" class="form__required"> Valor incorrecto</span>
-                <span *ngIf="field.error == 'FORMAT'" class="form__required"> Formato incorrecto</span>
-                <span *ngIf="field.error == 'SIZE'" class="form__required"> Tamaño incorrecto</span>
-            </label>
-            <span *ngIf="field.symbol" class="form__icon form__icon-symbol"><i class="{{ field.symbol }}"></i></span>
-            <span *ngIf="field.type == 'password' && field.show" (click)="field.show = false" class="form__icon form__icon-action"><i class="fas fa-eye-slash"></i></span>
-            <span *ngIf="field.type == 'password' && !field.show" (click)="field.show = true" class="form__icon form__icon-action"><i class="fas fa-eye"></i></span>
-            <span *ngIf="field.type == 'date'" class="form__icon form__icon-off"><i class="fas fa-calendar-alt"></i></span>
-            <span *ngIf="field.type == 'time'" class="form__icon form__icon-off"><i class="fas fa-clock"></i></span>
-            <span *ngIf="field.type == 'select'" class="form__icon form__icon-off"><i class="fas fa-chevron-down"></i></span>
-            <input *ngIf="field.type != 'radio' && field.type != 'checkbox' && field.type != 'file' && field.type != 'textarea' && field.type != 'date' && field.type != 'time'" [formControlName]="field.name" [type]="field.type == 'select' && !field.creatable ? 'button' : field.type == 'password' && field.show ? 'text' : field.type" [autocomplete]="field.autocomplete ? 'auto' : 'off'" (focus)="selectedInput = field.name" (blur)="selectedInput = ''" (ngModelChange)="changed(field)" [ngClass]="{ 'form__focus' : field.options && selectedInput == field.name }" onclick="this.focus()" [step]="field.type == 'time' && 1" maxlength="100" spellcheck="false">
-            <ul *ngIf="field.options" class="form__options">
-                <ul *ngIf="field.type == 'select' && field.id && field.nameLabel" class="form__list scrollbar-custom">
-                    <li *ngIf="!field.optionsView || field.optionsView.length == 0" class="form__option form__option-empty">No se encontraron registros</li>
-                    <li *ngFor="let option of field.optionsView" (click)="selectOption(field, option);selectedInput = ''" class="form__option form__option-valid">
-                        <span>{{ option[field.nameLabel] }}</span>
-                    </li>
-                </ul>
-                <ul *ngIf="field.type == 'select' && field.id && field.namesLabel && field.namesLabel.length > 0" class="form__list scrollbar-custom">
-                    <li *ngIf="!field.optionsView || field.optionsView.length == 0" class="form__option form__option-empty">No se encontraron registros</li>
-                    <li *ngFor="let option of field.optionsView" (click)="selectOption(field, option);selectedInput = ''" class="form__option form__option-valid">
-                        <span *ngFor="let name of field.namesLabel">{{ option[name] }} </span>
-                    </li>
-                </ul>
-                <ul *ngIf="field.type != 'select' || !field.id" class="form__list scrollbar-custom">
-                    <li *ngIf="!field.optionsView || field.optionsView.length == 0" class="form__option form__option-empty">No hay recomendaciones</li>
-                    <li *ngFor="let option of field.optionsView" (click)="selectOption(field, option);selectedInput = ''" class="form__option form__option-valid">{{ option }}</li>
-                </ul>
-            </ul>
-
-            <!-- Input hidden for id select type -->
-            <input *ngIf="field.type == 'select' && field.id" [formControlName]="field.id" type="hidden">
-
-            <!-- Input date type -->
-            <input *ngIf="field.type == 'date'" [formControlName]="field.name" type="date" (ngModelChange)="changed(field)" [ngClass]="{ 'form__focus' : field.options && selectedInput == field.name }" [min]="field.min" [max]="field.max">
-
-            <!-- Input date type -->
-            <input *ngIf="field.type == 'time'" [formControlName]="field.name" type="time" (ngModelChange)="changed(field)" [ngClass]="{ 'form__focus' : field.options && selectedInput == field.name }" step="1">
-
-            <!-- Input checbox type -->
-            <input *ngIf="field.type == 'checkbox'" [formControlName]="field.name" (change)="changed(field)" type="checkbox">
-            <label *ngIf="field.type == 'checkbox'"></label>
-            <label *ngIf="field.type == 'checkbox'">{{ field.text }}</label>
-
-            <!-- Input file type -->
-            <input *ngIf="field.type == 'file'" [formControlName]="field.name" type="hidden">
-            <input *ngIf="field.type == 'file'" #fileInput (change)="drawFile(fileInput.files, field)" title="" type="file">
-            <span *ngIf="field.type == 'file' && (!field.value || !field.value.name)">Seleccionar...</span>
-            <span *ngIf="field.type == 'file' && field.value && field.value.name">{{ field.value.name }}</span>
-
-            <!-- radio input -->
-            <div *ngIf="field.type == 'radio'">
-                <span *ngFor="let radio of field.radios" class="form__radio">
-                    <input [formControlName]="field.name" (focus)="selectedInput = field.name" type="radio" [value]="radio.value">
-                    <label></label>
-                    <label>{{ radio.text }}</label>
-                </span>
-            </div>
-
-            <!-- area input -->
-            <textarea *ngIf="field.type == 'textarea'" [formControlName]="field.name" (focus)="selectedInput = field.name" type="text" maxlength="500" spellcheck="false" autocomplete="off"></textarea>
-        </div>
-    </div>
-
+  @for (group of form.groups; track group) {
     <div class="form__group">
-        <div class="form__box form__box-buttons">
-            <button *ngFor="let button of form.buttons" [ngClass]="{ 'form__button-primary' : button.primary }" (click)="eventForm(button.type)" (focus)="selectedInput = 'submit'" [type]="button.type == 'submit' ? 'submit' : 'button'"><span *ngIf="saving && button.saving"><i class="fas fa-spinner spin"></i></span><span *ngIf="!saving || !button.saving"><i class="{{ button.icon }}"></i>{{ button.text }}</span></button>
+      @if (group.section) {
+        <div class="form__section">{{ group.section }}</div>
+      }
+      @for (field of group.fields; track field) {
+        <div [ngClass]="{ 'form__box-options' : field.type == 'checkbox' || field.type == 'radio', 'form__box-hidden' : field.type == 'hidden' }" class="form__box">
+          @if (field.type != 'hidden' && field.type != 'checkbox' && field.label) {
+            <label class="form__label">
+              <span>{{ field.label }}</span>
+              @if (field.required) {
+                <span>*</span>
+              }
+              @if (required && FormGroup.controls[field.name].errors && FormGroup.controls[field.name].errors.required) {
+                <span class="form__required"> Campo obligatorio</span>
+              }
+              @if (required && FormGroup.controls[field.name].errors && FormGroup.controls[field.name].errors.max) {
+                <span class="form__required"> Valor incorrecto</span>
+              }
+              @if (field.error == 'FORMAT') {
+                <span class="form__required"> Formato incorrecto</span>
+              }
+              @if (field.error == 'SIZE') {
+                <span class="form__required"> Tamaño incorrecto</span>
+              }
+            </label>
+          }
+          @if (field.symbol) {
+            <span class="form__icon form__icon-symbol"><i class="{{ field.symbol }}"></i></span>
+          }
+          @if (field.type == 'password' && field.show) {
+            <span (click)="field.show = false" class="form__icon form__icon-action"><i class="fas fa-eye-slash"></i></span>
+          }
+          @if (field.type == 'password' && !field.show) {
+            <span (click)="field.show = true" class="form__icon form__icon-action"><i class="fas fa-eye"></i></span>
+          }
+          @if (field.type == 'date') {
+            <span class="form__icon form__icon-off"><i class="fas fa-calendar-alt"></i></span>
+          }
+          @if (field.type == 'time') {
+            <span class="form__icon form__icon-off"><i class="fas fa-clock"></i></span>
+          }
+          @if (field.type == 'select') {
+            <span class="form__icon form__icon-off"><i class="fas fa-chevron-down"></i></span>
+          }
+          @if (field.type != 'radio' && field.type != 'checkbox' && field.type != 'file' && field.type != 'textarea' && field.type != 'date' && field.type != 'time') {
+            <input [formControlName]="field.name" [type]="field.type == 'select' && !field.creatable ? 'button' : field.type == 'password' && field.show ? 'text' : field.type" [autocomplete]="field.autocomplete ? 'auto' : 'off'" (focus)="selectedInput = field.name" (blur)="selectedInput = ''" (ngModelChange)="changed(field)" [ngClass]="{ 'form__focus' : field.options && selectedInput == field.name }" onclick="this.focus()" [step]="field.type == 'time' && 1" maxlength="100" spellcheck="false">
+          }
+          @if (field.options) {
+            <ul class="form__options">
+              @if (field.type == 'select' && field.id && field.nameLabel) {
+                <ul class="form__list scrollbar-custom">
+                  @if (!field.optionsView || field.optionsView.length == 0) {
+                    <li class="form__option form__option-empty">No se encontraron registros</li>
+                  }
+                  @for (option of field.optionsView; track option) {
+                    <li (click)="selectOption(field, option);selectedInput = ''" class="form__option form__option-valid">
+                      <span>{{ option[field.nameLabel] }}</span>
+                    </li>
+                  }
+                </ul>
+              }
+              @if (field.type == 'select' && field.id && field.namesLabel && field.namesLabel.length > 0) {
+                <ul class="form__list scrollbar-custom">
+                  @if (!field.optionsView || field.optionsView.length == 0) {
+                    <li class="form__option form__option-empty">No se encontraron registros</li>
+                  }
+                  @for (option of field.optionsView; track option) {
+                    <li (click)="selectOption(field, option);selectedInput = ''" class="form__option form__option-valid">
+                      @for (name of field.namesLabel; track name) {
+                        <span>{{ option[name] }} </span>
+                      }
+                    </li>
+                  }
+                </ul>
+              }
+              @if (field.type != 'select' || !field.id) {
+                <ul class="form__list scrollbar-custom">
+                  @if (!field.optionsView || field.optionsView.length == 0) {
+                    <li class="form__option form__option-empty">No hay recomendaciones</li>
+                  }
+                  @for (option of field.optionsView; track option) {
+                    <li (click)="selectOption(field, option);selectedInput = ''" class="form__option form__option-valid">{{ option }}</li>
+                  }
+                </ul>
+              }
+            </ul>
+          }
+          <!-- Input hidden for id select type -->
+          @if (field.type == 'select' && field.id) {
+            <input [formControlName]="field.id" type="hidden">
+          }
+          <!-- Input date type -->
+          @if (field.type == 'date') {
+            <input [formControlName]="field.name" type="date" (ngModelChange)="changed(field)" [ngClass]="{ 'form__focus' : field.options && selectedInput == field.name }" [min]="field.min" [max]="field.max">
+          }
+          <!-- Input date type -->
+          @if (field.type == 'time') {
+            <input [formControlName]="field.name" type="time" (ngModelChange)="changed(field)" [ngClass]="{ 'form__focus' : field.options && selectedInput == field.name }" step="1">
+          }
+          <!-- Input checbox type -->
+          @if (field.type == 'checkbox') {
+            <input [formControlName]="field.name" (change)="changed(field)" type="checkbox">
+          }
+          @if (field.type == 'checkbox') {
+            <label></label>
+          }
+          @if (field.type == 'checkbox') {
+            <label>{{ field.text }}</label>
+          }
+          <!-- Input file type -->
+          @if (field.type == 'file') {
+            <input [formControlName]="field.name" type="hidden">
+          }
+          @if (field.type == 'file') {
+            <input #fileInput (change)="drawFile(fileInput.files, field)" title="" type="file">
+          }
+          @if (field.type == 'file' && (!field.value || !field.value.name)) {
+            <span>Seleccionar...</span>
+          }
+          @if (field.type == 'file' && field.value && field.value.name) {
+            <span>{{ field.value.name }}</span>
+          }
+          <!-- radio input -->
+          @if (field.type == 'radio') {
+            <div>
+              @for (radio of field.radios; track radio) {
+                <span class="form__radio">
+                  <input [formControlName]="field.name" (focus)="selectedInput = field.name" type="radio" [value]="radio.value">
+                  <label></label>
+                  <label>{{ radio.text }}</label>
+                </span>
+              }
+            </div>
+          }
+          <!-- area input -->
+          @if (field.type == 'textarea') {
+            <textarea [formControlName]="field.name" (focus)="selectedInput = field.name" type="text" maxlength="500" spellcheck="false" autocomplete="off"></textarea>
+          }
         </div>
+      }
     </div>
+  }
+
+  <div class="form__group">
+    <div class="form__box form__box-buttons">
+      @for (button of form.buttons; track button) {
+        <button [ngClass]="{ 'form__button-primary' : button.primary }" (click)="eventForm(button.type)" (focus)="selectedInput = 'submit'" [type]="button.type == 'submit' ? 'submit' : 'button'">@if (saving && button.saving) {
+          <span><i class="fas fa-spinner spin"></i></span>
+          }@if (!saving || !button.saving) {
+          <span><i class="{{ button.icon }}"></i>{{ button.text }}</span>
+        }</button>
+      }
+    </div>
+  </div>
 </form>

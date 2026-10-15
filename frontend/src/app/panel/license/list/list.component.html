@@ -1,92 +1,146 @@
 <div class="title">
-    <div class="title__info">
-        <h2>Cuotas</h2>
-    </div>
+  <div class="title__info">
+    <h2>Cuotas</h2>
+  </div>
 </div>
 <div class="section__info">
-    <div class="section__box">
-        <div class="list">
-            <div *ngIf="paging" class="list__row">
-                <div class="list__cell list__cell-load"><i class="fas fa-spinner spin"></i></div>
-            </div>
-            <div *ngIf="!paging && licensesView.length > 0" class="list__row">
-                <div class="list__cell list__cell-full muted">Mostrando {{ (page - 1) * maxitems + 1 }} - {{ (page - 1) * maxitems + licensesView.length }} de {{ licensesFiltered.length }}</div>
-            </div>
-            <div *ngFor="let item of licensesView" class="list__row list__row-cells">
-                <div class="list__cell list__cell-full">
-                    <div class="list__title"><strong>{{ (item.tax ? (item.tax + item.value) : item.value) | currency }}</strong></div>
-                    <div class="list__subtitle"><span>{{ item.month | date:"MMMM 'de' yyyy" }}</span></div>
-                </div>
-                <div *ngIf="item.status == 'Analisis'" class="list__cell">
-                    <div class="list__subtitle">
-                        <div class="list__tag list__tag-pending"><strong>{{ item.status }}</strong></div>
-                    </div>
-                </div>
-                <div *ngIf="item.status != 'Aprobado' && item.status != 'Analisis' && item.coefficient && item.coefficient_validate" class="list__cell list__cell-right">
-                    <div class="list__title">{{ item.payments ? "Saldo pendiente: " : "" }}<strong>{{ ((item.coefficient * item.value) - item.payments) | currency:"ARS" }}</strong></div>
-                    <div *ngIf="item.coefficient_date && item.calc" class="list__subtitle"><span>Cotizado: {{ item.coefficient_date | date:"dd/MM/yyyy, HH:mm" }}</span></div>
-                    <div *ngIf="!item.calc" class="list__subtitle"><span>Valido hasta: {{ item.coefficient_validate | date:"dd/MM/yyyy, HH:mm" }} <i class="fas fa-clock"></i></span></div>
-                </div>
-                <div *ngIf="item.status == 'Aprobado'" class="list__cell list__cell-right">
-                    <div *ngIf="item.total" class="list__title"><strong>{{ item.total | currency:"ARS" }}</strong></div>
-                    <div *ngIf="item.datetime" class="list__subtitle"><span>{{ item.datetime | date:"dd/MM/yyyy" }}</span></div>
-                </div>
-                <div *ngIf="item.status == 'Aprobado'" class="list__cell list__cell-icon">
-                    <i class="fas fa-check-circle"></i>
-                </div>
-                <div *ngIf="item.status == 'Analisis'" class="list__cell list__cell-icon">
-                    <i class="fas fa-info-circle"></i>
-                </div>
-                <div *ngIf="item.status != 'Aprobado' && item.status != 'Analisis' && item.current && item.coefficient_validate && !item.loading && item.calc" (click)="calcDollar(item)" class="list__cell list__cell-button">
-                    <i class="fas fa-sync-alt"></i>
-                </div>
-                <div *ngIf="item.status != 'Aprobado' && item.status != 'Analisis' && item.current && !item.coefficient_validate && !item.loading" (click)="calcDollar(item)" class="list__cell list__cell-button">
-                    <i class="fas fa-calculator"></i>
-                </div>
-                <div *ngIf="item.status != 'Aprobado' && item.status != 'Analisis' && item.current && item.loading" class="list__cell list__cell-icon">
-                    <i class="fas fa-spinner spin"></i>
-                </div>
-                <div *ngIf="item.status != 'Aprobado' && item.status != 'Analisis' && item.current && item.coefficient_validate && item.calc" (click)="setPriceDialogConfirm(item)" class="list__cell list__cell-button">
-                    <i class="fas fa-thumbtack"></i>
-                </div>
-                <div *ngIf="item.status != 'Aprobado' && item.status != 'Analisis' && item.current && item.coefficient_validate && !item.calc" (click)="uploadTicketDialogForm(item)" class="list__cell list__cell-button">
-                    <i class="fas fa-paperclip"></i>
-                </div>
-                <div *ngIf="access.role == 'Super Administrador' && access.type == 'admin'" [routerLink]="['/panel/licencia/' + item.id + '/1']" class="list__cell list__cell-button">
-                    <i class="fas fa-chevron-circle-right"></i>
-                </div>
-            </div>
-            <div *ngIf="!paging && licensesView.length == 0" class="list__row">
-                <div class="list__cell list__cell-full"><i class="fas fa-exclamation-circle"></i>No se encontraron registros</div>
-            </div>
+  <div class="section__box">
+    <div class="list">
+      @if (paging) {
+        <div class="list__row">
+          <div class="list__cell list__cell-load"><i class="fas fa-spinner spin"></i></div>
         </div>
+      }
+      @if (!paging && licensesView.length > 0) {
+        <div class="list__row">
+          <div class="list__cell list__cell-full muted">Mostrando {{ (page - 1) * maxitems + 1 }} - {{ (page - 1) * maxitems + licensesView.length }} de {{ licensesFiltered.length }}</div>
+        </div>
+      }
+      @for (item of licensesView; track item) {
+        <div class="list__row list__row-cells">
+          <div class="list__cell list__cell-full">
+            <div class="list__title"><strong>{{ (item.tax ? (item.tax + item.value) : item.value) | currency }}</strong></div>
+            <div class="list__subtitle"><span>{{ item.month | date:"MMMM 'de' yyyy" }}</span></div>
+          </div>
+          @if (item.status == 'Analisis') {
+            <div class="list__cell">
+              <div class="list__subtitle">
+                <div class="list__tag list__tag-pending"><strong>{{ item.status }}</strong></div>
+              </div>
+            </div>
+          }
+          @if (item.status != 'Aprobado' && item.status != 'Analisis' && item.coefficient && item.coefficient_validate) {
+            <div class="list__cell list__cell-right">
+              <div class="list__title">{{ item.payments ? "Saldo pendiente: " : "" }}<strong>{{ ((item.coefficient * item.value) - item.payments) | currency:"ARS" }}</strong></div>
+              @if (item.coefficient_date && item.calc) {
+                <div class="list__subtitle"><span>Cotizado: {{ item.coefficient_date | date:"dd/MM/yyyy, HH:mm" }}</span></div>
+              }
+              @if (!item.calc) {
+                <div class="list__subtitle"><span>Valido hasta: {{ item.coefficient_validate | date:"dd/MM/yyyy, HH:mm" }} <i class="fas fa-clock"></i></span></div>
+              }
+            </div>
+          }
+          @if (item.status == 'Aprobado') {
+            <div class="list__cell list__cell-right">
+              @if (item.total) {
+                <div class="list__title"><strong>{{ item.total | currency:"ARS" }}</strong></div>
+              }
+              @if (item.datetime) {
+                <div class="list__subtitle"><span>{{ item.datetime | date:"dd/MM/yyyy" }}</span></div>
+              }
+            </div>
+          }
+          @if (item.status == 'Aprobado') {
+            <div class="list__cell list__cell-icon">
+              <i class="fas fa-check-circle"></i>
+            </div>
+          }
+          @if (item.status == 'Analisis') {
+            <div class="list__cell list__cell-icon">
+              <i class="fas fa-info-circle"></i>
+            </div>
+          }
+          @if (item.status != 'Aprobado' && item.status != 'Analisis' && item.current && item.coefficient_validate && !item.loading && item.calc) {
+            <div (click)="calcDollar(item)" class="list__cell list__cell-button">
+              <i class="fas fa-sync-alt"></i>
+            </div>
+          }
+          @if (item.status != 'Aprobado' && item.status != 'Analisis' && item.current && !item.coefficient_validate && !item.loading) {
+            <div (click)="calcDollar(item)" class="list__cell list__cell-button">
+              <i class="fas fa-calculator"></i>
+            </div>
+          }
+          @if (item.status != 'Aprobado' && item.status != 'Analisis' && item.current && item.loading) {
+            <div class="list__cell list__cell-icon">
+              <i class="fas fa-spinner spin"></i>
+            </div>
+          }
+          @if (item.status != 'Aprobado' && item.status != 'Analisis' && item.current && item.coefficient_validate && item.calc) {
+            <div (click)="setPriceDialogConfirm(item)" class="list__cell list__cell-button">
+              <i class="fas fa-thumbtack"></i>
+            </div>
+          }
+          @if (item.status != 'Aprobado' && item.status != 'Analisis' && item.current && item.coefficient_validate && !item.calc) {
+            <div (click)="uploadTicketDialogForm(item)" class="list__cell list__cell-button">
+              <i class="fas fa-paperclip"></i>
+            </div>
+          }
+          @if (access.role == 'Super Administrador' && access.type == 'admin') {
+            <div [routerLink]="['/panel/licencia/' + item.id + '/1']" class="list__cell list__cell-button">
+              <i class="fas fa-chevron-circle-right"></i>
+            </div>
+          }
+        </div>
+      }
+      @if (!paging && licensesView.length == 0) {
+        <div class="list__row">
+          <div class="list__cell list__cell-full"><i class="fas fa-exclamation-circle"></i>No se encontraron registros</div>
+        </div>
+      }
     </div>
+  </div>
 </div>
 <div class="section__info">
-    <div class="section__box">
-        <div *ngIf="pages > 1" class="pagination">
-            <div *ngIf="page > 3" (click)="changePage(1)" class="pagination__page">
-                <div class="pagination__number"><i class="fas fa-chevron-left"></i></div>
-            </div>
-            <div *ngIf="page > 2" (click)="changePage(page - 2)" class="pagination__page">
-                <div class="pagination__number">{{ page - 2 }}</div>
-            </div>
-            <div *ngIf="page > 1" (click)="changePage(page - 1)" class="pagination__page">
-                <div class="pagination__number">{{ page - 1 }}</div>
-            </div>
-            <div class="pagination__current">
-                <div class="pagination__number">{{ page }}</div>
-            </div>
-            <div *ngIf="pages > page" (click)="changePage(page + 1)" class="pagination__page">
-                <div class="pagination__number">{{ page + 1 }}</div>
-            </div>
-            <div *ngIf="pages > page + 1" (click)="changePage(page + 2)" class="pagination__page">
-                <div class="pagination__number">{{ page + 2 }}</div>
-            </div>
-            <div *ngIf="pages > page + 2" (click)="changePage(pages)" class="pagination__page">
-                <div class="pagination__number"><i class="fas fa-chevron-right"></i></div>
-            </div>
+  <div class="section__box">
+    @if (pages > 1) {
+      <div class="pagination">
+        @if (page > 3) {
+          <div (click)="changePage(1)" class="pagination__page">
+            <div class="pagination__number"><i class="fas fa-chevron-left"></i></div>
+          </div>
+        }
+        @if (page > 2) {
+          <div (click)="changePage(page - 2)" class="pagination__page">
+            <div class="pagination__number">{{ page - 2 }}</div>
+          </div>
+        }
+        @if (page > 1) {
+          <div (click)="changePage(page - 1)" class="pagination__page">
+            <div class="pagination__number">{{ page - 1 }}</div>
+          </div>
+        }
+        <div class="pagination__current">
+          <div class="pagination__number">{{ page }}</div>
         </div>
-    </div>
+        @if (pages > page) {
+          <div (click)="changePage(page + 1)" class="pagination__page">
+            <div class="pagination__number">{{ page + 1 }}</div>
+          </div>
+        }
+        @if (pages > page + 1) {
+          <div (click)="changePage(page + 2)" class="pagination__page">
+            <div class="pagination__number">{{ page + 2 }}</div>
+          </div>
+        }
+        @if (pages > page + 2) {
+          <div (click)="changePage(pages)" class="pagination__page">
+            <div class="pagination__number"><i class="fas fa-chevron-right"></i></div>
+          </div>
+        }
+      </div>
+    }
+  </div>
 </div>
-<app-dialog-modal *ngFor="let dialog of dialogs" [dialog]="dialog" (responseDialogModal)="responseDialog($event)"></app-dialog-modal>
+@for (dialog of dialogs; track dialog) {
+  <app-dialog-modal [dialog]="dialog" (responseDialogModal)="responseDialog($event)"></app-dialog-modal>
+}

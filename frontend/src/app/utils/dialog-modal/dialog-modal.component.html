@@ -1,89 +1,153 @@
 <div (click)="sendResponse(false)" class="dialog">
 </div>
 <div class="dialog__container">
-    <div class="dialog__box dialog__box-{{dialog.type}} scrollbar-custom">
-        <div (click)="sendResponse(false)" class="dialog__close"><i class="fas fa-times click"></i></div>
-        <div class="dialog__title">
-            <h2>{{ dialog.title }}</h2>
-            <span class="dialog__message">{{ dialog.message }}</span>
-            <span class="dialog__span">{{ dialog.span }}</span>
-        </div>
-
-        <!-- Dialog modal list type -->
-        <div *ngIf="dialog.type == 'list'" class="group">
-            <div class="group__box group__box-full">
-                <input [(ngModel)]="search" (ngModelChange)="updateFound()" type="text" maxlength="100" spellcheck="false">
-                <label class="group__label">Buscar por nombre</label>
-            </div>
-        </div>
-        <div *ngIf="dialog.type == 'list'" class="list">
-            <div *ngIf="paging" class="list__row">
-                <div class="list__cell list__cell-load"><i class="fas fa-spinner spin"></i></div>
-            </div>
-            <div *ngIf="!paging && dataView.length == 0" class="list__row">
-                <div class="list__cell list__cell-full"><i class="fas fa-exclamation-circle"></i>No se encontraron registros</div>
-            </div>
-            <div *ngIf="!paging && dataView.length > 0" class="list__row">
-                <div class="list__cell list__cell-full muted">Mostrando {{ (page - 1) * maxitems + 1 }} - {{ (page - 1) * maxitems + dataView.length }} de {{ dataFiltered.length }}</div>
-            </div>
-            <div *ngFor="let item of dataView" class="list__row list__row-cells">
-                <div *ngFor="let column of columns" class="list__cell list__cell-{{ column.type }}">
-                    <div *ngFor="let value of column.values" class="list__{{ value.style }}">
-                        <span *ngIf="value.names && value.names.length > 0">
-                            <span *ngFor="let name of value.names;let i = index">
-                                <strong *ngIf="item[name] && value.bold">{{ item[name] }}<span *ngIf="value.divisor && i < value.names.length - 1">{{ value.divisor }}</span></strong>
-                                <span *ngIf="item[name] && !value.bold">{{ item[name] }}<span *ngIf="value.divisor && i < value.names.length - 1">{{ value.divisor }}</span></span>
-                            </span>
-                        </span>
-                        <span *ngIf="value.label">{{ value.label }}: </span>
-                        <strong *ngIf="value.name && value.bold && value.format && value.format == 'decimal'">{{ item[value.name] | currency:"ARS" }}</strong>
-                        <span *ngIf="value.name && !value.bold && value.format && value.format == 'decimal'">{{ item[value.name] | currency:"ARS" }}</span>
-                        <strong *ngIf="value.name && value.bold && !value.format">{{ item[value.name] }}</strong>
-                        <span *ngIf="value.name && !value.bold && !value.format">{{ item[value.name] }}</span>
-                        <div *ngIf="value.span && value.muted" class="list__subtitle muted"><span>{{ value.span }}</span></div>
-                        <div *ngIf="value.span && !value.muted" class="list__subtitle"><span>{{ value.span }}</span></div>
-                    </div>
-                </div>
-                <div (click)="sendResponse({ values: item, event: dialog.event, item: dialog.item })" class="list__cell list__cell-button">
-                    <i class="fas fa-plus"></i>
-                </div>
-            </div>
-        </div>
-        <div *ngIf="dialog.type == 'list' && pages > 1" class="pagination">
-            <div *ngIf="page > 3" (click)="changePage(1)" class="pagination__page">
-                <div class="pagination__number"><i class="fas fa-chevron-left"></i></div>
-            </div>
-            <div *ngIf="page > 2" (click)="changePage(page - 2)" class="pagination__page">
-                <div class="pagination__number">{{ page - 2 }}</div>
-            </div>
-            <div *ngIf="page > 1" (click)="changePage(page - 1)" class="pagination__page">
-                <div class="pagination__number">{{ page - 1 }}</div>
-            </div>
-            <div class="pagination__current">
-                <div class="pagination__number">{{ page }}</div>
-            </div>
-            <div *ngIf="pages > page" (click)="changePage(page + 1)" class="pagination__page">
-                <div class="pagination__number">{{ page + 1 }}</div>
-            </div>
-            <div *ngIf="pages > page + 1" (click)="changePage(page + 2)" class="pagination__page">
-                <div class="pagination__number">{{ page + 2 }}</div>
-            </div>
-            <div *ngIf="pages > page + 2" (click)="changePage(pages)" class="pagination__page">
-                <div class="pagination__number"><i class="fas fa-chevron-right"></i></div>
-            </div>
-        </div>
-
-        <!-- Dialog modal form type -->
-        <app-form *ngIf="dialog.type == 'form'" [form]="dialog.form" (submitData)="sendResponse($event)"></app-form>
-
-        <!-- Dialog modal confirm type -->
-        <div *ngIf="dialog.type == 'confirm'" class="group">
-            <div class="group__box group__box-s">
-                <button (click)="sendResponse(false)" [disabled]="saving"><i class="fas fa-times"></i>NO</button>
-            </div>
-            <div class="group__box group__box-s">
-                <button (click)="saving=true;sendResponse({ values: dialog.values, event: dialog.event })" [ngClass]="{ 'group__save' : saving }" [disabled]="saving" class="group__primary"><i *ngIf="saving" class="fas fa-spinner spin"></i><span *ngIf="!saving"><i class="fas fa-check"></i>SI</span></button>
-            </div>
-        </div>
+  <div class="dialog__box dialog__box-{{dialog.type}} scrollbar-custom">
+    <div (click)="sendResponse(false)" class="dialog__close"><i class="fas fa-times click"></i></div>
+    <div class="dialog__title">
+      <h2>{{ dialog.title }}</h2>
+      <span class="dialog__message">{{ dialog.message }}</span>
+      <span class="dialog__span">{{ dialog.span }}</span>
     </div>
+
+    <!-- Dialog modal list type -->
+    @if (dialog.type == 'list') {
+      <div class="group">
+        <div class="group__box group__box-full">
+          <input [(ngModel)]="search" (ngModelChange)="updateFound()" type="text" maxlength="100" spellcheck="false">
+          <label class="group__label">Buscar por nombre</label>
+        </div>
+      </div>
+    }
+    @if (dialog.type == 'list') {
+      <div class="list">
+        @if (paging) {
+          <div class="list__row">
+            <div class="list__cell list__cell-load"><i class="fas fa-spinner spin"></i></div>
+          </div>
+        }
+        @if (!paging && dataView.length == 0) {
+          <div class="list__row">
+            <div class="list__cell list__cell-full"><i class="fas fa-exclamation-circle"></i>No se encontraron registros</div>
+          </div>
+        }
+        @if (!paging && dataView.length > 0) {
+          <div class="list__row">
+            <div class="list__cell list__cell-full muted">Mostrando {{ (page - 1) * maxitems + 1 }} - {{ (page - 1) * maxitems + dataView.length }} de {{ dataFiltered.length }}</div>
+          </div>
+        }
+        @for (item of dataView; track item) {
+          <div class="list__row list__row-cells">
+            @for (column of columns; track column) {
+              <div class="list__cell list__cell-{{ column.type }}">
+                @for (value of column.values; track value) {
+                  <div class="list__{{ value.style }}">
+                    @if (value.names && value.names.length > 0) {
+                      <span>
+                        @for (name of value.names; track name; let i = $index) {
+                          <span>
+                            @if (item[name] && value.bold) {
+                              <strong>{{ item[name] }}@if (value.divisor && i < value.names.length - 1) {
+                                <span>{{ value.divisor }}</span>
+                              }</strong>
+                            }
+                            @if (item[name] && !value.bold) {
+                              <span>{{ item[name] }}@if (value.divisor && i < value.names.length - 1) {
+                                <span>{{ value.divisor }}</span>
+                              }</span>
+                            }
+                          </span>
+                        }
+                      </span>
+                    }
+                    @if (value.label) {
+                      <span>{{ value.label }}: </span>
+                    }
+                    @if (value.name && value.bold && value.format && value.format == 'decimal') {
+                      <strong>{{ item[value.name] | currency:"ARS" }}</strong>
+                    }
+                    @if (value.name && !value.bold && value.format && value.format == 'decimal') {
+                      <span>{{ item[value.name] | currency:"ARS" }}</span>
+                    }
+                    @if (value.name && value.bold && !value.format) {
+                      <strong>{{ item[value.name] }}</strong>
+                    }
+                    @if (value.name && !value.bold && !value.format) {
+                      <span>{{ item[value.name] }}</span>
+                    }
+                    @if (value.span && value.muted) {
+                      <div class="list__subtitle muted"><span>{{ value.span }}</span></div>
+                    }
+                    @if (value.span && !value.muted) {
+                      <div class="list__subtitle"><span>{{ value.span }}</span></div>
+                    }
+                  </div>
+                }
+              </div>
+            }
+            <div (click)="sendResponse({ values: item, event: dialog.event, item: dialog.item })" class="list__cell list__cell-button">
+              <i class="fas fa-plus"></i>
+            </div>
+          </div>
+        }
+      </div>
+    }
+    @if (dialog.type == 'list' && pages > 1) {
+      <div class="pagination">
+        @if (page > 3) {
+          <div (click)="changePage(1)" class="pagination__page">
+            <div class="pagination__number"><i class="fas fa-chevron-left"></i></div>
+          </div>
+        }
+        @if (page > 2) {
+          <div (click)="changePage(page - 2)" class="pagination__page">
+            <div class="pagination__number">{{ page - 2 }}</div>
+          </div>
+        }
+        @if (page > 1) {
+          <div (click)="changePage(page - 1)" class="pagination__page">
+            <div class="pagination__number">{{ page - 1 }}</div>
+          </div>
+        }
+        <div class="pagination__current">
+          <div class="pagination__number">{{ page }}</div>
+        </div>
+        @if (pages > page) {
+          <div (click)="changePage(page + 1)" class="pagination__page">
+            <div class="pagination__number">{{ page + 1 }}</div>
+          </div>
+        }
+        @if (pages > page + 1) {
+          <div (click)="changePage(page + 2)" class="pagination__page">
+            <div class="pagination__number">{{ page + 2 }}</div>
+          </div>
+        }
+        @if (pages > page + 2) {
+          <div (click)="changePage(pages)" class="pagination__page">
+            <div class="pagination__number"><i class="fas fa-chevron-right"></i></div>
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Dialog modal form type -->
+    @if (dialog.type == 'form') {
+      <app-form [form]="dialog.form" (submitData)="sendResponse($event)"></app-form>
+    }
+
+    <!-- Dialog modal confirm type -->
+    @if (dialog.type == 'confirm') {
+      <div class="group">
+        <div class="group__box group__box-s">
+          <button (click)="sendResponse(false)" [disabled]="saving"><i class="fas fa-times"></i>NO</button>
+        </div>
+        <div class="group__box group__box-s">
+          <button (click)="saving=true;sendResponse({ values: dialog.values, event: dialog.event })" [ngClass]="{ 'group__save' : saving }" [disabled]="saving" class="group__primary">@if (saving) {
+            <i class="fas fa-spinner spin"></i>
+            }@if (!saving) {
+            <span><i class="fas fa-check"></i>SI</span>
+          }</button>
+        </div>
+      </div>
+    }
+  </div>
 </div>
