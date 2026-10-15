@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../_shared/service/auth.service';
 import { NavService } from 'src/app/_shared/service/nav.service';
@@ -7,6 +7,7 @@ import { LoadService } from '../../_shared/service/load.service';
 @Component({
     selector: 'app-nav',
     templateUrl: './nav.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class NavComponent implements OnInit {

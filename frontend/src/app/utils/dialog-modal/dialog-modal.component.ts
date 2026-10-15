@@ -1,8 +1,9 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
     selector: 'app-dialog-modal',
     templateUrl: './dialog-modal.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class DialogModalComponent implements OnInit {

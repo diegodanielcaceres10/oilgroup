@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BrandService } from '../../../_shared/service/brand.service';
 import { NavService } from '../../../_shared/service/nav.service';
@@ -9,6 +9,7 @@ import { Location } from '@angular/common';
 @Component({
     selector: 'app-brands',
     templateUrl: './brands.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class BrandsComponent implements OnInit {

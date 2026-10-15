@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ReportService } from '../../_shared/service/report.service';
 import { NavService } from '../../_shared/service/nav.service';
 import { HeaderService } from '../../_shared/service/header.service';
 import { LoadService } from '../../_shared/service/load.service';
 import { Location } from '@angular/common';
-import * as moment from 'moment';
+import moment from 'moment';
 import { HttpEventType } from '@angular/common/http';
 
 @Component({
     selector: 'app-report',
     templateUrl: './report.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ReportComponent implements OnInit {

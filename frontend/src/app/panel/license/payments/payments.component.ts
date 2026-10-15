@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LicenseService } from '../../../_shared/service/license.service';
 import { NavService } from '../../../_shared/service/nav.service';
 import { HeaderService } from '../../../_shared/service/header.service';
 import { LoadService } from '../../../_shared/service/load.service';
 import { Location } from '@angular/common';
-import * as moment from 'moment';
+import moment from 'moment';
 
 @Component({
     selector: 'app-payments',
     templateUrl: './payments.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class PaymentsComponent implements OnInit {

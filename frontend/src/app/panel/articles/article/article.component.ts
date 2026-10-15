@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ArticleService } from '../../../_shared/service/article.service';
 import { BrandService } from '../../../_shared/service/brand.service';
@@ -19,6 +19,7 @@ import am4themes_dataviz from "@amcharts/amcharts4/themes/dataviz";
 @Component({
     selector: 'app-article',
     templateUrl: './article.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ArticleComponent implements OnInit {

@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../_shared/service/auth.service';
 import { HeaderService } from 'src/app/_shared/service/header.service';
 import { trigger, style, animate, transition } from '@angular/animations';
-import * as moment from 'moment';
+import moment from 'moment';
 
 @Component({
     selector: 'app-header',
@@ -17,6 +17,7 @@ import * as moment from 'moment';
             ])
         ]),
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class HeaderComponent implements OnInit {

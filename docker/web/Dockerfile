@@ -1,11 +1,9 @@
-# Angular CLI 17 supports Node 18.13+ and 20.9+.
-FROM node:20-bullseye
+# Angular CLI 22 requires Node 22.22.3+ (or 24.15+).
+FROM node:22-bookworm
 
 WORKDIR /app
 
 COPY frontend/package.json frontend/package-lock.json ./
-
-RUN npm install --global npm@8
 
 RUN npm ci
 

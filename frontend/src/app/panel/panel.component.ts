@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { LoadService } from '../_shared/service/load.service';
 
 @Component({
     selector: 'app-panel',
     templateUrl: './panel.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class PanelComponent implements OnInit {

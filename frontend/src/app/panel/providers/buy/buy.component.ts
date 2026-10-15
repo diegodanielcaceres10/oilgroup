@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BuyService } from '../../../_shared/service/buy.service';
 import { ProviderService } from '../../../_shared/service/provider.service';
@@ -11,6 +11,7 @@ import { Location } from '@angular/common';
 @Component({
     selector: 'app-buy',
     templateUrl: './buy.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class BuyComponent implements OnInit {

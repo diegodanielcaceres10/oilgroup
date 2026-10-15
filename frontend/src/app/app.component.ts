@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { LoadService } from './_shared/service/load.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AppComponent implements OnInit {

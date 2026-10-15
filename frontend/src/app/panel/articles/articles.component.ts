@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { NavService } from '../../_shared/service/nav.service';
 import { LoadService } from '../../_shared/service/load.service';
 
 @Component({
     selector: 'app-articles',
     templateUrl: './articles.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ArticlesComponent implements OnInit {

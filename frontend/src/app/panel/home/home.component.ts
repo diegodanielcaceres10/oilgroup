@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../_shared/service/auth.service';
 import { MetricService } from '../../_shared/service/metric.service';
 import { NavService } from '../../_shared/service/nav.service';
@@ -14,6 +14,7 @@ import am4themes_dataviz from "@amcharts/amcharts4/themes/dataviz";
 @Component({
     selector: 'app-home',
     templateUrl: './home.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class HomeComponent implements OnInit {

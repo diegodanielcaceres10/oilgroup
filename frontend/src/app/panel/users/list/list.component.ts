@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../_shared/service/auth.service';
 import { UserService } from '../../../_shared/service/user.service';
@@ -11,6 +11,7 @@ import { Location } from '@angular/common';
 @Component({
     selector: 'app-list',
     templateUrl: './list.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ListComponent implements OnInit {

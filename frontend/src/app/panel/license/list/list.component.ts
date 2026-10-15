@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../_shared/service/auth.service';
 import { LicenseService } from '../../../_shared/service/license.service';
@@ -7,11 +7,12 @@ import { HeaderService } from '../../../_shared/service/header.service';
 import { LoadService } from '../../../_shared/service/load.service';
 import { Location } from '@angular/common';
 import { environment } from 'src/environments/environment';
-import * as moment from 'moment';
+import moment from 'moment';
 
 @Component({
     selector: 'app-list',
     templateUrl: './list.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ListComponent implements OnInit {

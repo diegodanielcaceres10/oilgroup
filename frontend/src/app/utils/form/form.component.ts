@@ -1,9 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { Validators, UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 
 @Component({
     selector: 'app-form',
     templateUrl: './form.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class FormComponent implements OnInit {

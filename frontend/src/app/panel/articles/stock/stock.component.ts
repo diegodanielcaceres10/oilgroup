@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../_shared/service/auth.service';
 import { ArticleService } from '../../../_shared/service/article.service';
@@ -11,6 +11,7 @@ import { HttpEventType } from '@angular/common/http';
 @Component({
     selector: 'app-stock',
     templateUrl: './stock.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class StockComponent implements OnInit {

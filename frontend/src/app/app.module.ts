@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UtilsModule } from './utils/utils.module';
 
@@ -28,7 +28,7 @@ registerLocaleData(localeEsAr);
     ],
     providers: [
         { provide: LOCALE_ID, useValue: 'es-AR' },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
     ],
     bootstrap: [AppComponent]
 })

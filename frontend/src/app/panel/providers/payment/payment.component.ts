@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProviderPaymentService } from '../../../_shared/service/provider_payment.service';
 import { ProviderService } from '../../../_shared/service/provider.service';
@@ -10,6 +10,7 @@ import { Location } from '@angular/common';
 @Component({
     selector: 'app-payment',
     templateUrl: './payment.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class PaymentComponent implements OnInit {

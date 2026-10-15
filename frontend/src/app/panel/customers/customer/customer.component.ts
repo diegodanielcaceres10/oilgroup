@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../_shared/service/auth.service';
 import { CustomerService } from '../../../_shared/service/customer.service';
@@ -12,6 +12,7 @@ import { HttpEventType } from '@angular/common/http';
 @Component({
     selector: 'app-customer',
     templateUrl: './customer.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CustomerComponent implements OnInit {
