@@ -5,9 +5,6 @@
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --port 4200 --watch --poll=2000",
     "build-prd": "ng build --configuration=production",
-    "build-hom": "ng build --configuration=hom",
-    "build-qua": "ng build --configuration=qua --base-href=/quality/oilgroup/web/",
-    "build-dev": "ng build --configuration=dev --base-href=/development/oilgroup/web/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

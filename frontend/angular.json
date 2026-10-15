@@ -85,33 +85,6 @@
                   "maximumError": "10kb"
                 }
               ]
-            },
-            "hom": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.hom.ts"
-                }
-              ],
-              "outputHashing": "all"
-            },
-            "qua": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.qua.ts"
-                }
-              ],
-              "outputHashing": "all"
-            },
-            "dev": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.dev.ts"
-                }
-              ],
-              "outputHashing": "all"
             }
           }
         },

@@ -1,4 +1,1 @@
 <router-outlet></router-outlet>
-@if (environment) {
-  <span [ngClass]="{ 'environment-dev' : environment == 'DEV', 'environment-qua' : environment == 'QUA', 'environment-hom' : environment == 'HOM' }" class="environment">Ambiente: <strong>{{ environment }}</strong></span>
-}

@@ -8,16 +8,16 @@ No se debe actualizar directamente de Angular 11 a 22 ni usar `--force` para ign
 
 ## Estado inicial
 
-| Componente | Versión / estado actual |
-| --- | --- |
-| Angular y Angular CLI | 11.2.x |
-| TypeScript | 4.1.x |
-| RxJS | 6.6.x |
-| Node para Docker web | 14 |
-| Testing unitario | Karma + Jasmine |
-| E2E | Protractor |
-| Lint | TSLint |
-| Arquitectura | `NgModule` y lazy-loading por módulos |
+| Componente            | Versión / estado actual               |
+| --------------------- | ------------------------------------- |
+| Angular y Angular CLI | 11.2.x                                |
+| TypeScript            | 4.1.x                                 |
+| RxJS                  | 6.6.x                                 |
+| Node para Docker web  | 14                                    |
+| Testing unitario      | Karma + Jasmine                       |
+| E2E                   | Protractor                            |
+| Lint                  | TSLint                                |
+| Arquitectura          | `NgModule` y lazy-loading por módulos |
 
 ## Requisitos de destino
 
@@ -86,11 +86,11 @@ npx ng update @angular/cli@^<major> @angular/core@^<major> --create-commits
 
 La opción `--create-commits` permite aislar y revertir las migraciones generadas por el CLI. Revisar el resultado antes de continuar.
 
-| Tramo | Majors | Node recomendado durante el tramo | Objetivo |
-| --- | --- | --- | --- |
-| A | 11 → 12 → 13 → 14 → 15 | Node 14, luego 16 | Salir de Angular 11 y estabilizar builders/configuración. |
-| B | 15 → 16 → 17 → 18 → 19 | Node 16, luego 18/20 | Actualizar TypeScript y dependencias del ecosistema. |
-| C | 19 → 20 → 21 → 22 | Node 20, luego 22 | Adoptar tooling actual y alcanzar Angular 22. |
+| Tramo | Majors                 | Node recomendado durante el tramo | Objetivo                                                  |
+| ----- | ---------------------- | --------------------------------- | --------------------------------------------------------- |
+| A     | 11 → 12 → 13 → 14 → 15 | Node 14, luego 16                 | Salir de Angular 11 y estabilizar builders/configuración. |
+| B     | 15 → 16 → 17 → 18 → 19 | Node 16, luego 18/20              | Actualizar TypeScript y dependencias del ecosistema.      |
+| C     | 19 → 20 → 21 → 22      | Node 20, luego 22                 | Adoptar tooling actual y alcanzar Angular 22.             |
 
 Consultar el [Update Guide oficial](https://angular.dev/update-guide) para cada salto, seleccionando Windows y el nivel de complejidad apropiado.
 
@@ -105,9 +105,6 @@ Consultar el [Update Guide oficial](https://angular.dev/update-guide) para cada 
 
    ```bash
    npm run build-prd
-   npm run build-hom
-   npm run build-qua
-   npm run build-dev
    ```
 
 7. Validar que `baseHref` y los archivos de entorno siguen apuntando a los paths correctos.
@@ -126,7 +123,7 @@ Ejemplo:
 const response = await this.http.get(url).toPromise();
 
 // Después
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom } from "rxjs";
 
 const response = await firstValueFrom(this.http.get(url));
 ```
@@ -182,7 +179,7 @@ No cambiar Node 14 a Node 22 mientras el frontend siga en Angular 11: esa combin
 La migración se considera completa cuando:
 
 - `ng version` muestra Angular CLI, Angular y TypeScript compatibles con Angular 22.
-- `npm run build-prd`, `build-hom`, `build-qua` y `build-dev` finalizan correctamente.
+- `npm run build-prd` finaliza correctamente.
 - Los tests unitarios y E2E de reemplazo pasan en CI.
 - Los flujos funcionales críticos pasan contra el backend local Dockerizado.
 - El Dockerfile web usa una versión de Node compatible con Angular 22.
