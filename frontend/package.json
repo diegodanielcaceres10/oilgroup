@@ -6,8 +6,7 @@
     "start": "ng serve --host 0.0.0.0 --port 4200 --watch --poll=2000",
     "build-prd": "ng build --configuration=production",
     "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "lint": "ng lint"
   },
   "author": "Diego Caceres",
   "license": "ISC",
@@ -30,7 +29,7 @@
     "zone.js": "^0.15.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^22.2.2",
+    "@angular/build": "^22.2.2",
     "@angular/cli": "^22.2.2",
     "@angular/compiler-cli": "^22.2.3",
     "@types/jasmine": "~3.6.0",
