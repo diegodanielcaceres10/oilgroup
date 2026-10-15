@@ -5,16 +5,13 @@
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --port 4200 --watch --poll=2000",
     "build-prd": "ng build --configuration=production",
-    "test": "ng test",
-    "lint": "ng lint"
+    "test": "ng test"
   },
   "author": "Diego Caceres",
   "license": "ISC",
   "private": true,
   "dependencies": {
     "@amcharts/amcharts4": "^4.10.17",
-    "@amcharts/amcharts4-fonts": "^4.0.1",
-    "@amcharts/amcharts4-geodata": "^4.1.19",
     "@angular/animations": "^22.2.3",
     "@angular/common": "^22.2.3",
     "@angular/compiler": "^22.2.3",
@@ -33,19 +30,13 @@
     "@angular/cli": "^22.2.2",
     "@angular/compiler-cli": "^22.2.3",
     "@types/jasmine": "~3.6.0",
-    "@types/node": "^20.19.0",
-    "codelyzer": "^6.0.0",
     "istanbul-lib-instrument": "^6.0.3",
     "jasmine-core": "~3.6.0",
-    "jasmine-spec-reporter": "~5.0.0",
     "karma": "~6.4.4",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage": "~2.0.3",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "^1.5.0",
-    "protractor": "~7.0.0",
-    "ts-node": "~8.3.0",
-    "tslint": "~6.1.0",
     "typescript": "~6.0.3"
   }
 }
