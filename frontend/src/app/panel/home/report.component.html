@@ -32,7 +32,7 @@
                   <span>{{ filter.label }}:</span>
                   <strong>{{ filter.value }}</strong>
                   @if (!filter.required) {
-                    <span (click)="filter.value = '';getAll(1)" class="click"><i class="fas fa-times"></i></span>
+                    <span (click)="filter.value = '';getAll()" class="click"><i class="fas fa-times"></i></span>
                   }
                 </div>
               }
@@ -41,7 +41,7 @@
                   <span>{{ filter.label }}:</span>
                   <strong>{{ filter.value[filter.nameLabel] }}</strong>
                   @if (!filter.required) {
-                    <span (click)="filter.value = '';getAll(1)" class="click"><i class="fas fa-times"></i></span>
+                    <span (click)="filter.value = '';getAll()" class="click"><i class="fas fa-times"></i></span>
                   }
                 </div>
               }
@@ -120,7 +120,7 @@
                   <span>{{ filter.label }}:</span>
                   <strong>{{ filter.value }}</strong>
                   @if (!filter.required) {
-                    <span (click)="filter.value = '';getAll(1)" class="click"><i class="fas fa-times"></i></span>
+                    <span (click)="filter.value = '';getAll()" class="click"><i class="fas fa-times"></i></span>
                   }
                 </div>
               }
@@ -129,7 +129,7 @@
                   <span>{{ filter.label }}:</span>
                   <strong>{{ filter.value[filter.nameLabel] }}</strong>
                   @if (!filter.required) {
-                    <span (click)="filter.value = '';getAll(1)" class="click"><i class="fas fa-times"></i></span>
+                    <span (click)="filter.value = '';getAll()" class="click"><i class="fas fa-times"></i></span>
                   }
                 </div>
               }

@@ -141,7 +141,7 @@ export class NavComponent implements OnInit {
         }
     }
 
-    redirect(link, name, subname) {
+    redirect(link, name, subname?) {
         try {
             this.menuselected = name
             this.pageselected = subname
