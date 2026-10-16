@@ -89,7 +89,7 @@ export class ArticleComponent implements OnInit {
         }
     }
 
-    find(id) {
+    find(id: any) {
         try {
             this.LoadService.change(true)
             this.ArticleService.find({ article: { id: id } }).then((res: any) => {
@@ -121,7 +121,7 @@ export class ArticleComponent implements OnInit {
                 if (res.status == "success") {
                     this.providers = res.data
                     if (this.article.provider.id > 0) {
-                        this.article.provider = this.providers.find(i => i.id == this.article.provider.id)
+                        this.article.provider = this.providers.find((i: any) => i.id == this.article.provider.id)
                     }
                 } else {
                     console.error("Response:", res.status)
@@ -168,7 +168,7 @@ export class ArticleComponent implements OnInit {
                                 name: "fantasy_name",
                                 id: "provider",
                                 type: "select",
-                                options: this.providers.filter(i => i.active),
+                                options: this.providers.filter((i: any) => i.active),
                                 nameValue: "id",
                                 nameLabel: "fantasy_name",
                                 label: "Proveedor",
@@ -179,7 +179,7 @@ export class ArticleComponent implements OnInit {
                             {
                                 name: "brand",
                                 type: "select",
-                                options: this.brands.map((i) => { return i.name }),
+                                options: this.brands.map((i: any) => { return i.name }),
                                 label: "Marca",
                                 value: this.article.brand,
                                 creatable: true,
@@ -188,7 +188,7 @@ export class ArticleComponent implements OnInit {
                             {
                                 name: "category",
                                 type: "select",
-                                options: this.categories.map((i) => { return i.name }),
+                                options: this.categories.map((i: any) => { return i.name }),
                                 label: "Categoria",
                                 value: this.article.category,
                                 creatable: true,
@@ -263,7 +263,7 @@ export class ArticleComponent implements OnInit {
         }
     }
 
-    profitabilityChart(data) {
+    profitabilityChart(data: any) {
         try {
             am4core.useTheme(am4themes_dataviz);
             am4core.useTheme(am4themes_animated);
@@ -306,7 +306,7 @@ export class ArticleComponent implements OnInit {
         }
     }
 
-    setList(value) {
+    setList(value: any) {
         try {
             this.tab = value
             this.filtered = value == "medidas" ? this.article.prices : value == "ventas" ? this.article.sales : this.article.history
@@ -322,7 +322,7 @@ export class ArticleComponent implements OnInit {
         }
     }
 
-    changePage(value) {
+    changePage(value: any) {
         try {
             this.paging = true
             this.view = []
@@ -341,7 +341,7 @@ export class ArticleComponent implements OnInit {
         }
     }
 
-    sendForm(data) {
+    sendForm(data: any) {
         try {
             if (data) {
                 if (data.event == "createArticleDialogConfirm") {
@@ -363,7 +363,7 @@ export class ArticleComponent implements OnInit {
     }
 
     // Define dialogs
-    createArticleDialogConfirm(data) {
+    createArticleDialogConfirm(data: any) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -377,7 +377,7 @@ export class ArticleComponent implements OnInit {
         }
     }
 
-    updateArticleDialogConfirm(data) {
+    updateArticleDialogConfirm(data: any) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -438,7 +438,7 @@ export class ArticleComponent implements OnInit {
         }
     }
 
-    addMeasureDialogConfirm(data) {
+    addMeasureDialogConfirm(data: any) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -452,7 +452,7 @@ export class ArticleComponent implements OnInit {
         }
     }
 
-    updateMeasureDialogForm(data) {
+    updateMeasureDialogForm(data: any) {
         try {
             this.dialogs.push({
                 type: "form",
@@ -506,7 +506,7 @@ export class ArticleComponent implements OnInit {
         }
     }
 
-    updateMeasureDialogConfirm(data) {
+    updateMeasureDialogConfirm(data: any) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -520,7 +520,7 @@ export class ArticleComponent implements OnInit {
         }
     }
 
-    deleteMeasureDialogConfirm(data) {
+    deleteMeasureDialogConfirm(data: any) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -548,7 +548,7 @@ export class ArticleComponent implements OnInit {
     }
 
     // Define response dialog events
-    responseDialog(data) {
+    responseDialog(data: any) {
         try {
             if (data) {
                 if (data.event == "createArticle") {
@@ -581,7 +581,7 @@ export class ArticleComponent implements OnInit {
     }
 
     // Define events
-    createArticle(data) {
+    createArticle(data: any) {
         try {
             data.cost = data.cost ? parseFloat(data.cost) : false
             this.ArticleService.create({ article: data }).then((res: any) => {
@@ -614,7 +614,7 @@ export class ArticleComponent implements OnInit {
         }
     }
 
-    updateArticle(data) {
+    updateArticle(data: any) {
         try {
             data.cost = data.cost ? parseFloat(data.cost) : false
             this.ArticleService.update({ article: data }).then((res: any) => {
@@ -645,7 +645,7 @@ export class ArticleComponent implements OnInit {
         }
     }
 
-    addMeasure(data) {
+    addMeasure(data: any) {
         try {
             data.units = parseInt(data.units)
             this.ArticleService.addMeasure({ price: data }).then((res: any) => {
@@ -675,7 +675,7 @@ export class ArticleComponent implements OnInit {
         }
     }
 
-    updateMeasure(data) {
+    updateMeasure(data: any) {
         try {
             this.ArticleService.updateMeasure({ price: data }).then((res: any) => {
                 if (res.status == "success") {
@@ -704,7 +704,7 @@ export class ArticleComponent implements OnInit {
         }
     }
 
-    deleteMeasure(data) {
+    deleteMeasure(data: any) {
         try {
             this.ArticleService.deleteMeasure({ price: data }).then((res: any) => {
                 if (res.status == "success") {
@@ -748,7 +748,7 @@ export class ArticleComponent implements OnInit {
                     this.HeaderService.showError("Error en la conectividad")
                     this.dialogs.pop()
                 }
-            }), (e) => {
+            }), (e: any) => {
                 console.error("Error", e)
                 this.HeaderService.showError("Error en la conectividad")
                 this.dialogs.pop()

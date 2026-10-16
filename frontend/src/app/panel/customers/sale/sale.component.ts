@@ -84,7 +84,7 @@ export class SaleComponent implements OnInit {
         }
     }
 
-    find(id) {
+    find(id: any) {
         try {
             this.LoadService.change(true)
             this.SaleService.find({ sale: { id: id } }).then((res: any) => {
@@ -92,8 +92,8 @@ export class SaleComponent implements OnInit {
                     this.sale = res.data
                     this.sale.total = this.sale.total ? this.sale.total.toFixed(2) : "0.00"
                     if (this.sale.status == "Pendiente") {
-                        this.sale.articles = this.sale.items.filter(i => i.article)
-                        this.sale.details = this.sale.items.filter(i => !i.article)
+                        this.sale.articles = this.sale.items.filter((i: any) => i.article)
+                        this.sale.details = this.sale.items.filter((i: any) => !i.article)
                         this.ArticleService.getPrices().then((res: any) => {
                             if (res.status == "success") {
                                 this.articles = res.data
@@ -174,7 +174,7 @@ export class SaleComponent implements OnInit {
                 if (res.status == "success") {
                     this.customers = res.data
                     if (this.sale.customer && this.sale.customer.id > 0) {
-                        this.sale.customer = this.customers.find(i => i.id == this.sale.customer.id)
+                        this.sale.customer = this.customers.find((i: any) => i.id == this.sale.customer.id)
                     }
                 } else {
                     console.error("Response:", res.status)
@@ -403,7 +403,7 @@ export class SaleComponent implements OnInit {
         }
     }
 
-    sendForm(data) {
+    sendForm(data: any) {
         try {
             if (data) {
                 if (data.event == "back" && this.path > 0) {
@@ -438,11 +438,11 @@ export class SaleComponent implements OnInit {
     }
 
     // Define steps events
-    setSale(data) {
+    setSale(data: any) {
         try {
             let item = data
             this.steps[0].groups[0].fields[0].value = item.status
-            this.steps[0].groups[0].fields[1].value = this.customers.find(i => i.id == item.customer)
+            this.steps[0].groups[0].fields[1].value = this.customers.find((i: any) => i.id == item.customer)
             this.steps[0].groups[0].fields[2].value = item.billing
             this.steps[0].groups[0].fields[3].value = item.document
             this.steps[0].groups[0].fields[4].value = item.description
@@ -477,7 +477,7 @@ export class SaleComponent implements OnInit {
 
     setStock() {
         try {
-            let item = this.sale.articles.find(i => !i.review)
+            let item = this.sale.articles.find((i: any) => !i.review)
             if (this.sale.status != "Pendiente" && item) {
                 this.error = "Debe confirmar la revisión de todos los articulos"
             } else {
@@ -490,7 +490,7 @@ export class SaleComponent implements OnInit {
         }
     }
 
-    setPayment(data) {
+    setPayment(data: any) {
         try {
             this.sale.payment = data
             this.steps[3].groups[0].fields[0].value = this.sale.payment.status
@@ -571,7 +571,7 @@ export class SaleComponent implements OnInit {
         }
     }
 
-    addArticleDialogForm(data) {
+    addArticleDialogForm(data: any) {
         try {
             const dataSelect = []
             if (data.price_list) dataSelect.push({ value: data.price_list, text: "Precio de Lista: $" + data.price_list })
@@ -742,7 +742,7 @@ export class SaleComponent implements OnInit {
         }
     }
 
-    searchReplaceDialogList(data) {
+    searchReplaceDialogList(data: any) {
         let article = data.article
         try {
             this.dialogs.push({
@@ -752,7 +752,7 @@ export class SaleComponent implements OnInit {
                 message: "Todos los articulos con precio definido",
                 item: data,
                 list: {
-                    data: this.articles.filter(i => i.id != article.id && i.stock > 0 && i.measure == "Unidad"),
+                    data: this.articles.filter((i: any) => i.id != article.id && i.stock > 0 && i.measure == "Unidad"),
                     columns: [
                         {
                             type: "full",
@@ -788,7 +788,7 @@ export class SaleComponent implements OnInit {
         }
     }
 
-    addReplaceDialogForm(item, data) {
+    addReplaceDialogForm(item: any, data: any) {
         let article = data.article
         try {
             this.dialogs.push({
@@ -865,7 +865,7 @@ export class SaleComponent implements OnInit {
         }
     }
 
-    updateCountForm(data) {
+    updateCountForm(data: any) {
         let article = data.article
         try {
             this.dialogs.push({
@@ -935,7 +935,7 @@ export class SaleComponent implements OnInit {
 
     reviewSaleDialogConfirm() {
         try {
-            if (this.sale.articles.find(i => !i.review && !i.deleted) || this.sale.details.find(i => !i.review && !i.deleted)) {
+            if (this.sale.articles.find((i: any) => !i.review && !i.deleted) || this.sale.details.find((i: any) => !i.review && !i.deleted)) {
                 this.error = "Debe confirmar la revisión de todos los articulos y detalles adicionales"
             } else {
                 this.dialogs.push({
@@ -991,7 +991,7 @@ export class SaleComponent implements OnInit {
         }
     }
 
-    setBillingDialogConfirm(data) {
+    setBillingDialogConfirm(data: any) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -1032,7 +1032,7 @@ export class SaleComponent implements OnInit {
     }
 
     // Define response dialog events
-    responseDialog(data) {
+    responseDialog(data: any) {
         try {
             if (data) {
                 if (data.event == "addArticleDialogForm") {
@@ -1078,7 +1078,7 @@ export class SaleComponent implements OnInit {
     }
 
     // Define events
-    addArticle(data) {
+    addArticle(data: any) {
         try {
             data.price = parseFloat(data.price)
             data.quantity = parseFloat(data.quantity)
@@ -1096,7 +1096,7 @@ export class SaleComponent implements OnInit {
         }
     }
 
-    removeArticle(data) {
+    removeArticle(data: any) {
         try {
             this.sale.articles.splice(this.sale.articles.indexOf(data), 1)
             this.sale.total -= data.subtotal
@@ -1109,7 +1109,7 @@ export class SaleComponent implements OnInit {
         }
     }
 
-    addDetail(data) {
+    addDetail(data: any) {
         try {
             data.subtotal = parseFloat(data.subtotal)
             this.sale.details.push(data)
@@ -1122,7 +1122,7 @@ export class SaleComponent implements OnInit {
         }
     }
 
-    removeDetail(data) {
+    removeDetail(data: any) {
         try {
             this.sale.details.splice(this.sale.details.indexOf(data), 1)
             this.sale.total -= data.subtotal
@@ -1135,7 +1135,7 @@ export class SaleComponent implements OnInit {
         }
     }
 
-    addDiscount(data) {
+    addDiscount(data: any) {
         try {
             let subtotal = this.sale.total * data.discount / 100 * -1
             let item = { concept: data.discount + "% OFF", subtotal: subtotal }
@@ -1149,7 +1149,7 @@ export class SaleComponent implements OnInit {
         }
     }
 
-    addReplace(data) {
+    addReplace(data: any) {
         try {
             data.stock = parseFloat(data.stock)
             if (!this.sale.articles[data.index].replaces) this.sale.articles[data.index].replaces = []
@@ -1163,7 +1163,7 @@ export class SaleComponent implements OnInit {
         }
     }
 
-    removeReplace(item, replace) {
+    removeReplace(item: any, replace: any) {
         try {
             item.replaces.splice(item.replaces.indexOf(replace), 1)
             item.stock = + replace.stock
@@ -1174,7 +1174,7 @@ export class SaleComponent implements OnInit {
         }
     }
 
-    updateCount(data) {
+    updateCount(data: any) {
         try {
             data.stock = parseFloat(data.stock)
             this.sale.articles[data.index].stock = data.stock
@@ -1273,7 +1273,7 @@ export class SaleComponent implements OnInit {
         }
     }
 
-    billingSale(data) {
+    billingSale(data: any) {
         try {
             this.SaleService.billing({ sale: data }).then((res: any) => {
                 if (res.status == "success") {
@@ -1317,7 +1317,7 @@ export class SaleComponent implements OnInit {
                     this.HeaderService.showError("Error en la conectividad")
                     this.dialogs.pop()
                 }
-            }), (e) => {
+            }), (e: any) => {
                 console.error("Error", e)
                 this.HeaderService.showError("Error en la conectividad")
                 this.dialogs.pop()

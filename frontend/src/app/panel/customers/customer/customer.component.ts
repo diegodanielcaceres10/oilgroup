@@ -79,7 +79,7 @@ export class CustomerComponent implements OnInit {
         }
     }
 
-    find(id) {
+    find(id: any) {
         try {
             this.LoadService.change(true)
             this.CustomerService.find({ customer: { id: id }, }).then((res: any) => {
@@ -138,7 +138,7 @@ export class CustomerComponent implements OnInit {
                                 name: "username",
                                 id: "user",
                                 type: "select",
-                                options: this.users.filter(i => i.active),
+                                options: this.users.filter((i: any) => i.active),
                                 nameValue: "username",
                                 namesLabel: ["lastname", "firstname"],
                                 symbol: "fas fa-user-tie",
@@ -223,7 +223,7 @@ export class CustomerComponent implements OnInit {
         }
     }
 
-    changePage(value) {
+    changePage(value: any) {
         try {
             this.paging = true
             this.salesView = []
@@ -241,7 +241,7 @@ export class CustomerComponent implements OnInit {
         }
     }
 
-    sendForm(data) {
+    sendForm(data: any) {
         try {
             if (data) {
                 if (data.event == "createCustomerDialogConfirm") {
@@ -263,7 +263,7 @@ export class CustomerComponent implements OnInit {
     }
 
     // Define dialogs
-    createCustomerDialogConfirm(data) {
+    createCustomerDialogConfirm(data: any) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -277,7 +277,7 @@ export class CustomerComponent implements OnInit {
         }
     }
 
-    updateCustomerDialogConfirm(data) {
+    updateCustomerDialogConfirm(data: any) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -305,7 +305,7 @@ export class CustomerComponent implements OnInit {
     }
 
     // Define response dialog events
-    responseDialog(data) {
+    responseDialog(data: any) {
         try {
             if (data) {
                 if (data.event == "createCustomer") {
@@ -329,7 +329,7 @@ export class CustomerComponent implements OnInit {
     }
 
     // Define events
-    createCustomer(data) {
+    createCustomer(data: any) {
         try {
             this.CustomerService.create({ customer: data, }).then((res: any) => {
                 if (res.status == "success") {
@@ -360,7 +360,7 @@ export class CustomerComponent implements OnInit {
         }
     }
 
-    updateCustomer(data) {
+    updateCustomer(data: any) {
         try {
             this.CustomerService.update({ customer: data, }).then((res: any) => {
                 if (res.status == "success") {
@@ -410,7 +410,7 @@ export class CustomerComponent implements OnInit {
                     this.HeaderService.showError("Error en la conectividad")
                     this.dialogs.pop()
                 }
-            }), (e) => {
+            }), (e: any) => {
                 console.error("Error", e)
                 this.HeaderService.showError("Error en la conectividad")
                 this.dialogs.pop()

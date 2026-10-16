@@ -58,7 +58,7 @@ export class BrandsComponent implements OnInit {
         }
     }
 
-    getAll(page) {
+    getAll(page: number) {
         try {
             this.paging = true
             this.brandsFiltered = []
@@ -89,7 +89,7 @@ export class BrandsComponent implements OnInit {
         }
     }
 
-    changePage(value) {
+    changePage(value: any) {
         try {
             this.paging = true
             this.brandsView = []
@@ -145,7 +145,7 @@ export class BrandsComponent implements OnInit {
 
     }
 
-    updateBrandDialogForm(data) {
+    updateBrandDialogForm(data: any) {
         try {
             this.dialogs.push({
                 type: "form",
@@ -187,7 +187,7 @@ export class BrandsComponent implements OnInit {
         }
     }
 
-    updateBrandDialogConfirm(data) {
+    updateBrandDialogConfirm(data: any) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -202,11 +202,11 @@ export class BrandsComponent implements OnInit {
     }
 
     // Define response dialog events
-    responseDialog(data) {
+    responseDialog(data: any) {
         try {
             if (data) {
                 if (data.event == "getAll") {
-                    this.filters.map((i) => {
+                    this.filters.map((i: any) => {
                         if (i.type == "select" && i.id) {
                             i.value = {}
                             i.value[i.nameValue] = data.values[i.id]
@@ -236,7 +236,7 @@ export class BrandsComponent implements OnInit {
     }
 
     // Define events
-    updateBrand(data) {
+    updateBrand(data: any) {
         try {
             this.BrandService.update({ brand: data }).then((res: any) => {
                 if (res.status == "success") {

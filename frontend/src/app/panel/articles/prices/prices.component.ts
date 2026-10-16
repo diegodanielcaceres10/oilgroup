@@ -120,7 +120,7 @@ export class PricesComponent implements OnInit {
         }
     }
 
-    getAll(page) {
+    getAll(page: number) {
         try {
             this.paging = true
             this.articlesFiltered = []
@@ -151,7 +151,7 @@ export class PricesComponent implements OnInit {
         }
     }
 
-    changePage(value) {
+    changePage(value: any) {
         try {
             this.paging = true
             this.articlesView = []
@@ -219,7 +219,7 @@ export class PricesComponent implements OnInit {
         }
     }
 
-    updatePriceDialogForm(data) {
+    updatePriceDialogForm(data: any) {
         try {
             this.dialogs.push({
                 type: "form",
@@ -281,7 +281,7 @@ export class PricesComponent implements OnInit {
         }
     }
 
-    updatePriceDialogConfirm(data) {
+    updatePriceDialogConfirm(data: any) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -296,11 +296,11 @@ export class PricesComponent implements OnInit {
     }
 
     // Define response dialog events
-    responseDialog(data) {
+    responseDialog(data: any) {
         try {
             if (data) {
                 if (data.event == "getAll") {
-                    this.filters.map((i) => {
+                    this.filters.map((i: any) => {
                         if (i.type == "select" && i.id) {
                             i.value = {}
                             i.value[i.nameValue] = data.values[i.id]
@@ -332,7 +332,7 @@ export class PricesComponent implements OnInit {
     }
 
     // Define events
-    updatePrice(data) {
+    updatePrice(data: any) {
         try {
             data.price_list = data.price_list ? parseFloat(data.price_list) : false
             data.price_offer = data.price_offer ? parseFloat(data.price_offer) : false
@@ -377,7 +377,7 @@ export class PricesComponent implements OnInit {
                     this.HeaderService.showError("Error en la conectividad")
                     this.dialogs.pop()
                 }
-            }), (e) => {
+            }), (e: any) => {
                 console.error("Error", e)
                 this.HeaderService.showError("Error en la conectividad")
                 this.dialogs.pop()

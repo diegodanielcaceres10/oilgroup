@@ -51,7 +51,7 @@ export class PaymentComponent implements OnInit {
                     if (res.status == "success") {
                         this.customers = res.data
                         if (this.payment.customer.id > 0) {
-                            this.payment.customer = this.customers.find(i => i.id == this.payment.customer.id)
+                            this.payment.customer = this.customers.find((i: any) => i.id == this.payment.customer.id)
                         }
                         setTimeout(() => {
                             this.createMode = true
@@ -65,7 +65,7 @@ export class PaymentComponent implements OnInit {
                                                 name: "fantasy_name",
                                                 id: "customer",
                                                 type: "select",
-                                                options: this.customers.filter(i => i.active),
+                                                options: this.customers.filter((i: any) => i.active),
                                                 nameValue: "id",
                                                 nameLabel: "fantasy_name",
                                                 label: "Cliente",
@@ -204,7 +204,7 @@ export class PaymentComponent implements OnInit {
         }
     }
 
-    find(id) {
+    find(id: any) {
         try {
             this.LoadService.change(true)
             this.CustomerPaymentService.find({ payment: { id: id } }).then((res: any) => {
@@ -230,7 +230,7 @@ export class PaymentComponent implements OnInit {
         }
     }
 
-    sendForm(data) {
+    sendForm(data: any) {
         try {
             if (data) {
                 this.createCustomerPaymentDialogConfirm(data.values)
@@ -241,7 +241,7 @@ export class PaymentComponent implements OnInit {
     }
 
     // Define dialogs
-    createCustomerPaymentDialogConfirm(data) {
+    createCustomerPaymentDialogConfirm(data: any) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -269,7 +269,7 @@ export class PaymentComponent implements OnInit {
     }
 
     // Define response dialog events
-    responseDialog(data) {
+    responseDialog(data: any) {
         try {
             if (data) {
                 if (data.event == "createPayment") {
@@ -291,7 +291,7 @@ export class PaymentComponent implements OnInit {
     }
 
     // Define events
-    createPayment(data) {
+    createPayment(data: any) {
         try {
             data.import = parseFloat(data.import)
             this.CustomerPaymentService.create({ payment: data }).then((res: any) => {

@@ -58,7 +58,7 @@ export class CategoriesComponent implements OnInit {
         }
     }
 
-    getAll(page) {
+    getAll(page: number) {
         try {
             this.paging = true
             this.categoriesFiltered = []
@@ -89,7 +89,7 @@ export class CategoriesComponent implements OnInit {
         }
     }
 
-    changePage(value) {
+    changePage(value: any) {
         try {
             this.paging = true
             this.categoriesView = []
@@ -145,7 +145,7 @@ export class CategoriesComponent implements OnInit {
 
     }
 
-    updateCategoryDialogForm(data) {
+    updateCategoryDialogForm(data: any) {
         try {
             this.dialogs.push({
                 type: "form",
@@ -188,7 +188,7 @@ export class CategoriesComponent implements OnInit {
         }
     }
 
-    updateCategoryDialogConfirm(data) {
+    updateCategoryDialogConfirm(data: any) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -203,11 +203,11 @@ export class CategoriesComponent implements OnInit {
     }
 
     // Define response dialog events
-    responseDialog(data) {
+    responseDialog(data: any) {
         try {
             if (data) {
                 if (data.event == "getAll") {
-                    this.filters.map((i) => {
+                    this.filters.map((i: any) => {
                         if (i.type == "select" && i.id) {
                             i.value = {}
                             i.value[i.nameValue] = data.values[i.id]
@@ -237,7 +237,7 @@ export class CategoriesComponent implements OnInit {
     }
 
     // Define events
-    updateCategory(data) {
+    updateCategory(data: any) {
         try {
             this.CategoryService.update({ category: data }).then((res: any) => {
                 if (res.status == "success") {

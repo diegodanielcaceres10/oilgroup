@@ -114,7 +114,7 @@ export class StockComponent implements OnInit {
         }
     }
 
-    getAll(page) {
+    getAll(page: number) {
         try {
             this.paging = true
             this.articlesFiltered = []
@@ -148,7 +148,7 @@ export class StockComponent implements OnInit {
         }
     }
 
-    changePage(value) {
+    changePage(value: any) {
         try {
             this.paging = true
             this.articlesView = []
@@ -216,7 +216,7 @@ export class StockComponent implements OnInit {
         }
     }
 
-    editStockDialogForm(data) {
+    editStockDialogForm(data: any) {
         try {
             this.dialogs.push({
                 type: "form",
@@ -270,7 +270,7 @@ export class StockComponent implements OnInit {
         }
     }
 
-    updateStockDialogConfirm(data) {
+    updateStockDialogConfirm(data: any) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -285,11 +285,11 @@ export class StockComponent implements OnInit {
     }
 
     // Define response dialog events
-    responseDialog(data) {
+    responseDialog(data: any) {
         try {
             if (data) {
                 if (data.event == "getAll") {
-                    this.filters.map((i) => {
+                    this.filters.map((i: any) => {
                         if (i.type == "select" && i.id) {
                             i.value = {}
                             i.value[i.nameValue] = data.values[i.id]
@@ -321,7 +321,7 @@ export class StockComponent implements OnInit {
     }
 
     // Define events
-    updateStock(data) {
+    updateStock(data: any) {
         try {
             data.units = parseFloat(data.units)
             this.ArticleService.updateStock({ article: data }).then((res: any) => {
@@ -365,7 +365,7 @@ export class StockComponent implements OnInit {
                     this.HeaderService.showError("Error en la conectividad")
                     this.dialogs.pop()
                 }
-            }), (e) => {
+            }), (e: any) => {
                 console.error("Error", e)
                 this.HeaderService.showError("Error en la conectividad")
                 this.dialogs.pop()

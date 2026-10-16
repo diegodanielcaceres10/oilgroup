@@ -84,7 +84,7 @@ export class SalesComponent implements OnInit {
         }
     }
 
-    changePage(value) {
+    changePage(value: any) {
         try {
             this.paging = true
             this.salesView = []
