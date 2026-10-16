@@ -70,7 +70,7 @@ export class UserComponent implements OnInit {
         }
     }
 
-    find(username) {
+    find(username: any) {
         try {
             this.LoadService.change(true)
             this.UserService.find({ user: { username: username } }).then((res: any) => {
@@ -171,7 +171,7 @@ export class UserComponent implements OnInit {
         }
     }
 
-    changePage(value) {
+    changePage(value: any) {
         try {
             this.paging = true
             this.salesView = []
@@ -189,7 +189,7 @@ export class UserComponent implements OnInit {
         }
     }
 
-    sendForm(data) {
+    sendForm(data: any) {
         try {
             if (data) {
                 if (data.event == "createUserDialogConfirm") {
@@ -211,7 +211,7 @@ export class UserComponent implements OnInit {
     }
 
     // Define dialogs
-    createUserDialogConfirm(data) {
+    createUserDialogConfirm(data: any) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -225,7 +225,7 @@ export class UserComponent implements OnInit {
         }
     }
 
-    updateUserDialogConfirm(data) {
+    updateUserDialogConfirm(data: any) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -279,7 +279,7 @@ export class UserComponent implements OnInit {
     }
 
     // Define response dialog events
-    responseDialog(data) {
+    responseDialog(data: any) {
         try {
             if (data) {
                 if (data.event == "createUser") {
@@ -307,7 +307,7 @@ export class UserComponent implements OnInit {
     }
 
     // Define events
-    createUser(data) {
+    createUser(data: any) {
         try {
             this.UserService.create({ user: data }).then((res: any) => {
                 if (res.status == "success") {
@@ -339,7 +339,7 @@ export class UserComponent implements OnInit {
         }
     }
 
-    updateUser(data) {
+    updateUser(data: any) {
         try {
             this.UserService.update({ user: data }).then((res: any) => {
                 if (res.status == "success") {
@@ -414,7 +414,7 @@ export class UserComponent implements OnInit {
                     this.HeaderService.showError("Error en la conectividad")
                     this.dialogs.pop()
                 }
-            }), (e) => {
+            }), (e: any) => {
                 console.error("Error", e)
                 this.HeaderService.showError("Error en la conectividad")
                 this.dialogs.pop()
@@ -444,7 +444,7 @@ export class UserComponent implements OnInit {
                     this.HeaderService.showError("Error en la conectividad")
                     this.dialogs.pop()
                 }
-            }), (e) => {
+            }), (e: any) => {
                 console.error("Error", e)
                 this.HeaderService.showError("Error en la conectividad")
                 this.dialogs.pop()

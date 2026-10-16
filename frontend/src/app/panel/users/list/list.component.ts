@@ -112,7 +112,7 @@ export class ListComponent implements OnInit {
         }
     }
 
-    getAll(page) {
+    getAll(page: number) {
         try {
             this.paging = true
             this.usersFiltered = []
@@ -143,7 +143,7 @@ export class ListComponent implements OnInit {
         }
     }
 
-    changePage(value) {
+    changePage(value: any) {
         try {
             this.paging = true
             this.usersView = []
@@ -199,7 +199,7 @@ export class ListComponent implements OnInit {
 
     }
 
-    activeUserDialogConfirm(data) {
+    activeUserDialogConfirm(data: any) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -214,11 +214,11 @@ export class ListComponent implements OnInit {
     }
 
     // Define response dialog events
-    responseDialog(data) {
+    responseDialog(data: any) {
         try {
             if (data) {
                 if (data.event == "getAll") {
-                    this.filters.map((i) => {
+                    this.filters.map((i: any) => {
                         if (i.type == "select" && i.id) {
                             i.value = {}
                             i.value[i.nameValue] = data.values[i.id]
@@ -244,7 +244,7 @@ export class ListComponent implements OnInit {
         }
     }
 
-    activeUser(data) {
+    activeUser(data: any) {
         try {
             this.UserService.active({ user: data }).then((res: any) => {
                 if (res.status == "success") {
