@@ -53,7 +53,7 @@ export class ListComponent implements OnInit {
         }
     }
 
-    getAll(page) {
+    getAll(page: number) {
         try {
             this.paging = true
             this.licensesFiltered = []
@@ -63,7 +63,7 @@ export class ListComponent implements OnInit {
                 if (res.status == "success") {
                     this.licenses = res.data
                     this.licensesFiltered = res.data
-                    let current = this.licensesFiltered && this.licensesFiltered.find(i => i.current);
+                    let current = this.licensesFiltered && this.licensesFiltered.find((i: any) => i.current);
                     if (current) {
                         if (current.coefficient_validate) {
                             let validatetime = current.coefficient_validate && moment(current.coefficient_validate).format("YYYY-MM-DD, HH:mm:ss");
@@ -99,7 +99,7 @@ export class ListComponent implements OnInit {
         }
     }
 
-    changePage(value) {
+    changePage(value: any) {
         try {
             this.paging = true
             this.licensesView = []
@@ -119,7 +119,7 @@ export class ListComponent implements OnInit {
     }
 
     // Define dialogs
-    setPriceDialogConfirm(data) {
+    setPriceDialogConfirm(data: any) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -133,7 +133,7 @@ export class ListComponent implements OnInit {
         }
     }
 
-    uploadTicketDialogForm(data) {
+    uploadTicketDialogForm(data: any) {
         try {
             this.dialogs.push({
                 type: "form",
@@ -173,7 +173,7 @@ export class ListComponent implements OnInit {
         }
     }
 
-    uploadTicketDialogConfirm(data) {
+    uploadTicketDialogConfirm(data: any) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -188,7 +188,7 @@ export class ListComponent implements OnInit {
     }
 
     // Define response dialog events
-    responseDialog(data) {
+    responseDialog(data: any) {
         try {
             if (data) {
                 if (data.event == "getAll") {
@@ -213,7 +213,7 @@ export class ListComponent implements OnInit {
         }
     }
 
-    calcDollar(data) {
+    calcDollar(data: any) {
         try {
             data.loading = true;
             this.LicenseService.getDollar().then((res: any) => {
@@ -237,7 +237,7 @@ export class ListComponent implements OnInit {
         }
     }
 
-    setPrice(data) {
+    setPrice(data: any) {
         try {
             this.LicenseService.price({ license: data }).then((res: any) => {
                 if (res.status == "success") {
@@ -264,7 +264,7 @@ export class ListComponent implements OnInit {
         }
     }
 
-    removePrice(data, timeout) {
+    removePrice(data: any, timeout: any) {
         try {
             setTimeout(() => {
                 this.LicenseService.remove({ license: data }).then((res: any) => {
@@ -286,14 +286,14 @@ export class ListComponent implements OnInit {
         }
     }
 
-    uploadTicket(data) {
+    uploadTicket(data: any) {
         try {
             this.LicenseService.upload(data).then((res: any) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.HeaderService.showSuccess("Comprobante adjunto con exito.");
                         this.dialogs = [];
-                        this.licensesView && this.licensesView.some(i => {
+                        this.licensesView && this.licensesView.some((i: any) => {
                             if (i.id == data.id) {
                                 i.status = "Analisis";
                                 return true;

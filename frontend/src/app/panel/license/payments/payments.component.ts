@@ -48,7 +48,7 @@ export class PaymentsComponent implements OnInit {
         }
     }
 
-    find(id) {
+    find(id: any) {
         try {
             this.LoadService.change(true)
             this.LicenseService.find({ license: { id: id } }).then((res: any) => {
@@ -75,7 +75,7 @@ export class PaymentsComponent implements OnInit {
         }
     }
 
-    changePage(value) {
+    changePage(value: any) {
         try {
             this.paging = true
             this.view = []
@@ -94,7 +94,7 @@ export class PaymentsComponent implements OnInit {
         }
     }
 
-    setPaymentDialogForm(data) {
+    setPaymentDialogForm(data: any) {
         try {
             this.dialogs.push({
                 type: "form",
@@ -159,7 +159,7 @@ export class PaymentsComponent implements OnInit {
         }
     }
 
-    setPaymentDialogConfirm(data) {
+    setPaymentDialogConfirm(data: any) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -173,7 +173,7 @@ export class PaymentsComponent implements OnInit {
         }
     }
 
-    cancelPaymentDialogConfirm(data) {
+    cancelPaymentDialogConfirm(data: any) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -188,7 +188,7 @@ export class PaymentsComponent implements OnInit {
     }
 
     // Define response dialog events
-    responseDialog(data) {
+    responseDialog(data: any) {
         try {
             if (data) {
                 if (data.event == "setPaymentDialogConfirm") {
@@ -210,7 +210,7 @@ export class PaymentsComponent implements OnInit {
         }
     }
 
-    setPayment(data) {
+    setPayment(data: any) {
         try {
             data.total = data.total ? parseFloat(data.total) : false
             this.LicenseService.payment({ payment: data }).then((res: any) => {
@@ -235,7 +235,7 @@ export class PaymentsComponent implements OnInit {
         }
     }
 
-    cancelPayment(data) {
+    cancelPayment(data: any) {
         try {
             this.LicenseService.cancel({ payment: data }).then((res: any) => {
                 if (res.status == "success") {
