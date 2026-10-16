@@ -64,7 +64,7 @@ export class ProviderComponent implements OnInit {
         }
     }
 
-    find(id) {
+    find(id: any) {
         try {
             this.LoadService.change(true)
             this.ProviderService.find({ provider: { id: id } }).then((res: any) => {
@@ -157,7 +157,7 @@ export class ProviderComponent implements OnInit {
         }
     }
 
-    setList(value) {
+    setList(value: any) {
         try {
             this.tab = value
             this.filtered = value == "compras" ? this.provider.buys : this.provider.articles
@@ -168,7 +168,7 @@ export class ProviderComponent implements OnInit {
         }
     }
 
-    changePage(value) {
+    changePage(value: any) {
         try {
             this.paging = true
             this.view = []
@@ -187,7 +187,7 @@ export class ProviderComponent implements OnInit {
         }
     }
 
-    sendForm(data) {
+    sendForm(data: any) {
         try {
             if (data) {
                 if (data.event == "createProviderDialogConfirm") {
@@ -209,7 +209,7 @@ export class ProviderComponent implements OnInit {
     }
 
     // Define dialogs
-    createProviderDialogConfirm(data) {
+    createProviderDialogConfirm(data: any) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -223,7 +223,7 @@ export class ProviderComponent implements OnInit {
         }
     }
 
-    updateProviderDialogConfirm(data) {
+    updateProviderDialogConfirm(data: any) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -238,7 +238,7 @@ export class ProviderComponent implements OnInit {
     }
 
     // Define response dialog events
-    responseDialog(data) {
+    responseDialog(data: any) {
         try {
             if (data) {
                 if (data.event == "createProvider") {
@@ -260,7 +260,7 @@ export class ProviderComponent implements OnInit {
     }
 
     // Define events
-    createProvider(data) {
+    createProvider(data: any) {
         try {
             this.ProviderService.create({ provider: data }).then((res: any) => {
                 if (res.status == "success") {
@@ -292,7 +292,7 @@ export class ProviderComponent implements OnInit {
         }
     }
 
-    updateProvider(data) {
+    updateProvider(data: any) {
         try {
             this.ProviderService.update({ provider: data }).then((res: any) => {
                 if (res.status == "success") {

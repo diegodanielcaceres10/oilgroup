@@ -68,7 +68,7 @@ export class BuyComponent implements OnInit {
         }
     }
 
-    find(id) {
+    find(id: any) {
         try {
             this.LoadService.change(true)
             this.BuyService.find({ buy: { id: id } }).then((res: any) => {
@@ -110,7 +110,7 @@ export class BuyComponent implements OnInit {
                 if (res.status == "success") {
                     this.providers = res.data
                     if (this.buy.provider && this.buy.provider.id > 0) {
-                        this.buy.provider = this.providers.find(i => i.id == this.buy.provider.id)
+                        this.buy.provider = this.providers.find((i: any) => i.id == this.buy.provider.id)
                     }
                 } else {
                     console.error("Response:", res.status)
@@ -131,7 +131,7 @@ export class BuyComponent implements OnInit {
                                     name: "fantasy_name",
                                     id: "provider",
                                     type: "select",
-                                    options: this.providers.filter(i => i.active),
+                                    options: this.providers.filter((i: any) => i.active),
                                     nameValue: "id",
                                     nameLabel: "fantasy_name",
                                     label: "Proveedor",
@@ -280,7 +280,7 @@ export class BuyComponent implements OnInit {
         }
     }
 
-    async getArticles(id) {
+    async getArticles(id: any) {
         let filter = [
             { name: "provider", value: id },
             { name: "active", parent: "a", value: "1" },
@@ -299,7 +299,7 @@ export class BuyComponent implements OnInit {
         })
     }
 
-    sendForm(data) {
+    sendForm(data: any) {
         try {
             if (data) {
                 if (data.event == "back" && this.path > 0) {
@@ -326,11 +326,11 @@ export class BuyComponent implements OnInit {
     }
 
     // Define steps events
-    async setBuy(data) {
+    async setBuy(data: any) {
         try {
             let item = data
             let buy = JSON.parse(sessionStorage.getItem("oilgroup-buy"))
-            this.steps[0].groups[0].fields[0].value = this.providers.find(i => i.id == item.provider)
+            this.steps[0].groups[0].fields[0].value = this.providers.find((i: any) => i.id == item.provider)
             this.steps[0].groups[0].fields[1].value = item.ticket
             this.steps[0].groups[0].fields[2].value = item.description
             await this.getArticles(item.provider)
@@ -361,7 +361,7 @@ export class BuyComponent implements OnInit {
         }
     }
 
-    setPayment(data) {
+    setPayment(data: any) {
         try {
             this.buy.payment = data
             this.steps[2].groups[0].fields[0].value = this.buy.payment.status
@@ -436,7 +436,7 @@ export class BuyComponent implements OnInit {
         }
     }
 
-    addArticleDialogForm(data) {
+    addArticleDialogForm(data: any) {
         try {
             this.dialogs.push({
                 type: "form",
@@ -575,7 +575,7 @@ export class BuyComponent implements OnInit {
     }
 
     // Define response dialog events
-    responseDialog(data) {
+    responseDialog(data: any) {
         try {
             if (data) {
                 if (data.event == "addArticleDialogForm") {
@@ -603,7 +603,7 @@ export class BuyComponent implements OnInit {
     }
 
     // Define events
-    addArticle(data) {
+    addArticle(data: any) {
         try {
             data.cost = parseFloat(data.cost)
             data.quantity = parseInt(data.quantity)
@@ -619,7 +619,7 @@ export class BuyComponent implements OnInit {
         }
     }
 
-    removeArticle(data) {
+    removeArticle(data: any) {
         try {
             this.buy.articles.splice(this.buy.articles.indexOf(data), 1)
             this.buy.total -= data.subtotal
@@ -632,7 +632,7 @@ export class BuyComponent implements OnInit {
         }
     }
 
-    addDetail(data) {
+    addDetail(data: any) {
         try {
             data.subtotal = parseFloat(data.subtotal)
             this.buy.details.push(data)
@@ -645,7 +645,7 @@ export class BuyComponent implements OnInit {
         }
     }
 
-    removeDetail(data) {
+    removeDetail(data: any) {
         try {
             this.buy.details.splice(this.buy.details.indexOf(data), 1)
             this.buy.total -= data.subtotal

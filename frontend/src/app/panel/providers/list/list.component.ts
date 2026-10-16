@@ -101,7 +101,7 @@ export class ListComponent implements OnInit {
         }
     }
 
-    getAll(page) {
+    getAll(page: number) {
         try {
             this.paging = true
             this.providersFiltered = []
@@ -132,7 +132,7 @@ export class ListComponent implements OnInit {
         }
     }
 
-    changePage(value) {
+    changePage(value: any) {
         try {
             this.paging = true
             this.providersView = []
@@ -188,7 +188,7 @@ export class ListComponent implements OnInit {
 
     }
 
-    activeProviderDialogConfirm(data) {
+    activeProviderDialogConfirm(data: any) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -203,11 +203,11 @@ export class ListComponent implements OnInit {
     }
 
     // Define response dialog events
-    responseDialog(data) {
+    responseDialog(data: any) {
         try {
             if (data) {
                 if (data.event == "getAll") {
-                    this.filters.map((i) => {
+                    this.filters.map((i: any) => {
                         if (i.type == "select" && i.id) {
                             i.value = {}
                             i.value[i.nameValue] = data.values[i.id]
@@ -229,7 +229,7 @@ export class ListComponent implements OnInit {
         }
     }
 
-    activeProvider(data) {
+    activeProvider(data: any) {
         try {
             this.ProviderService.active({ provider: data }).then((res: any) => {
                 if (res.status == "success") {
