@@ -35,7 +35,7 @@ export class DialogModalComponent implements OnInit {
     updateFound() {
         try {
             this.paging = true
-            this.dataFiltered = this.data.filter(i => i.name.toLowerCase().includes(this.search.toLowerCase()))
+            this.dataFiltered = this.data.filter((i: any) => i.name.toLowerCase().includes(this.search.toLowerCase()))
             this.pages = Math.ceil(this.dataFiltered.length / this.maxitems)
             this.changePage(1)
         } catch (e) {
@@ -44,7 +44,7 @@ export class DialogModalComponent implements OnInit {
         }
     }
 
-    changePage(value) {
+    changePage(value: any) {
         try {
             this.paging = true
             this.dataView = []
@@ -61,7 +61,7 @@ export class DialogModalComponent implements OnInit {
         }
     }
 
-    sendResponse(value) {
+    sendResponse(value: any) {
         this.responseDialogModal.emit(value)
     }
 

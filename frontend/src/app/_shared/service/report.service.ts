@@ -16,7 +16,7 @@ export class ReportService {
     /**
      * getPayments
      */
-    public async getPayments(data) {
+    public async getPayments(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("report/getPayments/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -29,7 +29,7 @@ export class ReportService {
     /**
      * getActivity
      */
-    public async getActivity(data) {
+    public async getActivity(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("report/getActivity/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -107,7 +107,7 @@ export class ReportService {
     /**
      * exportPayments
      */
-    public async exportPayments(data) {
+    public async exportPayments(data: any) {
         return this.api.download("report/exportPayments/", data).subscribe(data => {
             this.progressPayments.emit(data)
         }, error => {
@@ -118,7 +118,7 @@ export class ReportService {
     /**
      * exportActivities
      */
-    public async exportActivities(data) {
+    public async exportActivities(data: any) {
         return this.api.download("report/exportActivities/", data).subscribe(data => {
             this.progressActivities.emit(data)
         }, error => {

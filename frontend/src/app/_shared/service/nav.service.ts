@@ -7,7 +7,7 @@ export class NavService {
 
     @Output() pageSelected: EventEmitter<any> = new EventEmitter()
 
-    page(data) {
+    page(data: any) {
         this.pageSelected.emit(data)
     }
 }

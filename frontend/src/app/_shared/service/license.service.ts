@@ -13,7 +13,7 @@ export class LicenseService {
     /**
      * getAll
      */
-    public async getAll(data) {
+    public async getAll(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("license/getAll/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -26,7 +26,7 @@ export class LicenseService {
     /**
      * find
      */
-    public async find(data) {
+    public async find(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("license/find/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -39,7 +39,7 @@ export class LicenseService {
     /**
      * price
      */
-    public async price(data) {
+    public async price(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("license/price/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -52,7 +52,7 @@ export class LicenseService {
     /**
      * remove
      */
-    public async remove(data) {
+    public async remove(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("license/remove/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -65,7 +65,7 @@ export class LicenseService {
     /**
      * upload
      */
-    public async upload(data) {
+    public async upload(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("license/upload/", data, "form-data").toPromise().then((data: any) => {
                 resolve(data)
@@ -78,7 +78,7 @@ export class LicenseService {
     /**
      * payment
      */
-    public async payment(data) {
+    public async payment(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("license/payment/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -91,7 +91,7 @@ export class LicenseService {
     /**
      * cancel
      */
-    public async cancel(data) {
+    public async cancel(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("license/cancel/", data).toPromise().then((data: any) => {
                 resolve(data)

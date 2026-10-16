@@ -15,7 +15,7 @@ export class SaleService {
     /**
      * getAll
      */
-    public async getAll(data) {
+    public async getAll(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("sale/getAll/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -28,7 +28,7 @@ export class SaleService {
     /**
      * find
      */
-    public async find(data) {
+    public async find(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("sale/find/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -41,7 +41,7 @@ export class SaleService {
     /**
      * create
      */
-    public async create(data) {
+    public async create(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("sale/create/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -54,7 +54,7 @@ export class SaleService {
     /**
      * review
      */
-    public async review(data) {
+    public async review(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("sale/review/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -67,7 +67,7 @@ export class SaleService {
     /**
      * deliver
      */
-    public async deliver(data) {
+    public async deliver(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("sale/deliver/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -80,7 +80,7 @@ export class SaleService {
     /**
      * billing
      */
-    public async billing(data) {
+    public async billing(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("sale/billing/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -93,7 +93,7 @@ export class SaleService {
     /**
      * ticket
      */
-    public async ticket(data) {
+    public async ticket(data: any) {
         return this.api.download("sale/ticket/", data).subscribe(data => {
             this.progress.emit(data)
         }, error => {
@@ -104,7 +104,7 @@ export class SaleService {
     /**
      * cancel
      */
-    public async cancel(data) {
+    public async cancel(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("sale/cancel/", data).toPromise().then((data: any) => {
                 resolve(data)

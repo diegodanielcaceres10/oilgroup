@@ -19,7 +19,7 @@ export class UserService {
     /**
      * getAll
      */
-    public async getAll(data) {
+    public async getAll(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("user/getAll/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -32,7 +32,7 @@ export class UserService {
     /**
      * find
      */
-    public async find(data) {
+    public async find(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("user/find/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -45,7 +45,7 @@ export class UserService {
     /**
      * create
      */
-    public async create(data) {
+    public async create(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("user/create/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -58,7 +58,7 @@ export class UserService {
     /**
      * update
      */
-    public async update(data) {
+    public async update(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("user/update/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -71,7 +71,7 @@ export class UserService {
     /**
      * reset
      */
-    public async reset(data) {
+    public async reset(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("user/reset/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -84,7 +84,7 @@ export class UserService {
     /**
      * active
      */
-    public async active(data) {
+    public async active(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("user/active/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -97,7 +97,7 @@ export class UserService {
     /**
      * summary
      */
-    public async summary(data) {
+    public async summary(data: any) {
         return this.api.download("user/summary/", data).subscribe(data => {
             this.progress.emit(data)
         }, error => {
@@ -108,7 +108,7 @@ export class UserService {
     /**
      * pending
      */
-    public async pending(data) {
+    public async pending(data: any) {
         return this.api.download("user/pending/", data).subscribe(data => {
             this.progress.emit(data)
         }, error => {

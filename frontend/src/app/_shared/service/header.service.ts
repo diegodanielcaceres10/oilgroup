@@ -10,11 +10,11 @@ export class HeaderService {
     @Output() setBuyCart: EventEmitter<any> = new EventEmitter()
     @Output() setSaleCart: EventEmitter<any> = new EventEmitter()
 
-    showSuccess(data) {
+    showSuccess(data: any) {
         this.showSuccessAlert.emit(data)
     }
 
-    showError(data) {
+    showError(data: any) {
         this.showErrorAlert.emit(data)
     }
 }

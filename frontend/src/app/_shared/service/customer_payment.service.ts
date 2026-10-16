@@ -13,7 +13,7 @@ export class CustomerPaymentService {
     /**
      * find
      */
-    public async find(data) {
+    public async find(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("customer_payment/find/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -26,7 +26,7 @@ export class CustomerPaymentService {
     /**
      * create
      */
-    public async create(data) {
+    public async create(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("customer_payment/create/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -39,7 +39,7 @@ export class CustomerPaymentService {
     /**
      * cancel
      */
-    public async cancel(data) {
+    public async cancel(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("customer_payment/cancel/", data).toPromise().then((data: any) => {
                 resolve(data)

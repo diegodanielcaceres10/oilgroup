@@ -7,7 +7,7 @@ export class LoadService {
 
     @Output() changeStatus: EventEmitter<any> = new EventEmitter()
 
-    change(data) {
+    change(data: any) {
         this.changeStatus.emit(data)
     }
 }

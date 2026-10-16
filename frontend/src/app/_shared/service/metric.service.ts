@@ -13,7 +13,7 @@ export class MetricService {
     /**
      * getAll
      */
-    public async getAll(data) {
+    public async getAll(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("metric/getAll/", data).toPromise().then((data: any) => {
                 resolve(data)

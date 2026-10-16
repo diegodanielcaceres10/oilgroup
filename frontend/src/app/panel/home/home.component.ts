@@ -98,7 +98,7 @@ export class HomeComponent implements OnInit {
         }
     }
 
-    pieChart(data, id) {
+    pieChart(data: any, id: any) {
         try {
             am4core.useTheme(am4themes_dataviz);
             am4core.useTheme(am4themes_animated);
@@ -131,7 +131,7 @@ export class HomeComponent implements OnInit {
         }
     }
 
-    lineChart(data, id) {
+    lineChart(data: any, id: any) {
         try {
             am4core.useTheme(am4themes_dataviz);
             am4core.useTheme(am4themes_animated);

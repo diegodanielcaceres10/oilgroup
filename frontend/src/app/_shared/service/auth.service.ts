@@ -19,7 +19,7 @@ export class AuthService {
     /**
      * logIn
      */
-    public async logIn(user) {
+    public async logIn(user: any) {
         return new Promise((resolve, reject) => {
             this.api.post("auth/login/", user).toPromise().then((user: any) => {
                 if (user.status == "success") {

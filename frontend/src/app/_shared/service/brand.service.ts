@@ -13,7 +13,7 @@ export class BrandService {
     /**
      * getAll
      */
-    public async getAll(data) {
+    public async getAll(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("brand/getAll/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -26,7 +26,7 @@ export class BrandService {
     /**
      * update
      */
-    public async update(data) {
+    public async update(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("brand/update/", data).toPromise().then((data: any) => {
                 resolve(data)

@@ -17,7 +17,7 @@ export class ArticleService {
     /**
      * getAll
      */
-    public async getAll(data) {
+    public async getAll(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("article/getAll/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -43,7 +43,7 @@ export class ArticleService {
     /**
      * getAllPrices
      */
-    public async getAllPrices(data) {
+    public async getAllPrices(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("article/getAllPrices/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -56,7 +56,7 @@ export class ArticleService {
     /**
      * find
      */
-    public async find(data) {
+    public async find(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("article/find/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -69,7 +69,7 @@ export class ArticleService {
     /**
      * create
      */
-    public async create(data) {
+    public async create(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("article/create/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -82,7 +82,7 @@ export class ArticleService {
     /**
      * update
      */
-    public async update(data) {
+    public async update(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("article/update/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -95,7 +95,7 @@ export class ArticleService {
     /**
      * active
      */
-    public async active(data) {
+    public async active(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("article/active/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -108,7 +108,7 @@ export class ArticleService {
     /**
      * addMeasure
      */
-    public async addMeasure(data) {
+    public async addMeasure(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("article/addMeasure/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -121,7 +121,7 @@ export class ArticleService {
     /**
      * updateMeasure
      */
-    public async updateMeasure(data) {
+    public async updateMeasure(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("article/updateMeasure/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -134,7 +134,7 @@ export class ArticleService {
     /**
      * deleteMeasure
      */
-    public async deleteMeasure(data) {
+    public async deleteMeasure(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("article/deleteMeasure/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -147,7 +147,7 @@ export class ArticleService {
     /**
      * updatePrices
      */
-    public async updatePrices(data) {
+    public async updatePrices(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("article/updatePrices/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -160,7 +160,7 @@ export class ArticleService {
     /**
      * updateStock
      */
-    public async updateStock(data) {
+    public async updateStock(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("article/updateStock/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -195,7 +195,7 @@ export class ArticleService {
     /**
      * exportSales
      */
-    public async exportSales(data) {
+    public async exportSales(data: any) {
         return this.api.download("article/exportSales/", data).subscribe(data => {
             this.progressSales.emit(data)
         }, error => {

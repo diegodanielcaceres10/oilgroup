@@ -74,7 +74,7 @@ export class LoginComponent implements OnInit {
         }
     }
 
-    login(data) {
+    login(data: any) {
         try {
             this.saving = true
             this.AuthService.logIn(data.values).then((res: any) => {

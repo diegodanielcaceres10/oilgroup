@@ -15,7 +15,7 @@ export class CustomerService {
     /**
      * getAll
      */
-    public async getAll(data) {
+    public async getAll(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("customer/getAll/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -28,7 +28,7 @@ export class CustomerService {
     /**
      * find
      */
-    public async find(data) {
+    public async find(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("customer/find/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -41,7 +41,7 @@ export class CustomerService {
     /**
      * create
      */
-    public async create(data) {
+    public async create(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("customer/create/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -54,7 +54,7 @@ export class CustomerService {
     /**
      * update
      */
-    public async update(data) {
+    public async update(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("customer/update/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -67,7 +67,7 @@ export class CustomerService {
     /**
      * active
      */
-    public async active(data) {
+    public async active(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("customer/active/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -80,7 +80,7 @@ export class CustomerService {
     /**
      * summary
      */
-    public async summary(data) {
+    public async summary(data: any) {
         return this.api.download("customer/summary/", data).subscribe(data => {
             this.progress.emit(data)
         }, error => {

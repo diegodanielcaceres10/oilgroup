@@ -13,7 +13,7 @@ export class CategoryService {
     /**
      * getAll
      */
-    public async getAll(data) {
+    public async getAll(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("category/getAll/", data).toPromise().then((data: any) => {
                 resolve(data)
@@ -26,7 +26,7 @@ export class CategoryService {
     /**
      * update
      */
-    public async update(data) {
+    public async update(data: any) {
         return new Promise((resolve, reject) => {
             this.api.post("category/update/", data).toPromise().then((data: any) => {
                 resolve(data)

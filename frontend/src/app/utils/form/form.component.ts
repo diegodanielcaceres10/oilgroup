@@ -22,8 +22,8 @@ export class FormComponent implements OnInit {
     ngOnInit(): void {
         this.FormGroup = new UntypedFormGroup({});
         if (this.form.groups && this.form.groups.length > 0) {
-            this.form.groups.map((group) => {
-                group.fields.map((field) => {
+            this.form.groups.map((group: any) => {
+                group.fields.map((field: any) => {
                     let validators = []
                     if (field.required) validators.push(Validators.required)
                     if (field.max) validators.push(Validators.max(field.max))
@@ -61,8 +61,8 @@ export class FormComponent implements OnInit {
                     }
                 })
             })
-            this.form.groups.map((group) => {
-                group.fields.map((field) => {
+            this.form.groups.map((group: any) => {
+                group.fields.map((field: any) => {
                     this.changed(field)
                 })
             })
@@ -70,19 +70,19 @@ export class FormComponent implements OnInit {
         
     }
 
-    changed(field) {
+    changed(field: any) {
         this.required = false
         let value = this.FormGroup.controls[field.name].value
         if (this.form.rules && this.form.rules.length > 0) {
-            this.form.rules.map((r) => {
+            this.form.rules.map((r: any) => {
                 if (r.name == field.name) {
-                    r.names.map((n) => {
+                    r.names.map((n: any) => {
                         if (r.type == "required") {
                             this.FormGroup.controls[n].setValidators(r.values.indexOf(value) > - 1 ? [Validators.required] : null)
                             this.FormGroup.controls[n].updateValueAndValidity()
-                            this.form.groups.some((g) => {
+                            this.form.groups.some((g: any) => {
                                 let ok = false
-                                g.fields.some((f) => {
+                                g.fields.some((f: any) => {
                                     if (f.name == n) {
                                         f.required = r.values.indexOf(value) > - 1 ? true : false
                                         ok = true
@@ -104,9 +104,9 @@ export class FormComponent implements OnInit {
                                 this.FormGroup.controls[n].disable()
                             }
                         } else if (r.type == "text") {
-                            this.form.groups.some((g) => {
+                            this.form.groups.some((g: any) => {
                                 let ok = false
-                                g.fields.some((f) => {
+                                g.fields.some((f: any) => {
                                     if (f.name == n) {
                                         f.type = r.values.indexOf(value) > - 1 ? "text" : "hidden"
                                         ok = true
@@ -116,9 +116,9 @@ export class FormComponent implements OnInit {
                                 if (ok) return true
                             })
                         } else if (r.type == "date") {
-                            this.form.groups.some((g) => {
+                            this.form.groups.some((g: any) => {
                                 let ok = false
-                                g.fields.some((f) => {
+                                g.fields.some((f: any) => {
                                     if (f.name == n) {
                                         f.type = r.values.indexOf(value) > - 1 ? "date" : "hidden"
                                         ok = true
@@ -132,20 +132,20 @@ export class FormComponent implements OnInit {
                 }
             })
         }
-        this.form.groups.map((g) => {
-            g.fields.map((f) => {
+        this.form.groups.map((g: any) => {
+            g.fields.map((f: any) => {
                 if (f && f.rules && f.rules.length > 0) {
                 }
             })
         })
         if (value && field && field.options && field.options.length > 0 && (field.type == "text" || field.creatable)) {
-            field.optionsView = field.options.filter(i => i.toLowerCase().includes(this.FormGroup.controls[field.name].value.toLowerCase()))
+            field.optionsView = field.options.filter((i: any) => i.toLowerCase().includes(this.FormGroup.controls[field.name].value.toLowerCase()))
         } else {
             field.optionsView = field.options
         }
     }
 
-    selectOption(field, value) {
+    selectOption(field: any, value: any) {
         if (field.type == "select" && field.id && field.nameLabel) {
             this.FormGroup.controls[field.id].setValue(value[field.nameValue])
             this.FormGroup.controls[field.name].setValue(value[field.nameLabel])
@@ -161,7 +161,7 @@ export class FormComponent implements OnInit {
         }
     }
 
-    drawFile(files, field) {
+    drawFile(files: any, field: any) {
         try {
             for (let item of files) {
                 const file: File = item;
@@ -182,7 +182,7 @@ export class FormComponent implements OnInit {
         };
     }
 
-    eventForm(type) {
+    eventForm(type: any) {
         if (type == "next") {
             this.required = false
             this.saving = true

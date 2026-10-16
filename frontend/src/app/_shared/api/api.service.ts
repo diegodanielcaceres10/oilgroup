@@ -23,7 +23,7 @@ export class ApiService {
         public httpClient: HttpClient,
     ) { }
 
-    public setToken(token, username) {
+    public setToken(token: any, username: any) {
         this.headers = new HttpHeaders({ "Authorization": token, "username": username });
     }
 
