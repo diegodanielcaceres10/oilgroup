@@ -105,6 +105,13 @@
           "options": {
             "buildTarget": "oilgroup-app:build"
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"],
+            "maxWarnings": 1796
+          }
         }
       }
     }
