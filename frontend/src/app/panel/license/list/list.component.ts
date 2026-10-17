@@ -18,7 +18,7 @@ import moment from 'moment';
 export class ListComponent implements OnInit {
 
     access: any = {}
-    paging: boolean
+    paging!: boolean
     licenses: any = []
     licensesFiltered: any = []
     licensesView: any = []

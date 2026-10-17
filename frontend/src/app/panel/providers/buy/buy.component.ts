@@ -16,11 +16,11 @@ import { Location } from '@angular/common';
 })
 export class BuyComponent implements OnInit {
 
-    paging: boolean
+    paging!: boolean
     error: string = ""
-    createMode: boolean
-    block: boolean
-    showCart: boolean
+    createMode!: boolean
+    block!: boolean
+    showCart!: boolean
     buy: any = {
         provider: {},
         items: [],

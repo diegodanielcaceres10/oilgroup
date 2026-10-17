@@ -14,7 +14,7 @@ import { Location } from '@angular/common';
 })
 export class CategoriesComponent implements OnInit {
 
-    paging: boolean
+    paging!: boolean
     categories: any = []
     categoriesFiltered: any = []
     categoriesView: any = []

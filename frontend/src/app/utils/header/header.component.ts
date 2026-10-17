@@ -25,7 +25,7 @@ export class HeaderComponent implements OnInit {
     access: any = {}
     alerts: any = []
     alert: any = {}
-    show: boolean
+    show!: boolean
 
     constructor(
         private AuthService: AuthService,

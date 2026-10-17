@@ -17,7 +17,7 @@ import { Location } from '@angular/common';
 export class PaymentComponent implements OnInit {
 
     access: any = {}
-    createMode: boolean
+    createMode!: boolean
     payment: any = {
         customer: {},
     }

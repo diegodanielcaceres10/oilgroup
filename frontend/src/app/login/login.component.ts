@@ -12,8 +12,8 @@ import { LoadService } from '../_shared/service/load.service';
 export class LoginComponent implements OnInit {
 
     loading: boolean = true
-    saving: boolean
-    error: string
+    saving!: boolean
+    error!: string
     form: any = {}
 
     constructor(

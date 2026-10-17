@@ -18,12 +18,12 @@ import { Location } from '@angular/common';
 export class SaleComponent implements OnInit {
 
     access: any = {}
-    paging: boolean
-    error: string
-    editMode: boolean
-    createMode: boolean
-    block: boolean
-    showCart: boolean
+    paging!: boolean
+    error!: string
+    editMode!: boolean
+    createMode!: boolean
+    block!: boolean
+    showCart!: boolean
     sale: any = {
         user: {},
         customer: {},

@@ -14,7 +14,7 @@ import { Location } from '@angular/common';
 })
 export class ListComponent implements OnInit {
 
-    paging: boolean
+    paging!: boolean
     providers: any = []
     providersFiltered: any = []
     providersView: any = []

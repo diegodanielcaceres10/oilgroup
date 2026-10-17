@@ -11,8 +11,8 @@ export class DialogModalComponent implements OnInit {
     @Input() dialog: any
     @Output() responseDialogModal = new EventEmitter<any>()
 
-    paging: boolean
-    saving: boolean
+    paging!: boolean
+    saving!: boolean
     columns: any = []
     data: any = []
     dataFiltered: any = []

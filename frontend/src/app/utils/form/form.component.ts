@@ -10,11 +10,11 @@ import { Validators, UntypedFormGroup, UntypedFormControl } from '@angular/forms
 export class FormComponent implements OnInit {
 
     @Input() form: any
-    @Input() saving: boolean
+    @Input() saving!: boolean
     @Output() submitData = new EventEmitter<any>()
 
-    FormGroup: UntypedFormGroup;
-    required: boolean
+    FormGroup!: UntypedFormGroup;
+    required!: boolean
     selectedInput: string = ""
 
     constructor() { }

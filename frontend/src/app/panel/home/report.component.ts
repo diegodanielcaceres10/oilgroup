@@ -16,7 +16,7 @@ import { HttpEventType } from '@angular/common/http';
 })
 export class ReportComponent implements OnInit {
 
-    paging: boolean
+    paging!: boolean
     metrics: any = {}
     path: string = ""
     report: string = ""

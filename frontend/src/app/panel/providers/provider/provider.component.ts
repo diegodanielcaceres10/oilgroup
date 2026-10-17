@@ -14,9 +14,9 @@ import { Location } from '@angular/common';
 })
 export class ProviderComponent implements OnInit {
 
-    paging: boolean
-    editMode: boolean
-    createMode: boolean
+    paging!: boolean
+    editMode!: boolean
+    createMode!: boolean
     provider: any = {
         articles: [],
         buys: [],

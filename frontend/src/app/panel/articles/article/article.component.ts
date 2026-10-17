@@ -24,9 +24,9 @@ import am4themes_dataviz from "@amcharts/amcharts4/themes/dataviz";
 })
 export class ArticleComponent implements OnInit {
 
-    paging: boolean
-    editMode: boolean
-    createMode: boolean
+    paging!: boolean
+    editMode!: boolean
+    createMode!: boolean
     article: any = {
         provider: {},
     }

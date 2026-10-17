@@ -12,7 +12,7 @@ import { LoadService } from '../../_shared/service/load.service';
 })
 export class NavComponent implements OnInit {
 
-    @ViewChild("logo") logo: ElementRef;
+    @ViewChild("logo") logo!: ElementRef;
     access: any = {}
     items: any = [
         {

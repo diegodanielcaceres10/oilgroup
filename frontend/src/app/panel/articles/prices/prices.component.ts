@@ -17,7 +17,7 @@ import { HttpEventType } from '@angular/common/http';
 export class PricesComponent implements OnInit {
 
     access: any = {}
-    paging: boolean
+    paging!: boolean
     articles: any = []
     articlesFiltered: any = []
     articlesView: any = []

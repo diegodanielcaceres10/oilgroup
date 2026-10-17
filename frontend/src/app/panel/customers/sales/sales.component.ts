@@ -16,7 +16,7 @@ import { Location } from '@angular/common';
 export class SalesComponent implements OnInit {
 
     access: any = {}
-    paging: boolean
+    paging!: boolean
     path: string = ""
     filter: any = {
         "pendientes": "pending",

@@ -15,7 +15,7 @@ import moment from 'moment';
 })
 export class PaymentsComponent implements OnInit {
 
-    paging: boolean
+    paging!: boolean
     license: any = {}
     filtered: any = []
     view: any = []

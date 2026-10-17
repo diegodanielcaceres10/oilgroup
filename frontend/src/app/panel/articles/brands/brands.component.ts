@@ -14,7 +14,7 @@ import { Location } from '@angular/common';
 })
 export class BrandsComponent implements OnInit {
 
-    paging: boolean
+    paging!: boolean
     brands: any = []
     brandsFiltered: any = []
     brandsView: any = []

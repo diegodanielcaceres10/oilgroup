@@ -18,9 +18,9 @@ import { HttpEventType } from '@angular/common/http';
 export class CustomerComponent implements OnInit {
 
     access: any = {}
-    paging: boolean
-    editMode: boolean
-    createMode: boolean
+    paging!: boolean
+    editMode!: boolean
+    createMode!: boolean
     customer: any = {
         user: {},
         sales: [],
