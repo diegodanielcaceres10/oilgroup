@@ -16,10 +16,10 @@
               @if (field.required) {
                 <span>*</span>
               }
-              @if (required && FormGroup.controls[field.name].errors && FormGroup.controls[field.name].errors.required) {
+              @if (required && FormGroup.controls[field.name].errors && FormGroup.controls[field.name].errors?.required) {
                 <span class="form__required"> Campo obligatorio</span>
               }
-              @if (required && FormGroup.controls[field.name].errors && FormGroup.controls[field.name].errors.max) {
+              @if (required && FormGroup.controls[field.name].errors && FormGroup.controls[field.name].errors?.max) {
                 <span class="form__required"> Valor incorrecto</span>
               }
               @if (field.error == 'FORMAT') {

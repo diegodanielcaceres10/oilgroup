@@ -98,7 +98,7 @@ export class BuyComponent implements OnInit {
         try {
             this.buy.provider.id = this.ActivatedRoute.snapshot.queryParams["proveedor"]
             if (this.buy.provider.id) this.block = true
-            let buy = JSON.parse(sessionStorage.getItem("oilgroup-buy"))
+            let buy = JSON.parse(sessionStorage.getItem("oilgroup-buy") ?? "null")
             if (buy) {
                 if (this.buy.provider && this.buy.provider.id && buy.provider && this.buy.provider.id != buy.provider.id) {
                     sessionStorage.setItem("oilgroup-buy", JSON.stringify(this.buy))
@@ -329,7 +329,7 @@ export class BuyComponent implements OnInit {
     async setBuy(data: any) {
         try {
             let item = data
-            let buy = JSON.parse(sessionStorage.getItem("oilgroup-buy"))
+            let buy = JSON.parse(sessionStorage.getItem("oilgroup-buy") ?? "null")
             this.steps[0].groups[0].fields[0].value = this.providers.find((i: any) => i.id == item.provider)
             this.steps[0].groups[0].fields[1].value = item.ticket
             this.steps[0].groups[0].fields[2].value = item.description

@@ -145,7 +145,7 @@ export class SaleComponent implements OnInit {
         try {
             this.sale.customer.id = this.ActivatedRoute.snapshot.queryParams["cliente"]
             if (this.sale.customer.id) this.block = true
-            let sale = JSON.parse(sessionStorage.getItem("oilgroup-sale"))
+            let sale = JSON.parse(sessionStorage.getItem("oilgroup-sale") ?? "null")
             if (sale) {
                 if (this.sale.customer && this.sale.customer.id && sale.customer && this.sale.customer.id != sale.customer.id) {
                     sessionStorage.setItem("oilgroup-sale", JSON.stringify(this.sale))
@@ -164,7 +164,7 @@ export class SaleComponent implements OnInit {
                 console.error("Error", e)
                 this.HeaderService.showError("Error en la conectividad")
             })
-            let filter = [
+            let filter: { name: string, parent: string | null, value: string }[] = [
                 { name: "active", parent: "c", value: "1" },
             ]
             if (["Super Administrador", "Administrador"].indexOf(this.access.role) == -1) {
