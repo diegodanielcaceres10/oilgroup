@@ -1,6 +1,10 @@
 # OilgroupAppAngular
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.3.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.3 and has since been upgraded to Angular 22.
+
+## Requirements
+
+To run the frontend outside Docker, install Node.js 22.22.3 or later and npm. Angular CLI 22 supports Node.js `^22.22.3`, `^24.15.0` or `>=26`. The Docker setup uses the `node:22-bookworm` image, so it does not need a local Node.js installation.
 
 ## Development server
 
