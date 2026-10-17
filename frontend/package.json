@@ -4,8 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --port 4200 --watch --poll=2000",
-    "build-prd": "ng build --configuration=production",
-    "test": "ng test"
+    "build-prd": "ng build --configuration=production"
   },
   "author": "Diego Caceres",
   "license": "ISC",
@@ -29,14 +28,6 @@
     "@angular/build": "^22.2.2",
     "@angular/cli": "^22.2.2",
     "@angular/compiler-cli": "^22.2.3",
-    "@types/jasmine": "~3.6.0",
-    "istanbul-lib-instrument": "^6.0.3",
-    "jasmine-core": "~3.6.0",
-    "karma": "~6.4.4",
-    "karma-chrome-launcher": "~3.1.0",
-    "karma-coverage": "~2.0.3",
-    "karma-jasmine": "~4.0.0",
-    "karma-jasmine-html-reporter": "^1.5.0",
     "typescript": "~6.0.3"
   }
 }

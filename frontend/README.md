@@ -8,7 +8,7 @@ Run `npm start` for a dev server. Navigate to `http://localhost:4200/`. The app 
 
 ## Docker development environment
 
-From the repository root, run `docker compose up --build`. The frontend is available at `http://localhost:4200/` and source changes under `frontend/` trigger a reload. Stop it with `docker compose down`.
+From the repository root, run `docker compose up --build`. The frontend is available at `http://localhost:6004/` and source changes under `frontend/` trigger a reload. Stop it with `docker compose down`.
 
 ## Code scaffolding
 
@@ -16,11 +16,7 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/web/` directory. For a production build, run `npm run build-prd` (equivalent to `ng build --configuration=production`).
 
 ## Further help
 
