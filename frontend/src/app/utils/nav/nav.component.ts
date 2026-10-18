@@ -119,8 +119,8 @@ export class NavComponent implements OnInit {
             link: "/panel/licencia/1",
         },
     ]
-    menuselected: string = ""
-    pageselected: string = ""
+    menuselected = ""
+    pageselected = ""
 
     constructor(
         private Router: Router,

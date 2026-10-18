@@ -5,7 +5,7 @@ import { Injectable, Output, EventEmitter } from '@angular/core';
 })
 export class LoadService {
 
-    @Output() changeStatus: EventEmitter<any> = new EventEmitter()
+    @Output() changeStatus = new EventEmitter<any>()
 
     change(data: any) {
         this.changeStatus.emit(data)

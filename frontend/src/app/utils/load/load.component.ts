@@ -10,7 +10,7 @@ import { LoadService } from '../../_shared/service/load.service';
 export class LoadComponent implements OnInit {
 
     @Input() color!: boolean
-    loading: boolean = true
+    loading = true
 
     constructor(
         private LoadService: LoadService,

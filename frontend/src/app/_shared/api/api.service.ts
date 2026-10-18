@@ -51,7 +51,7 @@ export class ApiService {
             const formData = new FormData();
             Object.keys(values).forEach(key => {
                 if (typeof values[key] == "object" && values[key] && values[key].length !== undefined) {
-                    for (let value of values[key]) {
+                    for (const value of values[key]) {
                         formData.append(key, value);
                     }
                 } else if (values[key] !== undefined && values[key] !== null) formData.append(key, values[key]);

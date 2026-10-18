@@ -39,7 +39,7 @@ export class SaleComponent implements OnInit {
     documents: any = ["Factura A", "Factura B"]
     conditions: any = ["IVA Responsable Inscripto", "IVA Responsable no Inscripto", "IVA no Responsable", "IVA Sujeto Exento", "Consumidor Final", "Responsable Monotributo", "Otro"]
     methods: any = ["Efectivo", "Transferencia", "Deposito", "Tarjeta de cŕedito", "Tarjeta de débito", "Cheque", "Otro"]
-    path: number = 0
+    path = 0
     dialogs: any = []
     form: any = {}
     steps: any = []
@@ -145,7 +145,7 @@ export class SaleComponent implements OnInit {
         try {
             this.sale.customer.id = this.ActivatedRoute.snapshot.queryParams["cliente"]
             if (this.sale.customer.id) this.block = true
-            let sale = JSON.parse(sessionStorage.getItem("oilgroup-sale") ?? "null")
+            const sale = JSON.parse(sessionStorage.getItem("oilgroup-sale") ?? "null")
             if (sale) {
                 if (this.sale.customer && this.sale.customer.id && sale.customer && this.sale.customer.id != sale.customer.id) {
                     sessionStorage.setItem("oilgroup-sale", JSON.stringify(this.sale))
@@ -164,7 +164,7 @@ export class SaleComponent implements OnInit {
                 console.error("Error", e)
                 this.HeaderService.showError("Error en la conectividad")
             })
-            let filter: { name: string, parent: string | null, value: string }[] = [
+            const filter: { name: string, parent: string | null, value: string }[] = [
                 { name: "active", parent: "c", value: "1" },
             ]
             if (["Super Administrador", "Administrador"].indexOf(this.access.role) == -1) {
@@ -440,7 +440,7 @@ export class SaleComponent implements OnInit {
     // Define steps events
     setSale(data: any) {
         try {
-            let item = data
+            const item = data
             this.steps[0].groups[0].fields[0].value = item.status
             this.steps[0].groups[0].fields[1].value = this.customers.find((i: any) => i.id == item.customer)
             this.steps[0].groups[0].fields[2].value = item.billing
@@ -477,7 +477,7 @@ export class SaleComponent implements OnInit {
 
     setStock() {
         try {
-            let item = this.sale.articles.find((i: any) => !i.review)
+            const item = this.sale.articles.find((i: any) => !i.review)
             if (this.sale.status != "Pendiente" && item) {
                 this.error = "Debe confirmar la revisión de todos los articulos"
             } else {
@@ -743,7 +743,7 @@ export class SaleComponent implements OnInit {
     }
 
     searchReplaceDialogList(data: any) {
-        let article = data.article
+        const article = data.article
         try {
             this.dialogs.push({
                 type: "list",
@@ -789,7 +789,7 @@ export class SaleComponent implements OnInit {
     }
 
     addReplaceDialogForm(item: any, data: any) {
-        let article = data.article
+        const article = data.article
         try {
             this.dialogs.push({
                 type: "form",
@@ -866,7 +866,7 @@ export class SaleComponent implements OnInit {
     }
 
     updateCountForm(data: any) {
-        let article = data.article
+        const article = data.article
         try {
             this.dialogs.push({
                 type: "form",
@@ -1137,8 +1137,8 @@ export class SaleComponent implements OnInit {
 
     addDiscount(data: any) {
         try {
-            let subtotal = this.sale.total * data.discount / 100 * -1
-            let item = { concept: data.discount + "% OFF", subtotal: subtotal }
+            const subtotal = this.sale.total * data.discount / 100 * -1
+            const item = { concept: data.discount + "% OFF", subtotal: subtotal }
             this.sale.details.push(item)
             this.sale.total += subtotal
             sessionStorage.setItem("oilgroup-sale", JSON.stringify(this.sale))
@@ -1189,7 +1189,7 @@ export class SaleComponent implements OnInit {
 
     createSale() {
         try {
-            let sale = { ...this.sale }
+            const sale = { ...this.sale }
             sale.payment.import = parseFloat(sale.payment.import)
             this.SaleService.create({ sale: sale }).then((res: any) => {
                 if (res.status == "success") {
@@ -1224,7 +1224,7 @@ export class SaleComponent implements OnInit {
 
     reviewSale() {
         try {
-            let sale = { ...this.sale }
+            const sale = { ...this.sale }
             this.SaleService.review({ sale: sale }).then((res: any) => {
                 if (res.status == "success") {
                     setTimeout(() => {
@@ -1250,7 +1250,7 @@ export class SaleComponent implements OnInit {
 
     deliverSale() {
         try {
-            let sale = { ...this.sale }
+            const sale = { ...this.sale }
             this.SaleService.deliver({ sale: sale }).then((res: any) => {
                 if (res.status == "success") {
                     setTimeout(() => {
@@ -1299,7 +1299,7 @@ export class SaleComponent implements OnInit {
 
     printTicket() {
         try {
-            let sale = { ...this.sale }
+            const sale = { ...this.sale }
             this.SaleService.ticket({ sale: sale }).catch((e) => {
                 console.error("Error", e)
                 this.HeaderService.showError("Error en la conectividad")
@@ -1329,7 +1329,7 @@ export class SaleComponent implements OnInit {
 
     cancelSale() {
         try {
-            let sale = { ...this.sale }
+            const sale = { ...this.sale }
             this.SaleService.cancel({ sale: sale }).then((res: any) => {
                 if (res.status == "success") {
                     setTimeout(() => {

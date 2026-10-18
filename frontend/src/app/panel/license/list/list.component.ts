@@ -22,9 +22,9 @@ export class ListComponent implements OnInit {
     licenses: any = []
     licensesFiltered: any = []
     licensesView: any = []
-    page: number = 1
-    pages: number = 1
-    maxitems: number = 20
+    page = 1
+    pages = 1
+    maxitems = 20
     dialogs: any = []
     priceCoefficientValidate: number = environment.priceCoefficientValidate;
 
@@ -63,10 +63,10 @@ export class ListComponent implements OnInit {
                 if (res.status == "success") {
                     this.licenses = res.data
                     this.licensesFiltered = res.data
-                    let current = this.licensesFiltered && this.licensesFiltered.find((i: any) => i.current);
+                    const current = this.licensesFiltered && this.licensesFiltered.find((i: any) => i.current);
                     if (current) {
                         if (current.coefficient_validate) {
-                            let validatetime = current.coefficient_validate && moment(current.coefficient_validate).format("YYYY-MM-DD, HH:mm:ss");
+                            const validatetime = current.coefficient_validate && moment(current.coefficient_validate).format("YYYY-MM-DD, HH:mm:ss");
                             if (validatetime < moment().format("YYYY-MM-DD, HH:mm:ss")) {
                                 current.coefficient = undefined;
                                 current.coefficient_date = undefined;
@@ -105,7 +105,7 @@ export class ListComponent implements OnInit {
             this.licensesView = []
             this.page = value > this.pages ? 1 : value
             this.Location.replaceState("/panel/licencia/" + this.page)
-            let list = this.licensesFiltered.slice(this.maxitems * (this.page - 1), this.maxitems * this.page)
+            const list = this.licensesFiltered.slice(this.maxitems * (this.page - 1), this.maxitems * this.page)
             setTimeout(() => {
                 this.paging = false
                 this.LoadService.change(false)
@@ -245,7 +245,7 @@ export class ListComponent implements OnInit {
                         this.HeaderService.showSuccess("Cotización reservada con exito. Deberá adjuntar el comprobante durante las proximas " + this.priceCoefficientValidate + " horas");
                         this.dialogs.pop();
                         data.calc = false;
-                        let validatetime = moment(data.coefficient_validate).format("YYYY-MM-DD, HH:mm:ss");
+                        const validatetime = moment(data.coefficient_validate).format("YYYY-MM-DD, HH:mm:ss");
                         const timeout = moment(validatetime).diff(moment());
                         this.removePrice(data, timeout + (1000 * 60));
                     }, 100);

@@ -32,13 +32,13 @@ export class ArticleComponent implements OnInit {
     }
     filtered: any = []
     view: any = []
-    page: number = 1
-    pages: number = 1
-    maxitems: number = 20
+    page = 1
+    pages = 1
+    maxitems = 20
     providers: any = []
     brands: any = []
     categories: any = []
-    tab: string = "rentabilidad"
+    tab = "rentabilidad"
     dialogs: any = []
     form: any = {}
     suscription: any
@@ -269,11 +269,11 @@ export class ArticleComponent implements OnInit {
             am4core.useTheme(am4themes_animated);
 
             // Create chart instance
-            let chart = am4core.create("profitability-chart", am4charts.XYChart);
+            const chart = am4core.create("profitability-chart", am4charts.XYChart);
             chart.data = data;
 
             // Create axes
-            let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+            const categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
             categoryAxis.dataFields.category = "item";
             categoryAxis.renderer.grid.template.location = 0;
             categoryAxis.renderer.minGridDistance = 30;
@@ -285,17 +285,17 @@ export class ArticleComponent implements OnInit {
             categoryAxis.renderer.labels.template.wrap = true;
             categoryAxis.renderer.labels.template.textAlign = "end";
 
-            let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+            const valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
 
             // Create series
-            let series = chart.series.push(new am4charts.ColumnSeries());
+            const series = chart.series.push(new am4charts.ColumnSeries());
             series.dataFields.valueY = "total";
             series.dataFields.categoryX = "item";
             series.columns.template.tooltipText = "{categoryX}: [bold]${valueY}[/]";
             series.columns.template.fillOpacity = .8;
 
             // value config
-            let valueLabel = series.bullets.push(new am4charts.LabelBullet());
+            const valueLabel = series.bullets.push(new am4charts.LabelBullet());
             valueLabel.label.text = "$ [bold]{valueY}[/]";
             valueLabel.label.dy = -8;
             chart.maskBullets = false;
@@ -329,7 +329,7 @@ export class ArticleComponent implements OnInit {
             this.pages = Math.ceil(this.filtered.length / this.maxitems)
             this.page = value > this.pages ? 1 : value
             this.Location.replaceState("/panel/articulos/" + this.article.id + "/" + this.page + "?lista=" + this.tab)
-            let list = this.filtered.slice(this.maxitems * (this.page - 1), this.maxitems * this.page)
+            const list = this.filtered.slice(this.maxitems * (this.page - 1), this.maxitems * this.page)
             setTimeout(() => {
                 this.paging = false
                 this.view = list
@@ -730,7 +730,7 @@ export class ArticleComponent implements OnInit {
 
     exportSales() {
         try {
-            let article = { ...this.article }
+            const article = { ...this.article }
             this.ArticleService.exportSales({ article: article, }).catch((e) => {
                 console.error("Error", e)
                 this.HeaderService.showError("Error en la conectividad")
@@ -738,7 +738,7 @@ export class ArticleComponent implements OnInit {
             })
             this.suscription = this.ArticleService.progressSales.subscribe((data: any) => {
                 if (data.body && data.status == 200 && data.type == HttpEventType.Response) {
-                    let blob: any = new Blob([data.body], { type: 'application/pdf' });
+                    const blob: any = new Blob([data.body], { type: 'application/pdf' });
                     const objectUrl = URL.createObjectURL(blob);
                     window.open(objectUrl, '_blank');
                     this.suscription.unsubscribe();

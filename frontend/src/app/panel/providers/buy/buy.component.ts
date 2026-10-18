@@ -17,7 +17,7 @@ import { Location } from '@angular/common';
 export class BuyComponent implements OnInit {
 
     paging!: boolean
-    error: string = ""
+    error = ""
     createMode!: boolean
     block!: boolean
     showCart!: boolean
@@ -34,7 +34,7 @@ export class BuyComponent implements OnInit {
     articles: any = []
     articlesFiltered: any = []
     methods: any = ["Efectivo", "Transferencia", "Deposito", "Tarjeta de cŕedito", "Tarjeta de débito", "Cheque", "Otro"]
-    path: number = 0
+    path = 0
     dialogs: any = []
     form: any = {}
     steps: any = []
@@ -98,7 +98,7 @@ export class BuyComponent implements OnInit {
         try {
             this.buy.provider.id = this.ActivatedRoute.snapshot.queryParams["proveedor"]
             if (this.buy.provider.id) this.block = true
-            let buy = JSON.parse(sessionStorage.getItem("oilgroup-buy") ?? "null")
+            const buy = JSON.parse(sessionStorage.getItem("oilgroup-buy") ?? "null")
             if (buy) {
                 if (this.buy.provider && this.buy.provider.id && buy.provider && this.buy.provider.id != buy.provider.id) {
                     sessionStorage.setItem("oilgroup-buy", JSON.stringify(this.buy))
@@ -281,7 +281,7 @@ export class BuyComponent implements OnInit {
     }
 
     async getArticles(id: any) {
-        let filter = [
+        const filter = [
             { name: "provider", value: id },
             { name: "active", parent: "a", value: "1" },
         ]
@@ -328,8 +328,8 @@ export class BuyComponent implements OnInit {
     // Define steps events
     async setBuy(data: any) {
         try {
-            let item = data
-            let buy = JSON.parse(sessionStorage.getItem("oilgroup-buy") ?? "null")
+            const item = data
+            const buy = JSON.parse(sessionStorage.getItem("oilgroup-buy") ?? "null")
             this.steps[0].groups[0].fields[0].value = this.providers.find((i: any) => i.id == item.provider)
             this.steps[0].groups[0].fields[1].value = item.ticket
             this.steps[0].groups[0].fields[2].value = item.description
@@ -660,7 +660,7 @@ export class BuyComponent implements OnInit {
 
     createBuy() {
         try {
-            let buy = { ...this.buy }
+            const buy = { ...this.buy }
             buy.payment.import = buy.payment.import ? parseFloat(buy.payment.import) : false
             this.BuyService.create({ buy: buy }).then((res: any) => {
                 if (res.status == "success") {
@@ -690,7 +690,7 @@ export class BuyComponent implements OnInit {
 
     cancelBuy() {
         try {
-            let buy = { ...this.buy }
+            const buy = { ...this.buy }
             this.BuyService.cancel({ buy: buy }).then((res: any) => {
                 if (res.status == "success") {
                     setTimeout(() => {

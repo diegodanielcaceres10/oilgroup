@@ -19,9 +19,9 @@ export class PaymentsComponent implements OnInit {
     license: any = {}
     filtered: any = []
     view: any = []
-    page: number = 1
-    pages: number = 1
-    maxitems: number = 20
+    page = 1
+    pages = 1
+    maxitems = 20
     dialogs: any = []
 
     constructor(
@@ -82,7 +82,7 @@ export class PaymentsComponent implements OnInit {
             this.pages = Math.ceil(this.filtered.length / this.maxitems)
             this.page = value > this.pages ? 1 : value
             this.Location.replaceState("/panel/licencia/" + this.license.id + "/" + this.page)
-            let list = this.filtered.slice(this.maxitems * (this.page - 1), this.maxitems * this.page)
+            const list = this.filtered.slice(this.maxitems * (this.page - 1), this.maxitems * this.page)
             setTimeout(() => {
                 this.paging = false
                 this.view = list

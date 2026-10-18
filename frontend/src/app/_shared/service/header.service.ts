@@ -5,10 +5,10 @@ import { Injectable, Output, EventEmitter } from '@angular/core';
 })
 export class HeaderService {
 
-    @Output() showSuccessAlert: EventEmitter<any> = new EventEmitter()
-    @Output() showErrorAlert: EventEmitter<any> = new EventEmitter()
-    @Output() setBuyCart: EventEmitter<any> = new EventEmitter()
-    @Output() setSaleCart: EventEmitter<any> = new EventEmitter()
+    @Output() showSuccessAlert = new EventEmitter<any>()
+    @Output() showErrorAlert = new EventEmitter<any>()
+    @Output() setBuyCart = new EventEmitter<any>()
+    @Output() setSaleCart = new EventEmitter<any>()
 
     showSuccess(data: any) {
         this.showSuccessAlert.emit(data)

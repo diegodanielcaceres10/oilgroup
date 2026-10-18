@@ -17,10 +17,10 @@ export class DialogModalComponent implements OnInit {
     data: any = []
     dataFiltered: any = []
     dataView: any = []
-    page: number = 1
-    pages: number = 1
-    maxitems: number = 10
-    search: string = ""
+    page = 1
+    pages = 1
+    maxitems = 10
+    search = ""
 
     constructor() { }
 
@@ -49,7 +49,7 @@ export class DialogModalComponent implements OnInit {
             this.paging = true
             this.dataView = []
             this.page = value > this.pages ? 1 : value
-            let list = this.dataFiltered.slice(this.maxitems * (this.page - 1), this.maxitems * this.page)
+            const list = this.dataFiltered.slice(this.maxitems * (this.page - 1), this.maxitems * this.page)
             setTimeout(() => {
                 this.paging = false
                 this.dataView = list

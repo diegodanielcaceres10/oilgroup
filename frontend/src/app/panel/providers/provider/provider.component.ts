@@ -23,11 +23,11 @@ export class ProviderComponent implements OnInit {
     }
     filtered: any = []
     view: any = []
-    page: number = 1
-    pages: number = 1
-    maxitems: number = 20
+    page = 1
+    pages = 1
+    maxitems = 20
     conditions: any = ["IVA Responsable Inscripto", "IVA Responsable no Inscripto", "IVA no Responsable", "IVA Sujeto Exento", "Consumidor Final", "Responsable Monotributo", "Otro"]
-    tab: string = "compras"
+    tab = "compras"
     dialogs: any = []
     form: any = {}
 
@@ -175,8 +175,7 @@ export class ProviderComponent implements OnInit {
             this.pages = Math.ceil(this.filtered.length / this.maxitems)
             this.page = value > this.pages ? 1 : value
             this.Location.replaceState("/panel/proveedores/" + this.provider.id + "/" + this.page + "?lista=" + this.tab)
-            let list
-            list = this.filtered.slice(this.maxitems * (this.page - 1), this.maxitems * this.page)
+            const list = this.filtered.slice(this.maxitems * (this.page - 1), this.maxitems * this.page)
             setTimeout(() => {
                 this.paging = false
                 this.view = list

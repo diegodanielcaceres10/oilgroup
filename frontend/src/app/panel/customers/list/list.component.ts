@@ -20,9 +20,9 @@ export class ListComponent implements OnInit {
     customers: any = []
     customersFiltered: any = []
     customersView: any = []
-    page: number = 1
-    pages: number = 1
-    maxitems: number = 20
+    page = 1
+    pages = 1
+    maxitems = 20
     conditions: any = ["IVA Responsable Inscripto", "IVA Responsable no Inscripto", "IVA no Responsable", "IVA Sujeto Exento", "Consumidor Final", "Responsable Monotributo", "Otro"]
     filters: any = []
     dialogs: any = []
@@ -45,7 +45,7 @@ export class ListComponent implements OnInit {
             }, 0)
             this.access = this.AuthService.getUser()
             this.page = parseInt(this.ActivatedRoute.snapshot.params["page"])
-            let params = this.ActivatedRoute.snapshot.queryParams
+            const params = this.ActivatedRoute.snapshot.queryParams
             this.filters = [
                 {
                     name: "user",
@@ -137,7 +137,7 @@ export class ListComponent implements OnInit {
             this.customersFiltered = []
             this.customersView = []
             this.page = page
-            let filter = this.filters
+            const filter = this.filters
             if (["Super Administrador", "Administrador"].indexOf(this.access.role) == -1) {
                 filter.push({ name: "user", type: "hidden", value: this.access.username })
             }
@@ -172,7 +172,7 @@ export class ListComponent implements OnInit {
             this.customersView = []
             this.page = value > this.pages ? 1 : value
             let params = ""
-            for (let filter of this.filters) {
+            for (const filter of this.filters) {
                 if (filter.type != "hidden" && filter.id && filter.value && filter.value[filter.nameLabel] && filter.value[filter.nameLabel] != "") {
                     params += params == "" ? "?" + filter.label.replace(/ /gi, "").toLowerCase() + "=" + filter.value[filter.nameLabel] : "&" + filter.label.replace(/ /gi, "").toLowerCase() + "=" + filter.value[filter.nameLabel];
                 } else if (filter.type != "hidden" && !filter.id && filter.value && filter.value != "") {
@@ -180,7 +180,7 @@ export class ListComponent implements OnInit {
                 }
             }
             this.Location.replaceState("/panel/clientes/" + this.page + params)
-            let list = this.customersFiltered.slice(this.maxitems * (this.page - 1), this.maxitems * this.page)
+            const list = this.customersFiltered.slice(this.maxitems * (this.page - 1), this.maxitems * this.page)
             setTimeout(() => {
                 this.paging = false
                 this.LoadService.change(false)

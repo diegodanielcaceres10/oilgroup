@@ -22,9 +22,9 @@ export class UserComponent implements OnInit {
     }
     salesFiltered: any = []
     salesView: any = []
-    page: number = 1
-    pages: number = 1
-    maxitems: number = 20
+    page = 1
+    pages = 1
+    maxitems = 20
     roles: any = ["Administrador", "Vendedor"]
     dialogs: any = []
     form: any = {}
@@ -178,7 +178,7 @@ export class UserComponent implements OnInit {
             this.pages = Math.ceil(this.salesFiltered.length / this.maxitems)
             this.page = value > this.pages ? 1 : value
             this.Location.replaceState("/panel/usuarios/" + this.user.username + "/" + this.page)
-            let list = this.salesFiltered.slice(this.maxitems * (this.page - 1), this.maxitems * this.page)
+            const list = this.salesFiltered.slice(this.maxitems * (this.page - 1), this.maxitems * this.page)
             setTimeout(() => {
                 this.paging = false
                 this.salesView = list
@@ -371,7 +371,7 @@ export class UserComponent implements OnInit {
 
     resetUser() {
         try {
-            let user = { ...this.user }
+            const user = { ...this.user }
             this.UserService.reset({ user: user }).then((res: any) => {
                 if (res.status == "success") {
                     setTimeout(() => {
@@ -396,7 +396,7 @@ export class UserComponent implements OnInit {
 
     printSummary() {
         try {
-            let user = { ...this.user }
+            const user = { ...this.user }
             this.UserService.summary({ user: user, }).catch((e) => {
                 console.error("Error", e)
                 this.HeaderService.showError("Error en la conectividad")
@@ -404,7 +404,7 @@ export class UserComponent implements OnInit {
             })
             this.suscription = this.UserService.progress.subscribe((data: any) => {
                 if (data.body && data.status) {
-                    let blob: any = new Blob([data.body], { type: 'application/pdf' });
+                    const blob: any = new Blob([data.body], { type: 'application/pdf' });
                     const objectUrl = URL.createObjectURL(blob);
                     window.open(objectUrl, '_blank');
                     this.dialogs = []
@@ -426,7 +426,7 @@ export class UserComponent implements OnInit {
 
     printPending() {
         try {
-            let user = { ...this.user }
+            const user = { ...this.user }
             this.UserService.pending({ user: user, }).catch((e) => {
                 console.error("Error", e)
                 this.HeaderService.showError("Error en la conectividad")
@@ -434,7 +434,7 @@ export class UserComponent implements OnInit {
             })
             this.suscription = this.UserService.progress.subscribe((data: any) => {
                 if (data.body && data.status) {
-                    let blob: any = new Blob([data.body], { type: 'application/pdf' });
+                    const blob: any = new Blob([data.body], { type: 'application/pdf' });
                     const objectUrl = URL.createObjectURL(blob);
                     window.open(objectUrl, '_blank');
                     this.dialogs = []

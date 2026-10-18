@@ -104,14 +104,14 @@ export class HomeComponent implements OnInit {
             am4core.useTheme(am4themes_animated);
 
             // Create chart instance
-            let chart = am4core.create(id, am4charts.PieChart);
+            const chart = am4core.create(id, am4charts.PieChart);
             chart.data = data;
 
             // Set inner radius
             chart.innerRadius = am4core.percent(35);
 
             // Add and configure Series
-            let pieSeries = chart.series.push(new am4charts.PieSeries());
+            const pieSeries = chart.series.push(new am4charts.PieSeries());
             pieSeries.dataFields.value = "total";
             pieSeries.dataFields.category = "type";
             pieSeries.slices.template.stroke = am4core.color("#fff");
@@ -137,11 +137,11 @@ export class HomeComponent implements OnInit {
             am4core.useTheme(am4themes_animated);
 
             // Create chart instance
-            let chart = am4core.create(id, am4charts.XYChart);
+            const chart = am4core.create(id, am4charts.XYChart);
             chart.data = data;
 
             // Create axes
-            let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+            const categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
             categoryAxis.dataFields.category = "item";
             categoryAxis.renderer.grid.template.location = 0;
             categoryAxis.renderer.minGridDistance = 30;
@@ -153,17 +153,17 @@ export class HomeComponent implements OnInit {
             categoryAxis.renderer.labels.template.wrap = true;
             categoryAxis.renderer.labels.template.textAlign = "end";
 
-            let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+            const valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
 
             // Create series
-            let series = chart.series.push(new am4charts.ColumnSeries());
+            const series = chart.series.push(new am4charts.ColumnSeries());
             series.dataFields.valueY = "total";
             series.dataFields.categoryX = "item";
             series.columns.template.tooltipText = "{categoryX}: [bold]${valueY}[/]";
             series.columns.template.fillOpacity = .8;
 
             // value config
-            let valueLabel = series.bullets.push(new am4charts.LabelBullet());
+            const valueLabel = series.bullets.push(new am4charts.LabelBullet());
             valueLabel.label.text = "$ [bold]{valueY}[/]";
             valueLabel.label.dy = -8;
             chart.maskBullets = false;

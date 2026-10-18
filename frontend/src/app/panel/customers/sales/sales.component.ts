@@ -17,7 +17,7 @@ export class SalesComponent implements OnInit {
 
     access: any = {}
     paging!: boolean
-    path: string = ""
+    path = ""
     filter: any = {
         "pendientes": "pending",
         "listas": "ready",
@@ -26,9 +26,9 @@ export class SalesComponent implements OnInit {
     filters: any = []
     sales: any = []
     salesView: any = []
-    page: number = 1
-    pages: number = 1
-    maxitems: number = 20
+    page = 1
+    pages = 1
+    maxitems = 20
 
     constructor(
         private ActivatedRoute: ActivatedRoute,
@@ -50,7 +50,7 @@ export class SalesComponent implements OnInit {
             this.path = this.ActivatedRoute.snapshot.url[1].path
             this.page = parseInt(this.ActivatedRoute.snapshot.params["page"])
             this.LoadService.change(true)
-            let filter = this.filters
+            const filter = this.filters
             if (this.path == "facturacion") {
                 filter.push({ name: "billing", value: 1 }, { name: "billing_date", type: "null", value: "null" })
             } else if (this.path == "pendientes") {
@@ -91,7 +91,7 @@ export class SalesComponent implements OnInit {
             this.pages = Math.ceil(this.sales.length / this.maxitems)
             this.page = value > this.pages ? 1 : value
             this.Location.replaceState("/panel/clientes/ventas/" + this.path + "/" + this.page)
-            let list = this.sales.slice(this.maxitems * (this.page - 1), this.maxitems * this.page)
+            const list = this.sales.slice(this.maxitems * (this.page - 1), this.maxitems * this.page)
             setTimeout(() => {
                 this.paging = false
                 this.salesView = list

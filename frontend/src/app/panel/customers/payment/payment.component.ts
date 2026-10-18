@@ -320,7 +320,7 @@ export class PaymentComponent implements OnInit {
 
     cancelPayment() {
         try {
-            let payment = { ...this.payment }
+            const payment = { ...this.payment }
             this.CustomerPaymentService.cancel({ payment: payment }).then((res: any) => {
                 if (res.status == "success") {
                     setTimeout(() => {

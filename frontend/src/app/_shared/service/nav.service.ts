@@ -5,7 +5,7 @@ import { Injectable, Output, EventEmitter } from '@angular/core';
 })
 export class NavService {
 
-    @Output() pageSelected: EventEmitter<any> = new EventEmitter()
+    @Output() pageSelected = new EventEmitter<any>()
 
     page(data: any) {
         this.pageSelected.emit(data)

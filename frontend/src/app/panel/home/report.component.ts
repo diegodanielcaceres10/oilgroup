@@ -18,13 +18,13 @@ export class ReportComponent implements OnInit {
 
     paging!: boolean
     metrics: any = {}
-    path: string = ""
-    report: string = ""
+    path = ""
+    report = ""
     filtered: any = []
     view: any = []
-    page: number = 1
-    pages: number = 1
-    maxitems: number = 20
+    page = 1
+    pages = 1
+    maxitems = 20
     filters: any = []
     dialogs: any = []
     suscription: any
@@ -47,7 +47,7 @@ export class ReportComponent implements OnInit {
             this.page = parseInt(this.ActivatedRoute.snapshot.params["page"])
             this.path = this.ActivatedRoute.snapshot.url[1].path
             this.report = this.path == "actividades" ? "activities" : "payments"
-            let params = this.ActivatedRoute.snapshot.queryParams
+            const params = this.ActivatedRoute.snapshot.queryParams
             this.filters = [
                 {
                     name: "from",
@@ -164,7 +164,7 @@ export class ReportComponent implements OnInit {
             this.view = []
             this.page = value > this.pages ? 1 : value
             let params = ""
-            for (let filter of this.filters) {
+            for (const filter of this.filters) {
                 if (filter.type != "hidden" && filter.id && filter.value && filter.value[filter.nameLabel] && filter.value[filter.nameLabel] != "") {
                     params += params == "" ? "?" + filter.label.replace(/ /gi, "").toLowerCase() + "=" + filter.value[filter.nameLabel] : "&" + filter.label.replace(/ /gi, "").toLowerCase() + "=" + filter.value[filter.nameLabel];
                 } else if (filter.type != "hidden" && !filter.id && filter.value && filter.value != "") {
@@ -172,7 +172,7 @@ export class ReportComponent implements OnInit {
                 }
             }
             this.Location.replaceState("/panel/reporte/" + this.path + "/" + this.page + params)
-            let list = this.metrics.slice(this.maxitems * (this.page - 1), this.maxitems * this.page)
+            const list = this.metrics.slice(this.maxitems * (this.page - 1), this.maxitems * this.page)
             setTimeout(() => {
                 this.paging = false
                 this.LoadService.change(false)
@@ -213,8 +213,8 @@ export class ReportComponent implements OnInit {
     }
 
     filterDialogForm() {
-        let data: Record<string, any> = {}
-        for (let filter of this.filters) {
+        const data: Record<string, any> = {}
+        for (const filter of this.filters) {
             data[filter.name] = filter.value || ""
         }
         try {

@@ -18,9 +18,9 @@ export class BrandsComponent implements OnInit {
     brands: any = []
     brandsFiltered: any = []
     brandsView: any = []
-    page: number = 1
-    pages: number = 1
-    maxitems: number = 20
+    page = 1
+    pages = 1
+    maxitems = 20
     filters: any = []
     dialogs: any = []
     form: any = {}
@@ -41,7 +41,7 @@ export class BrandsComponent implements OnInit {
                 this.NavService.page({ page: "article", subpage: "brands" })
             }, 0)
             this.page = parseInt(this.ActivatedRoute.snapshot.params["page"])
-            let params = this.ActivatedRoute.snapshot.queryParams
+            const params = this.ActivatedRoute.snapshot.queryParams
             this.filters = [
                 {
                     name: "name",
@@ -95,7 +95,7 @@ export class BrandsComponent implements OnInit {
             this.brandsView = []
             this.page = value > this.pages ? 1 : value
             let params = ""
-            for (let filter of this.filters) {
+            for (const filter of this.filters) {
                 if (filter.type != "hidden" && filter.id && filter.value && filter.value[filter.nameLabel] && filter.value[filter.nameLabel] != "") {
                     params += params == "" ? "?" + filter.label.replace(/ /gi, "").toLowerCase() + "=" + filter.value[filter.nameLabel] : "&" + filter.label.replace(/ /gi, "").toLowerCase() + "=" + filter.value[filter.nameLabel];
                 } else if (filter.type != "hidden" && !filter.id && filter.value && filter.value != "") {
@@ -103,7 +103,7 @@ export class BrandsComponent implements OnInit {
                 }
             }
             this.Location.replaceState("/panel/articulos/marcas/" + this.page + params)
-            let list = this.brandsFiltered.slice(this.maxitems * (this.page - 1), this.maxitems * this.page)
+            const list = this.brandsFiltered.slice(this.maxitems * (this.page - 1), this.maxitems * this.page)
             setTimeout(() => {
                 this.paging = false
                 this.LoadService.change(false)

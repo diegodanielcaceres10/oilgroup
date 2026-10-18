@@ -15,7 +15,7 @@ export class FormComponent implements OnInit {
 
     FormGroup!: UntypedFormGroup;
     required!: boolean
-    selectedInput: string = ""
+    selectedInput = ""
 
     constructor() { }
 
@@ -24,7 +24,7 @@ export class FormComponent implements OnInit {
         if (this.form.groups && this.form.groups.length > 0) {
             this.form.groups.map((group: any) => {
                 group.fields.map((field: any) => {
-                    let validators = []
+                    const validators = []
                     if (field.required) validators.push(Validators.required)
                     if (field.max) validators.push(Validators.max(field.max))
                     if (field.type == "select" && field.id) {
@@ -37,7 +37,7 @@ export class FormComponent implements OnInit {
                         } else if (field.namesLabel && field.namesLabel.length > 0) {
                             let values = ""
                             if (field.value) {
-                                for (let name of field.namesLabel) {
+                                for (const name of field.namesLabel) {
                                     values += field.value[name] + " "
                                 }
                             }
@@ -72,7 +72,7 @@ export class FormComponent implements OnInit {
 
     changed(field: any) {
         this.required = false
-        let value = this.FormGroup.controls[field.name].value
+        const value = this.FormGroup.controls[field.name].value
         if (this.form.rules && this.form.rules.length > 0) {
             this.form.rules.map((r: any) => {
                 if (r.name == field.name) {
@@ -151,7 +151,7 @@ export class FormComponent implements OnInit {
             this.FormGroup.controls[field.name].setValue(value[field.nameLabel])
         } else if (field.type == "select" && field.id && field.namesLabel && field.namesLabel.length > 0) {
             let values = ""
-            for (let name of field.namesLabel) {
+            for (const name of field.namesLabel) {
                 values += value[name] + " "
             }
             this.FormGroup.controls[field.id].setValue(value[field.nameValue])
@@ -163,7 +163,7 @@ export class FormComponent implements OnInit {
 
     drawFile(files: any, field: any) {
         try {
-            for (let item of files) {
+            for (const item of files) {
                 const file: File = item;
                 if (["application/pdf", "image/png", "image/jpeg", "image/jpg"].indexOf(file.type) == -1) {
                     field.error = "FORMAT";

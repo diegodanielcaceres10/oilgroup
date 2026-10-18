@@ -6,7 +6,7 @@ import { ApiService } from '../api/api.service';
 })
 export class CustomerService {
 
-    @Output() progress: EventEmitter<any> = new EventEmitter()
+    @Output() progress = new EventEmitter<any>()
 
     constructor(
         private api: ApiService,

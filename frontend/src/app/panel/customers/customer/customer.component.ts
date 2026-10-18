@@ -27,9 +27,9 @@ export class CustomerComponent implements OnInit {
     }
     salesFiltered: any = []
     salesView: any = []
-    page: number = 1
-    pages: number = 1
-    maxitems: number = 20
+    page = 1
+    pages = 1
+    maxitems = 20
     users: any = []
     conditions: any = ["IVA Responsable Inscripto", "IVA Responsable no Inscripto", "IVA no Responsable", "IVA Sujeto Exento", "Consumidor Final", "Responsable Monotributo", "Otro"]
     dialogs: any = []
@@ -110,7 +110,7 @@ export class CustomerComponent implements OnInit {
     async getData() {
         try {
             if (["Super Administrador", "Administrador"].indexOf(this.access.role) > -1) {
-                let filter = [{ name: "role", value: "Vendedor" }]
+                const filter = [{ name: "role", value: "Vendedor" }]
                 await this.UserService.getAll({ filter: filter }).then((res: any) => {
                     if (res.status == "success") {
                         this.users = res.data
@@ -230,7 +230,7 @@ export class CustomerComponent implements OnInit {
             this.pages = Math.ceil(this.salesFiltered.length / this.maxitems)
             this.page = value > this.pages ? 1 : value
             this.Location.replaceState("/panel/clientes/" + this.customer.id + "/" + this.page)
-            let list = this.salesFiltered.slice(this.maxitems * (this.page - 1), this.maxitems * this.page)
+            const list = this.salesFiltered.slice(this.maxitems * (this.page - 1), this.maxitems * this.page)
             setTimeout(() => {
                 this.paging = false
                 this.salesView = list
@@ -392,7 +392,7 @@ export class CustomerComponent implements OnInit {
 
     printSummary() {
         try {
-            let customer = { ...this.customer }
+            const customer = { ...this.customer }
             this.CustomerService.summary({ customer: customer, }).catch((e) => {
                 console.error("Error", e)
                 this.HeaderService.showError("Error en la conectividad")
@@ -400,7 +400,7 @@ export class CustomerComponent implements OnInit {
             })
             this.suscription = this.CustomerService.progress.subscribe((data: any) => {
                 if (data.body && data.status == 200 && data.type == HttpEventType.Response) {
-                    let blob: any = new Blob([data.body], { type: 'application/pdf' });
+                    const blob: any = new Blob([data.body], { type: 'application/pdf' });
                     const objectUrl = URL.createObjectURL(blob);
                     window.open(objectUrl, '_blank');
                     this.suscription.unsubscribe();

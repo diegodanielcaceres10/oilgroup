@@ -6,9 +6,9 @@ import { ApiService } from '../api/api.service';
 })
 export class ArticleService {
 
-    @Output() progressPrices: EventEmitter<any> = new EventEmitter()
-    @Output() progressStock: EventEmitter<any> = new EventEmitter()
-    @Output() progressSales: EventEmitter<any> = new EventEmitter()
+    @Output() progressPrices = new EventEmitter<any>()
+    @Output() progressStock = new EventEmitter<any>()
+    @Output() progressSales = new EventEmitter<any>()
 
     constructor(
         private api: ApiService,

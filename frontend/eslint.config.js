@@ -10,13 +10,10 @@ const angular = require("angular-eslint");
 // lower "maxWarnings" accordingly.
 const baselineTs = {
   "@typescript-eslint/no-explicit-any": "warn",
-  "@typescript-eslint/no-inferrable-types": "warn",
   "@typescript-eslint/no-unused-expressions": "warn",
   "@typescript-eslint/no-unused-vars": "warn",
-  "@typescript-eslint/consistent-generic-constructors": "warn",
   "@typescript-eslint/no-wrapper-object-types": "warn",
   "@typescript-eslint/no-empty-function": "warn",
-  "prefer-const": "warn",
   "no-dupe-else-if": "warn",
   "no-self-assign": "warn",
   "no-empty": "warn",

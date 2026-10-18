@@ -7,7 +7,7 @@ import { ApiService } from '../api/api.service';
 })
 export class UserService {
 
-    @Output() progress: EventEmitter<any> = new EventEmitter()
+    @Output() progress = new EventEmitter<any>()
 
     public user: any = null
 
