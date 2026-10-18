@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../_shared/service/auth.service';
 import { CustomerService } from '../../../_shared/service/customer.service';
@@ -15,7 +15,7 @@ import { HttpEventType } from '@angular/common/http';
     changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
-export class CustomerComponent implements OnInit {
+export class CustomerComponent implements OnInit, OnDestroy {
 
     access: any = {}
     paging!: boolean
@@ -73,7 +73,9 @@ export class CustomerComponent implements OnInit {
 
     ngOnDestroy(): void {
         try {
-            this.suscription && this.suscription.unsubscribe();
+            if (this.suscription) {
+                this.suscription.unsubscribe();
+            }
         } catch (e) {
             console.error("Error", e);
         }
@@ -410,11 +412,11 @@ export class CustomerComponent implements OnInit {
                     this.HeaderService.showError("Error en la conectividad")
                     this.dialogs.pop()
                 }
-            }), (e: any) => {
+            }, (e: any) => {
                 console.error("Error", e)
                 this.HeaderService.showError("Error en la conectividad")
                 this.dialogs.pop()
-            }
+            })
         } catch (e) {
             console.error("Error", e)
         }

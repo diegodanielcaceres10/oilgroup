@@ -153,7 +153,7 @@ export class HomeComponent implements OnInit {
             categoryAxis.renderer.labels.template.wrap = true;
             categoryAxis.renderer.labels.template.textAlign = "end";
 
-            const valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+            chart.yAxes.push(new am4charts.ValueAxis());
 
             // Create series
             const series = chart.series.push(new am4charts.ColumnSeries());

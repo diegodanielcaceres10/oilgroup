@@ -1,4 +1,4 @@
-import { Injectable, Output, EventEmitter } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../api/api.service';
 
@@ -7,7 +7,7 @@ import { ApiService } from '../api/api.service';
 })
 export class UserService {
 
-    @Output() progress = new EventEmitter<any>()
+    progress = new EventEmitter<any>()
 
     public user: any = null
 

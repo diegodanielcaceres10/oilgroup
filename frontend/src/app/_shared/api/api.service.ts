@@ -34,7 +34,7 @@ export class ApiService {
      *
      * @return An `Observable` of the response, with the response body as a JSON object.
      */
-    public get(url: string): Observable<Object> {
+    public get(url: string): Observable<object> {
         return this.httpClient.get(url);
     }
 
@@ -45,8 +45,8 @@ export class ApiService {
      *
      * @return An `Observable` of the response, with the response body as a JSON object.
      */
-    public post(path: string, values?: any, raw?: string): Observable<Object> {
-        let body: any = {};
+    public post(path: string, values?: any, raw?: string): Observable<object> {
+        let body: any;
         if (raw == "form-data") {
             const formData = new FormData();
             Object.keys(values).forEach(key => {
@@ -70,7 +70,7 @@ export class ApiService {
      *
      * @return An `Observable` of the response, with the response body as a JSON object.
      */
-    public download(path: string, body?: any): Observable<Object> {
+    public download(path: string, body?: any): Observable<object> {
         return this.httpClient.post(this.apiUrl + path, body, { responseType: "blob", reportProgress: true, observe: "events", headers: this.headers });
     }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ArticleService } from '../../../_shared/service/article.service';
 import { BrandService } from '../../../_shared/service/brand.service';
@@ -22,7 +22,7 @@ import am4themes_dataviz from "@amcharts/amcharts4/themes/dataviz";
     changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
-export class ArticleComponent implements OnInit {
+export class ArticleComponent implements OnInit, OnDestroy {
 
     paging!: boolean
     editMode!: boolean
@@ -83,7 +83,9 @@ export class ArticleComponent implements OnInit {
 
     ngOnDestroy(): void {
         try {
-            this.suscription && this.suscription.unsubscribe();
+            if (this.suscription) {
+                this.suscription.unsubscribe();
+            }
         } catch (e) {
             console.error("Error", e);
         }
@@ -285,7 +287,7 @@ export class ArticleComponent implements OnInit {
             categoryAxis.renderer.labels.template.wrap = true;
             categoryAxis.renderer.labels.template.textAlign = "end";
 
-            const valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+            chart.yAxes.push(new am4charts.ValueAxis());
 
             // Create series
             const series = chart.series.push(new am4charts.ColumnSeries());
@@ -748,11 +750,11 @@ export class ArticleComponent implements OnInit {
                     this.HeaderService.showError("Error en la conectividad")
                     this.dialogs.pop()
                 }
-            }), (e: any) => {
+            }, (e: any) => {
                 console.error("Error", e)
                 this.HeaderService.showError("Error en la conectividad")
                 this.dialogs.pop()
-            }
+            })
         } catch (e) {
             console.error("Error", e)
         }

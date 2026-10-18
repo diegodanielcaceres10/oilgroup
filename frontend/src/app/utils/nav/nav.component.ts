@@ -147,7 +147,9 @@ export class NavComponent implements OnInit {
             this.pageselected = subname
             if (this.menuselected != name || this.pageselected != subname) this.LoadService.change(true);
             setTimeout(() => {
-                this.logo && this.logo.nativeElement && this.logo.nativeElement.focus();
+                if (this.logo && this.logo.nativeElement) {
+                    this.logo.nativeElement.focus();
+                }
             }, 0);
             this.Router.navigateByUrl(link);
         } catch (e) {

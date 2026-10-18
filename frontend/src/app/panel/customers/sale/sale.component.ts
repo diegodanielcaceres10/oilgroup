@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../_shared/service/auth.service';
 import { SaleService } from '../../../_shared/service/sale.service';
@@ -15,7 +15,7 @@ import { Location } from '@angular/common';
     changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
-export class SaleComponent implements OnInit {
+export class SaleComponent implements OnInit, OnDestroy {
 
     access: any = {}
     paging!: boolean
@@ -78,7 +78,9 @@ export class SaleComponent implements OnInit {
 
     ngOnDestroy(): void {
         try {
-            this.suscription && this.suscription.unsubscribe();
+            if (this.suscription) {
+                this.suscription.unsubscribe();
+            }
         } catch (e) {
             console.error("Error", e);
         }
@@ -108,10 +110,10 @@ export class SaleComponent implements OnInit {
                                             primary: true,
                                         },
                                     ],
-                                },
-                                    setTimeout(() => {
-                                        this.LoadService.change(false)
-                                    }, 100)
+                                }
+                                setTimeout(() => {
+                                    this.LoadService.change(false)
+                                }, 100)
                             } else {
                                 console.error("Response:", res.status)
                                 this.HeaderService.showError("Error al encontrar los articulos!")
@@ -423,8 +425,6 @@ export class SaleComponent implements OnInit {
                     this.setStock()
                 } else if (data.event == "setPayment") {
                     this.setPayment(data.values)
-                } else if (data.event == "setStock") {
-                    this.setStock()
                 } else {
                     setTimeout(() => {
                         this.HeaderService.showError("Error en el proceso")
@@ -1317,11 +1317,11 @@ export class SaleComponent implements OnInit {
                     this.HeaderService.showError("Error en la conectividad")
                     this.dialogs.pop()
                 }
-            }), (e: any) => {
+            }, (e: any) => {
                 console.error("Error", e)
                 this.HeaderService.showError("Error en la conectividad")
                 this.dialogs.pop()
-            }
+            })
         } catch (e) {
             console.error("Error", e)
         }

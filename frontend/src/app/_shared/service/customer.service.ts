@@ -1,4 +1,4 @@
-import { Injectable, Output, EventEmitter } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { ApiService } from '../api/api.service';
 
 @Injectable({
@@ -6,7 +6,7 @@ import { ApiService } from '../api/api.service';
 })
 export class CustomerService {
 
-    @Output() progress = new EventEmitter<any>()
+    progress = new EventEmitter<any>()
 
     constructor(
         private api: ApiService,

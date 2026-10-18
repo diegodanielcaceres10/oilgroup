@@ -17,8 +17,6 @@ export class FormComponent implements OnInit {
     required!: boolean
     selectedInput = ""
 
-    constructor() { }
-
     ngOnInit(): void {
         this.FormGroup = new UntypedFormGroup({});
         if (this.form.groups && this.form.groups.length > 0) {

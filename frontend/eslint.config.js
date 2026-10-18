@@ -10,18 +10,11 @@ const angular = require("angular-eslint");
 // lower "maxWarnings" accordingly.
 const baselineTs = {
   "@typescript-eslint/no-explicit-any": "warn",
-  "@typescript-eslint/no-unused-expressions": "warn",
-  "@typescript-eslint/no-unused-vars": "warn",
-  "@typescript-eslint/no-wrapper-object-types": "warn",
-  "@typescript-eslint/no-empty-function": "warn",
-  "no-dupe-else-if": "warn",
   "no-self-assign": "warn",
   "no-empty": "warn",
-  "no-useless-assignment": "warn",
   "@angular-eslint/prefer-inject": "warn",
   "@angular-eslint/prefer-standalone": "warn",
   "@angular-eslint/prefer-on-push-component-change-detection": "warn",
-  "@angular-eslint/no-output-native": "warn",
 };
 
 const baselineTemplate = {

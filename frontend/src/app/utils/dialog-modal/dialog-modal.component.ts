@@ -22,8 +22,6 @@ export class DialogModalComponent implements OnInit {
     maxitems = 10
     search = ""
 
-    constructor() { }
-
     ngOnInit(): void {
         if (this.dialog.type == "list") {
             this.columns = this.dialog.list ? this.dialog.list.columns : []

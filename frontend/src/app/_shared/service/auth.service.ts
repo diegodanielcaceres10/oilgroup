@@ -1,4 +1,4 @@
-import { Injectable, Output, EventEmitter } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../api/api.service';
 
@@ -7,7 +7,7 @@ import { ApiService } from '../api/api.service';
 })
 export class AuthService {
 
-    @Output() progress = new EventEmitter<any>()
+    progress = new EventEmitter<any>()
 
     public user: any = null
 
@@ -38,7 +38,7 @@ export class AuthService {
      * isLoggedIn
      */
     public isLoggedIn() {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             if (this.user) {
                 resolve(true);
             } else {

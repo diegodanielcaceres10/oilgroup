@@ -293,12 +293,14 @@ export class ListComponent implements OnInit {
                     setTimeout(() => {
                         this.HeaderService.showSuccess("Comprobante adjunto con exito.");
                         this.dialogs = [];
-                        this.licensesView && this.licensesView.some((i: any) => {
-                            if (i.id == data.id) {
-                                i.status = "Analisis";
-                                return true;
-                            }
-                        });
+                        if (this.licensesView) {
+                            this.licensesView.some((i: any) => {
+                                if (i.id == data.id) {
+                                    i.status = "Analisis";
+                                    return true;
+                                }
+                            });
+                        }
                     }, 100)
                 } else {
                     console.error("Response:", res.status)

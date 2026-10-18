@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../../_shared/service/user.service';
 import { NavService } from '../../../_shared/service/nav.service';
@@ -12,7 +12,7 @@ import { Location } from '@angular/common';
     changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
-export class UserComponent implements OnInit {
+export class UserComponent implements OnInit, OnDestroy {
 
     paging!: boolean
     editMode!: boolean
@@ -64,7 +64,9 @@ export class UserComponent implements OnInit {
 
     ngOnDestroy(): void {
         try {
-            this.suscription && this.suscription.unsubscribe();
+            if (this.suscription) {
+                this.suscription.unsubscribe();
+            }
         } catch (e) {
             console.error("Error", e);
         }
@@ -414,11 +416,11 @@ export class UserComponent implements OnInit {
                     this.HeaderService.showError("Error en la conectividad")
                     this.dialogs.pop()
                 }
-            }), (e: any) => {
+            }, (e: any) => {
                 console.error("Error", e)
                 this.HeaderService.showError("Error en la conectividad")
                 this.dialogs.pop()
-            }
+            })
         } catch (e) {
             console.error("Error", e)
         }
@@ -444,11 +446,11 @@ export class UserComponent implements OnInit {
                     this.HeaderService.showError("Error en la conectividad")
                     this.dialogs.pop()
                 }
-            }), (e: any) => {
+            }, (e: any) => {
                 console.error("Error", e)
                 this.HeaderService.showError("Error en la conectividad")
                 this.dialogs.pop()
-            }
+            })
         } catch (e) {
             console.error("Error", e)
         }
