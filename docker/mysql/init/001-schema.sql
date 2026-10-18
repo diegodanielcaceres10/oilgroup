@@ -233,7 +233,7 @@ CREATE TABLE IF NOT EXISTS license_payment (
 
 -- Development-only account for the curl smoke test below: admin / admin123.
 INSERT INTO `user` (username, pass, lastname, firstname, role, type, active)
-VALUES ('admin', SHA1('admin123'), 'Administrador', 'Local', 'Administrador', 'Administrador', 1)
+VALUES ('admin', SHA1('admin123'), 'Administrador', 'Local', 'Super Administrador', 'Administrador', 1)
 ON DUPLICATE KEY UPDATE username = username;
 
 INSERT INTO license (month, value, current, status)
