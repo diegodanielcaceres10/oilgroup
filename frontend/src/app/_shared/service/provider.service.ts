@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
 
+import { lastValueFrom } from 'rxjs';
 @Injectable({
     providedIn: 'root'
 })
@@ -15,7 +16,7 @@ export class ProviderService {
      */
     public async getAll(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("provider/getAll/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("provider/getAll/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -28,7 +29,7 @@ export class ProviderService {
      */
     public async find(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("provider/find/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("provider/find/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -41,7 +42,7 @@ export class ProviderService {
      */
     public async create(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("provider/create/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("provider/create/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -54,7 +55,7 @@ export class ProviderService {
      */
     public async update(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("provider/update/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("provider/update/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -67,7 +68,7 @@ export class ProviderService {
      */
     public async active(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("provider/active/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("provider/active/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)

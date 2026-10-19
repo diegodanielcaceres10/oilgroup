@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
 
+import { lastValueFrom } from 'rxjs';
 @Injectable({
     providedIn: 'root'
 })
@@ -15,7 +16,7 @@ export class MetricService {
      */
     public async getAll(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("metric/getAll/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("metric/getAll/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -28,7 +29,7 @@ export class MetricService {
      */
     public async getAllExtend() {
         return new Promise((resolve, reject) => {
-            this.api.post("metric/getAllExtend/").toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("metric/getAllExtend/")).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)

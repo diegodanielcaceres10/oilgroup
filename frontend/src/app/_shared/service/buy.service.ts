@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
 
+import { lastValueFrom } from 'rxjs';
 @Injectable({
     providedIn: 'root'
 })
@@ -15,7 +16,7 @@ export class BuyService {
      */
     public async find(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("buy/find/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("buy/find/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -28,7 +29,7 @@ export class BuyService {
      */
     public async create(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("buy/create/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("buy/create/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -41,7 +42,7 @@ export class BuyService {
      */
     public async billing(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("buy/billing/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("buy/billing/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -54,7 +55,7 @@ export class BuyService {
      */
     public async cancel(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("buy/cancel/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("buy/cancel/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)

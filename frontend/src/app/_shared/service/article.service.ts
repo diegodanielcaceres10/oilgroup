@@ -1,6 +1,7 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
 import { ApiService } from '../api/api.service';
 
+import { lastValueFrom } from 'rxjs';
 @Injectable({
     providedIn: 'root'
 })
@@ -19,7 +20,7 @@ export class ArticleService {
      */
     public async getAll(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("article/getAll/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("article/getAll/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -32,7 +33,7 @@ export class ArticleService {
      */
     public async getPrices() {
         return new Promise((resolve, reject) => {
-            this.api.post("article/getPrices/").toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("article/getPrices/")).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -45,7 +46,7 @@ export class ArticleService {
      */
     public async getAllPrices(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("article/getAllPrices/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("article/getAllPrices/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -58,7 +59,7 @@ export class ArticleService {
      */
     public async find(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("article/find/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("article/find/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -71,7 +72,7 @@ export class ArticleService {
      */
     public async create(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("article/create/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("article/create/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -84,7 +85,7 @@ export class ArticleService {
      */
     public async update(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("article/update/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("article/update/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -97,7 +98,7 @@ export class ArticleService {
      */
     public async active(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("article/active/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("article/active/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -110,7 +111,7 @@ export class ArticleService {
      */
     public async addMeasure(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("article/addMeasure/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("article/addMeasure/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -123,7 +124,7 @@ export class ArticleService {
      */
     public async updateMeasure(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("article/updateMeasure/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("article/updateMeasure/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -136,7 +137,7 @@ export class ArticleService {
      */
     public async deleteMeasure(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("article/deleteMeasure/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("article/deleteMeasure/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -149,7 +150,7 @@ export class ArticleService {
      */
     public async updatePrices(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("article/updatePrices/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("article/updatePrices/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -162,7 +163,7 @@ export class ArticleService {
      */
     public async updateStock(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("article/updateStock/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("article/updateStock/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)

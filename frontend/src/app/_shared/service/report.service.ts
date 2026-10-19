@@ -1,6 +1,7 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
 import { ApiService } from '../api/api.service';
 
+import { lastValueFrom } from 'rxjs';
 @Injectable({
     providedIn: 'root'
 })
@@ -18,7 +19,7 @@ export class ReportService {
      */
     public async getPayments(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("report/getPayments/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("report/getPayments/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -31,7 +32,7 @@ export class ReportService {
      */
     public async getActivity(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("report/getActivity/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("report/getActivity/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -44,7 +45,7 @@ export class ReportService {
      */
     public async getArticle() {
         return new Promise((resolve, reject) => {
-            this.api.post("report/getArticle/").toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("report/getArticle/")).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -57,7 +58,7 @@ export class ReportService {
      */
     public async getBrand() {
         return new Promise((resolve, reject) => {
-            this.api.post("report/getBrand/").toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("report/getBrand/")).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -70,7 +71,7 @@ export class ReportService {
      */
     public async getCategory() {
         return new Promise((resolve, reject) => {
-            this.api.post("report/getCategory/").toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("report/getCategory/")).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -83,7 +84,7 @@ export class ReportService {
      */
     public async getCustomer() {
         return new Promise((resolve, reject) => {
-            this.api.post("report/getCustomer/").toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("report/getCustomer/")).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -96,7 +97,7 @@ export class ReportService {
      */
     public async getProvider() {
         return new Promise((resolve, reject) => {
-            this.api.post("report/getProvider/").toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("report/getProvider/")).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)

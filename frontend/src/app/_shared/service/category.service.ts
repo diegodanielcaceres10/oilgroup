@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
 
+import { lastValueFrom } from 'rxjs';
 @Injectable({
     providedIn: 'root'
 })
@@ -15,7 +16,7 @@ export class CategoryService {
      */
     public async getAll(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("category/getAll/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("category/getAll/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -28,7 +29,7 @@ export class CategoryService {
      */
     public async update(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("category/update/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("category/update/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)

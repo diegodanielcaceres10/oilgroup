@@ -1,6 +1,7 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { ApiService } from '../api/api.service';
 
+import { lastValueFrom } from 'rxjs';
 @Injectable({
     providedIn: 'root'
 })
@@ -17,7 +18,7 @@ export class SaleService {
      */
     public async getAll(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("sale/getAll/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("sale/getAll/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -30,7 +31,7 @@ export class SaleService {
      */
     public async find(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("sale/find/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("sale/find/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -43,7 +44,7 @@ export class SaleService {
      */
     public async create(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("sale/create/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("sale/create/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -56,7 +57,7 @@ export class SaleService {
      */
     public async review(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("sale/review/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("sale/review/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -69,7 +70,7 @@ export class SaleService {
      */
     public async deliver(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("sale/deliver/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("sale/deliver/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -82,7 +83,7 @@ export class SaleService {
      */
     public async billing(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("sale/billing/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("sale/billing/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -106,7 +107,7 @@ export class SaleService {
      */
     public async cancel(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("sale/cancel/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("sale/cancel/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)

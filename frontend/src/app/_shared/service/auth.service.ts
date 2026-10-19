@@ -2,6 +2,7 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../api/api.service';
 
+import { lastValueFrom } from 'rxjs';
 @Injectable({
     providedIn: 'root'
 })
@@ -21,7 +22,7 @@ export class AuthService {
      */
     public async logIn(user: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("auth/login/", user).toPromise().then((user: any) => {
+            lastValueFrom(this.api.post("auth/login/", user)).then((user: any) => {
                 if (user.status == "success") {
                     sessionStorage.setItem("oilgroupAccessToken", user.token);
                     this.api.setToken(user.token, user.data && user.data.username);
@@ -44,7 +45,7 @@ export class AuthService {
             } else {
                 const token = sessionStorage.getItem("oilgroupAccessToken");
                 if (token) {
-                    this.api.post("auth/token/", { token }).toPromise().then((user: any) => {
+                    lastValueFrom(this.api.post("auth/token/", { token })).then((user: any) => {
                         if (user.status == "success") {
                             this.api.setToken(token, user.data && user.data.username);
                             this.user = user.data;

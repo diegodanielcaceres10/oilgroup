@@ -2,6 +2,7 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../api/api.service';
 
+import { lastValueFrom } from 'rxjs';
 @Injectable({
     providedIn: 'root'
 })
@@ -21,7 +22,7 @@ export class UserService {
      */
     public async getAll(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("user/getAll/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("user/getAll/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -34,7 +35,7 @@ export class UserService {
      */
     public async find(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("user/find/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("user/find/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -47,7 +48,7 @@ export class UserService {
      */
     public async create(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("user/create/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("user/create/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -60,7 +61,7 @@ export class UserService {
      */
     public async update(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("user/update/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("user/update/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -73,7 +74,7 @@ export class UserService {
      */
     public async reset(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("user/reset/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("user/reset/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -86,7 +87,7 @@ export class UserService {
      */
     public async active(data: any) {
         return new Promise((resolve, reject) => {
-            this.api.post("user/active/", data).toPromise().then((data: any) => {
+            lastValueFrom(this.api.post("user/active/", data)).then((data: any) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
