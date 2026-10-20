@@ -1305,22 +1305,25 @@ export class SaleComponent implements OnInit, OnDestroy {
                 this.HeaderService.showError("Error en la conectividad")
                 this.dialogs.pop()
             })
-            this.suscription = this.SaleService.progress.subscribe((data: any) => {
-                if (data.body && data.status) {
-                    const blob: any = new Blob([data.body], { type: 'application/pdf' });
-                    const objectUrl = URL.createObjectURL(blob);
-                    window.open(objectUrl, '_blank');
-                    this.dialogs.pop()
-                    this.suscription.unsubscribe();
-                } else if (data.error) {
-                    console.error("Response ", data)
+            this.suscription = this.SaleService.progress.subscribe({
+                next: (data: any) => {
+                    if (data.body && data.status) {
+                        const blob: any = new Blob([data.body], { type: 'application/pdf' });
+                        const objectUrl = URL.createObjectURL(blob);
+                        window.open(objectUrl, '_blank');
+                        this.dialogs.pop()
+                        this.suscription.unsubscribe();
+                    } else if (data.error) {
+                        console.error("Response ", data)
+                        this.HeaderService.showError("Error en la conectividad")
+                        this.dialogs.pop()
+                    }
+                },
+                error: (e: any) => {
+                    console.error("Error", e)
                     this.HeaderService.showError("Error en la conectividad")
                     this.dialogs.pop()
                 }
-            }, (e: any) => {
-                console.error("Error", e)
-                this.HeaderService.showError("Error en la conectividad")
-                this.dialogs.pop()
             })
         } catch (e) {
             console.error("Error", e)

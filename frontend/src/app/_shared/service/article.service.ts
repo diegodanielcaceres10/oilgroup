@@ -175,10 +175,13 @@ export class ArticleService {
      * exportPrices
      */
     public async exportPrices() {
-        return this.api.download("article/exportPrices/").subscribe(data => {
-            this.progressPrices.emit(data)
-        }, error => {
-            this.progressPrices.emit(error)
+        return this.api.download("article/exportPrices/").subscribe({
+            next: data => {
+                this.progressPrices.emit(data)
+            },
+            error: error => {
+                this.progressPrices.emit(error)
+            }
         })
     }
 
@@ -186,10 +189,13 @@ export class ArticleService {
      * exportStock
      */
     public async exportStock() {
-        return this.api.download("article/exportStock/").subscribe(data => {
-            this.progressStock.emit(data)
-        }, error => {
-            this.progressStock.emit(error)
+        return this.api.download("article/exportStock/").subscribe({
+            next: data => {
+                this.progressStock.emit(data)
+            },
+            error: error => {
+                this.progressStock.emit(error)
+            }
         })
     }
 
@@ -197,10 +203,13 @@ export class ArticleService {
      * exportSales
      */
     public async exportSales(data: any) {
-        return this.api.download("article/exportSales/", data).subscribe(data => {
-            this.progressSales.emit(data)
-        }, error => {
-            this.progressSales.emit(error)
+        return this.api.download("article/exportSales/", data).subscribe({
+            next: data => {
+                this.progressSales.emit(data)
+            },
+            error: error => {
+                this.progressSales.emit(error)
+            }
         })
     }
 }

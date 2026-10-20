@@ -99,10 +99,13 @@ export class UserService {
      * summary
      */
     public async summary(data: any) {
-        return this.api.download("user/summary/", data).subscribe(data => {
-            this.progress.emit(data)
-        }, error => {
-            this.progress.emit(error)
+        return this.api.download("user/summary/", data).subscribe({
+            next: data => {
+                this.progress.emit(data)
+            },
+            error: error => {
+                this.progress.emit(error)
+            }
         })
     }
 
@@ -110,10 +113,13 @@ export class UserService {
      * pending
      */
     public async pending(data: any) {
-        return this.api.download("user/pending/", data).subscribe(data => {
-            this.progress.emit(data)
-        }, error => {
-            this.progress.emit(error)
+        return this.api.download("user/pending/", data).subscribe({
+            next: data => {
+                this.progress.emit(data)
+            },
+            error: error => {
+                this.progress.emit(error)
+            }
         })
     }
 }

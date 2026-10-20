@@ -109,10 +109,13 @@ export class ReportService {
      * exportPayments
      */
     public async exportPayments(data: any) {
-        return this.api.download("report/exportPayments/", data).subscribe(data => {
-            this.progressPayments.emit(data)
-        }, error => {
-            this.progressPayments.emit(error)
+        return this.api.download("report/exportPayments/", data).subscribe({
+            next: data => {
+                this.progressPayments.emit(data)
+            },
+            error: error => {
+                this.progressPayments.emit(error)
+            }
         })
     }
 
@@ -120,10 +123,13 @@ export class ReportService {
      * exportActivities
      */
     public async exportActivities(data: any) {
-        return this.api.download("report/exportActivities/", data).subscribe(data => {
-            this.progressActivities.emit(data)
-        }, error => {
-            this.progressActivities.emit(error)
+        return this.api.download("report/exportActivities/", data).subscribe({
+            next: data => {
+                this.progressActivities.emit(data)
+            },
+            error: error => {
+                this.progressActivities.emit(error)
+            }
         })
     }
 }

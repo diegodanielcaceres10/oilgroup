@@ -95,10 +95,13 @@ export class SaleService {
      * ticket
      */
     public async ticket(data: any) {
-        return this.api.download("sale/ticket/", data).subscribe(data => {
-            this.progress.emit(data)
-        }, error => {
-            this.progress.emit(error)
+        return this.api.download("sale/ticket/", data).subscribe({
+            next: data => {
+                this.progress.emit(data)
+            },
+            error: error => {
+                this.progress.emit(error)
+            }
         })
     }
 

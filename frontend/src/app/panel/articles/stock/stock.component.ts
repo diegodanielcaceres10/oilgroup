@@ -355,22 +355,25 @@ export class StockComponent implements OnInit, OnDestroy {
                 this.HeaderService.showError("Error en la conectividad")
                 this.dialogs.pop()
             })
-            this.suscription = this.ArticleService.progressStock.subscribe((data: any) => {
-                if (data.body && data.status == 200 && data.type == HttpEventType.Response) {
-                    const blob: any = new Blob([data.body], { type: 'application/pdf' });
-                    const objectUrl = URL.createObjectURL(blob);
-                    window.open(objectUrl, '_blank');
-                    this.suscription.unsubscribe();
-                    this.dialogs = []
-                } else if (data.error) {
-                    console.error("Response ", data)
+            this.suscription = this.ArticleService.progressStock.subscribe({
+                next: (data: any) => {
+                    if (data.body && data.status == 200 && data.type == HttpEventType.Response) {
+                        const blob: any = new Blob([data.body], { type: 'application/pdf' });
+                        const objectUrl = URL.createObjectURL(blob);
+                        window.open(objectUrl, '_blank');
+                        this.suscription.unsubscribe();
+                        this.dialogs = []
+                    } else if (data.error) {
+                        console.error("Response ", data)
+                        this.HeaderService.showError("Error en la conectividad")
+                        this.dialogs.pop()
+                    }
+                },
+                error: (e: any) => {
+                    console.error("Error", e)
                     this.HeaderService.showError("Error en la conectividad")
                     this.dialogs.pop()
                 }
-            }, (e: any) => {
-                console.error("Error", e)
-                this.HeaderService.showError("Error en la conectividad")
-                this.dialogs.pop()
             })
         } catch (e) {
             console.error("Error", e)

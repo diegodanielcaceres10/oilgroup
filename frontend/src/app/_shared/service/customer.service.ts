@@ -82,10 +82,13 @@ export class CustomerService {
      * summary
      */
     public async summary(data: any) {
-        return this.api.download("customer/summary/", data).subscribe(data => {
-            this.progress.emit(data)
-        }, error => {
-            this.progress.emit(error)
+        return this.api.download("customer/summary/", data).subscribe({
+            next: data => {
+                this.progress.emit(data)
+            },
+            error: error => {
+                this.progress.emit(error)
+            }
         })
     }
 }

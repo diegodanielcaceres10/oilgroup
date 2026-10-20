@@ -404,22 +404,25 @@ export class UserComponent implements OnInit, OnDestroy {
                 this.HeaderService.showError("Error en la conectividad")
                 this.dialogs.pop()
             })
-            this.suscription = this.UserService.progress.subscribe((data: any) => {
-                if (data.body && data.status) {
-                    const blob: any = new Blob([data.body], { type: 'application/pdf' });
-                    const objectUrl = URL.createObjectURL(blob);
-                    window.open(objectUrl, '_blank');
-                    this.dialogs = []
-                    this.suscription.unsubscribe();
-                } else if (data.error) {
-                    console.error("Response ", data)
+            this.suscription = this.UserService.progress.subscribe({
+                next: (data: any) => {
+                    if (data.body && data.status) {
+                        const blob: any = new Blob([data.body], { type: 'application/pdf' });
+                        const objectUrl = URL.createObjectURL(blob);
+                        window.open(objectUrl, '_blank');
+                        this.dialogs = []
+                        this.suscription.unsubscribe();
+                    } else if (data.error) {
+                        console.error("Response ", data)
+                        this.HeaderService.showError("Error en la conectividad")
+                        this.dialogs.pop()
+                    }
+                },
+                error: (e: any) => {
+                    console.error("Error", e)
                     this.HeaderService.showError("Error en la conectividad")
                     this.dialogs.pop()
                 }
-            }, (e: any) => {
-                console.error("Error", e)
-                this.HeaderService.showError("Error en la conectividad")
-                this.dialogs.pop()
             })
         } catch (e) {
             console.error("Error", e)
@@ -434,22 +437,25 @@ export class UserComponent implements OnInit, OnDestroy {
                 this.HeaderService.showError("Error en la conectividad")
                 this.dialogs.pop()
             })
-            this.suscription = this.UserService.progress.subscribe((data: any) => {
-                if (data.body && data.status) {
-                    const blob: any = new Blob([data.body], { type: 'application/pdf' });
-                    const objectUrl = URL.createObjectURL(blob);
-                    window.open(objectUrl, '_blank');
-                    this.dialogs = []
-                    this.suscription.unsubscribe();
-                } else if (data.error) {
-                    console.error("Response ", data)
+            this.suscription = this.UserService.progress.subscribe({
+                next: (data: any) => {
+                    if (data.body && data.status) {
+                        const blob: any = new Blob([data.body], { type: 'application/pdf' });
+                        const objectUrl = URL.createObjectURL(blob);
+                        window.open(objectUrl, '_blank');
+                        this.dialogs = []
+                        this.suscription.unsubscribe();
+                    } else if (data.error) {
+                        console.error("Response ", data)
+                        this.HeaderService.showError("Error en la conectividad")
+                        this.dialogs.pop()
+                    }
+                },
+                error: (e: any) => {
+                    console.error("Error", e)
                     this.HeaderService.showError("Error en la conectividad")
                     this.dialogs.pop()
                 }
-            }, (e: any) => {
-                console.error("Error", e)
-                this.HeaderService.showError("Error en la conectividad")
-                this.dialogs.pop()
             })
         } catch (e) {
             console.error("Error", e)
