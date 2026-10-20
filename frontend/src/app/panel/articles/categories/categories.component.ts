@@ -5,6 +5,9 @@ import { NavService } from '../../../_shared/service/nav.service';
 import { HeaderService } from '../../../_shared/service/header.service';
 import { LoadService } from '../../../_shared/service/load.service';
 import { Location } from '@angular/common';
+import { Category, CategoryUpdate } from '../../../_shared/models/category';
+import { Dialog, DialogForm, DialogResponse } from '../../../_shared/models/dialog';
+import { Filter } from '../../../_shared/models/filter';
 
 @Component({
     selector: 'app-categories',
@@ -15,15 +18,15 @@ import { Location } from '@angular/common';
 export class CategoriesComponent implements OnInit {
 
     paging!: boolean
-    categories: any = []
-    categoriesFiltered: any = []
-    categoriesView: any = []
+    categories: Category[] = []
+    categoriesFiltered: Category[] = []
+    categoriesView: Category[] = []
     page = 1
     pages = 1
     maxitems = 20
-    filters: any = []
-    dialogs: any = []
-    form: any = {}
+    filters: Filter[] = []
+    dialogs: Dialog[] = []
+    form: Partial<DialogForm> = {}
 
     constructor(
         private ActivatedRoute: ActivatedRoute,
@@ -64,7 +67,7 @@ export class CategoriesComponent implements OnInit {
             this.categoriesFiltered = []
             this.categoriesView = []
             this.page = page
-            this.CategoryService.getAll({ filter: this.filters }).then((res: any) => {
+            this.CategoryService.getAll({ filter: this.filters }).then((res) => {
                 if (res.status == "success") {
                     this.categories = res.data
                     this.categoriesFiltered = res.data
@@ -89,7 +92,7 @@ export class CategoriesComponent implements OnInit {
         }
     }
 
-    changePage(value: any) {
+    changePage(value: number) {
         try {
             this.paging = true
             this.categoriesView = []
@@ -145,7 +148,7 @@ export class CategoriesComponent implements OnInit {
 
     }
 
-    updateCategoryDialogForm(data: any) {
+    updateCategoryDialogForm(data: Category) {
         try {
             this.dialogs.push({
                 type: "form",
@@ -188,7 +191,7 @@ export class CategoriesComponent implements OnInit {
         }
     }
 
-    updateCategoryDialogConfirm(data: any) {
+    updateCategoryDialogConfirm(data: CategoryUpdate) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -203,11 +206,11 @@ export class CategoriesComponent implements OnInit {
     }
 
     // Define response dialog events
-    responseDialog(data: any) {
+    responseDialog(data?: DialogResponse) {
         try {
             if (data) {
                 if (data.event == "getAll") {
-                    this.filters.map((i: any) => {
+                    this.filters.map((i) => {
                         if (i.type == "select" && i.id) {
                             i.value = {}
                             i.value[i.nameValue] = data.values[i.id]
@@ -237,9 +240,9 @@ export class CategoriesComponent implements OnInit {
     }
 
     // Define events
-    updateCategory(data: any) {
+    updateCategory(data: CategoryUpdate) {
         try {
-            this.CategoryService.update({ category: data }).then((res: any) => {
+            this.CategoryService.update({ category: data }).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.getAll(this.page)

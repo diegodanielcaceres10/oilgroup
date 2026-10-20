@@ -5,6 +5,9 @@ import { NavService } from '../../../_shared/service/nav.service';
 import { HeaderService } from '../../../_shared/service/header.service';
 import { LoadService } from '../../../_shared/service/load.service';
 import { Location } from '@angular/common';
+import { Brand, BrandUpdate } from '../../../_shared/models/brand';
+import { Dialog, DialogForm, DialogResponse } from '../../../_shared/models/dialog';
+import { Filter } from '../../../_shared/models/filter';
 
 @Component({
     selector: 'app-brands',
@@ -15,15 +18,15 @@ import { Location } from '@angular/common';
 export class BrandsComponent implements OnInit {
 
     paging!: boolean
-    brands: any = []
-    brandsFiltered: any = []
-    brandsView: any = []
+    brands: Brand[] = []
+    brandsFiltered: Brand[] = []
+    brandsView: Brand[] = []
     page = 1
     pages = 1
     maxitems = 20
-    filters: any = []
-    dialogs: any = []
-    form: any = {}
+    filters: Filter[] = []
+    dialogs: Dialog[] = []
+    form: Partial<DialogForm> = {}
 
     constructor(
         private ActivatedRoute: ActivatedRoute,
@@ -64,7 +67,7 @@ export class BrandsComponent implements OnInit {
             this.brandsFiltered = []
             this.brandsView = []
             this.page = page
-            this.BrandService.getAll({ filter: this.filters }).then((res: any) => {
+            this.BrandService.getAll({ filter: this.filters }).then((res) => {
                 if (res.status == "success") {
                     this.brands = res.data
                     this.brandsFiltered = res.data
@@ -89,7 +92,7 @@ export class BrandsComponent implements OnInit {
         }
     }
 
-    changePage(value: any) {
+    changePage(value: number) {
         try {
             this.paging = true
             this.brandsView = []
@@ -145,7 +148,7 @@ export class BrandsComponent implements OnInit {
 
     }
 
-    updateBrandDialogForm(data: any) {
+    updateBrandDialogForm(data: Brand) {
         try {
             this.dialogs.push({
                 type: "form",
@@ -187,7 +190,7 @@ export class BrandsComponent implements OnInit {
         }
     }
 
-    updateBrandDialogConfirm(data: any) {
+    updateBrandDialogConfirm(data: BrandUpdate) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -202,11 +205,11 @@ export class BrandsComponent implements OnInit {
     }
 
     // Define response dialog events
-    responseDialog(data: any) {
+    responseDialog(data?: DialogResponse) {
         try {
             if (data) {
                 if (data.event == "getAll") {
-                    this.filters.map((i: any) => {
+                    this.filters.map((i) => {
                         if (i.type == "select" && i.id) {
                             i.value = {}
                             i.value[i.nameValue] = data.values[i.id]
@@ -236,9 +239,9 @@ export class BrandsComponent implements OnInit {
     }
 
     // Define events
-    updateBrand(data: any) {
+    updateBrand(data: BrandUpdate) {
         try {
-            this.BrandService.update({ brand: data }).then((res: any) => {
+            this.BrandService.update({ brand: data }).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.getAll(this.page)

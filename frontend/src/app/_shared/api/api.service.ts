@@ -45,7 +45,7 @@ export class ApiService {
      *
      * @return An `Observable` of the response, with the response body as a JSON object.
      */
-    public post(path: string, values?: any, raw?: string): Observable<object> {
+    public post<T = object>(path: string, values?: any, raw?: string): Observable<T> {
         let body: any;
         if (raw == "form-data") {
             const formData = new FormData();
@@ -60,7 +60,7 @@ export class ApiService {
         } else {
             body = values;
         }
-        return this.httpClient.post(this.apiUrl + path, body, { headers: this.headers })
+        return this.httpClient.post<T>(this.apiUrl + path, body, { headers: this.headers })
     }
 
     /**

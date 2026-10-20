@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
+import { ApiResponse } from '../models/api';
+import { Filter } from '../models/filter';
+import { Brand, BrandUpdate } from '../models/brand';
 
 import { lastValueFrom } from 'rxjs';
 @Injectable({
@@ -14,9 +17,9 @@ export class BrandService {
     /**
      * getAll
      */
-    public async getAll(data: any) {
+    public async getAll(data: { filter?: Filter[] }): Promise<ApiResponse<Brand[]>> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("brand/getAll/", data)).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse<Brand[]>>("brand/getAll/", data)).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -27,9 +30,9 @@ export class BrandService {
     /**
      * update
      */
-    public async update(data: any) {
+    public async update(data: { brand: BrandUpdate }): Promise<ApiResponse> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("brand/update/", data)).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse>("brand/update/", data)).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
