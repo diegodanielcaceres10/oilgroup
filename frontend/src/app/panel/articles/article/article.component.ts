@@ -16,6 +16,12 @@ import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import am4themes_dataviz from "@amcharts/amcharts4/themes/dataviz";
 
+import { Subscription } from 'rxjs';
+import { Dialog, DialogForm, DialogResponse } from '../../../_shared/models/dialog';
+import { ArticleProfitability } from '../../../_shared/models/article';
+import { Brand } from '../../../_shared/models/brand';
+import { Category } from '../../../_shared/models/category';
+import { Provider } from '../../../_shared/models/provider';
 @Component({
     selector: 'app-article',
     templateUrl: './article.component.html',
@@ -35,13 +41,13 @@ export class ArticleComponent implements OnInit, OnDestroy {
     page = 1
     pages = 1
     maxitems = 20
-    providers: any = []
-    brands: any = []
-    categories: any = []
+    providers: Provider[] = []
+    brands: Brand[] = []
+    categories: Category[] = []
     tab = "rentabilidad"
-    dialogs: any = []
-    form: any = {}
-    suscription: any
+    dialogs: Dialog[] = []
+    form: Partial<DialogForm> = {}
+    suscription!: Subscription
 
     constructor(
         private ActivatedRoute: ActivatedRoute,
@@ -91,10 +97,10 @@ export class ArticleComponent implements OnInit, OnDestroy {
         }
     }
 
-    find(id: any) {
+    find(id: number) {
         try {
             this.LoadService.change(true)
-            this.ArticleService.find({ article: { id: id } }).then((res: any) => {
+            this.ArticleService.find({ article: { id: id } }).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.article = res.data
@@ -123,7 +129,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
                 if (res.status == "success") {
                     this.providers = res.data
                     if (this.article.provider.id > 0) {
-                        this.article.provider = this.providers.find((i: any) => i.id == this.article.provider.id)
+                        this.article.provider = this.providers.find((i) => i.id == this.article.provider.id)
                     }
                 } else {
                     console.error("Response:", res.status)
@@ -133,7 +139,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
                 console.error("Error", e)
                 this.HeaderService.showError("Error en la conectividad")
             })
-            await this.BrandService.getAll({}).then((res: any) => {
+            await this.BrandService.getAll({}).then((res) => {
                 if (res.status == "success") {
                     this.brands = res.data
                 } else {
@@ -144,7 +150,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
                 console.error("Error", e)
                 this.HeaderService.showError("Error en la conectividad")
             })
-            await this.CategoryService.getAll({}).then((res: any) => {
+            await this.CategoryService.getAll({}).then((res) => {
                 if (res.status == "success") {
                     this.categories = res.data
                 } else {
@@ -170,7 +176,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
                                 name: "fantasy_name",
                                 id: "provider",
                                 type: "select",
-                                options: this.providers.filter((i: any) => i.active),
+                                options: this.providers.filter((i) => i.active),
                                 nameValue: "id",
                                 nameLabel: "fantasy_name",
                                 label: "Proveedor",
@@ -181,7 +187,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
                             {
                                 name: "brand",
                                 type: "select",
-                                options: this.brands.map((i: any) => { return i.name }),
+                                options: this.brands.map((i) => { return i.name }),
                                 label: "Marca",
                                 value: this.article.brand,
                                 creatable: true,
@@ -190,7 +196,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
                             {
                                 name: "category",
                                 type: "select",
-                                options: this.categories.map((i: any) => { return i.name }),
+                                options: this.categories.map((i) => { return i.name }),
                                 label: "Categoria",
                                 value: this.article.category,
                                 creatable: true,
@@ -265,7 +271,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
         }
     }
 
-    profitabilityChart(data: any) {
+    profitabilityChart(data: ArticleProfitability[]) {
         try {
             am4core.useTheme(am4themes_dataviz);
             am4core.useTheme(am4themes_animated);
@@ -308,7 +314,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
         }
     }
 
-    setList(value: any) {
+    setList(value: string) {
         try {
             this.tab = value
             this.filtered = value == "medidas" ? this.article.prices : value == "ventas" ? this.article.sales : this.article.history
@@ -324,7 +330,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
         }
     }
 
-    changePage(value: any) {
+    changePage(value: number) {
         try {
             this.paging = true
             this.view = []
@@ -550,7 +556,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
     }
 
     // Define response dialog events
-    responseDialog(data: any) {
+    responseDialog(data?: DialogResponse) {
         try {
             if (data) {
                 if (data.event == "createArticle") {
@@ -586,7 +592,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
     createArticle(data: any) {
         try {
             data.cost = data.cost ? parseFloat(data.cost) : false
-            this.ArticleService.create({ article: data }).then((res: any) => {
+            this.ArticleService.create({ article: data }).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.createMode = false
@@ -619,7 +625,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
     updateArticle(data: any) {
         try {
             data.cost = data.cost ? parseFloat(data.cost) : false
-            this.ArticleService.update({ article: data }).then((res: any) => {
+            this.ArticleService.update({ article: data }).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.editMode = false
@@ -650,7 +656,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
     addMeasure(data: any) {
         try {
             data.units = parseInt(data.units)
-            this.ArticleService.addMeasure({ price: data }).then((res: any) => {
+            this.ArticleService.addMeasure({ price: data }).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.find(this.article.id)
@@ -679,7 +685,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
     updateMeasure(data: any) {
         try {
-            this.ArticleService.updateMeasure({ price: data }).then((res: any) => {
+            this.ArticleService.updateMeasure({ price: data }).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.find(this.article.id)
@@ -708,7 +714,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
     deleteMeasure(data: any) {
         try {
-            this.ArticleService.deleteMeasure({ price: data }).then((res: any) => {
+            this.ArticleService.deleteMeasure({ price: data }).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.find(this.article.id)
@@ -741,7 +747,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
             this.suscription = this.ArticleService.progressSales.subscribe({
                 next: (data: any) => {
                     if (data.body && data.status == 200 && data.type == HttpEventType.Response) {
-                        const blob: any = new Blob([data.body], { type: 'application/pdf' });
+                        const blob = new Blob([data.body], { type: 'application/pdf' });
                         const objectUrl = URL.createObjectURL(blob);
                         window.open(objectUrl, '_blank');
                         this.suscription.unsubscribe();
@@ -752,7 +758,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
                         this.dialogs.pop()
                     }
                 },
-                error: (e: any) => {
+                error: (e: unknown) => {
                     console.error("Error", e)
                     this.HeaderService.showError("Error en la conectividad")
                     this.dialogs.pop()

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
 import { ApiResponse } from '../models/api';
-import { Filter } from '../models/filter';
+import { ApiFilter } from '../models/filter';
 import { Category, CategoryUpdate } from '../models/category';
 
 import { lastValueFrom } from 'rxjs';
@@ -17,7 +17,7 @@ export class CategoryService {
     /**
      * getAll
      */
-    public async getAll(data: { filter?: Filter[] }): Promise<ApiResponse<Category[]>> {
+    public async getAll(data: { filter?: ApiFilter[] }): Promise<ApiResponse<Category[]>> {
         return new Promise((resolve, reject) => {
             lastValueFrom(this.api.post<ApiResponse<Category[]>>("category/getAll/", data)).then((data) => {
                 resolve(data)

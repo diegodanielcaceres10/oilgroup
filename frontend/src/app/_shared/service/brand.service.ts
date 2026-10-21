@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
 import { ApiResponse } from '../models/api';
-import { Filter } from '../models/filter';
+import { ApiFilter } from '../models/filter';
 import { Brand, BrandUpdate } from '../models/brand';
 
 import { lastValueFrom } from 'rxjs';
@@ -17,7 +17,7 @@ export class BrandService {
     /**
      * getAll
      */
-    public async getAll(data: { filter?: Filter[] }): Promise<ApiResponse<Brand[]>> {
+    public async getAll(data: { filter?: ApiFilter[] }): Promise<ApiResponse<Brand[]>> {
         return new Promise((resolve, reject) => {
             lastValueFrom(this.api.post<ApiResponse<Brand[]>>("brand/getAll/", data)).then((data) => {
                 resolve(data)

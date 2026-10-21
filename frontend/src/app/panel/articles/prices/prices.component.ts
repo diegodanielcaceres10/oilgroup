@@ -8,6 +8,10 @@ import { LoadService } from '../../../_shared/service/load.service';
 import { Location } from '@angular/common';
 import { HttpEventType } from '@angular/common/http';
 
+import { Subscription } from 'rxjs';
+import { Filter } from '../../../_shared/models/filter';
+import { Dialog, DialogForm, DialogResponse } from '../../../_shared/models/dialog';
+import { PriceRow } from '../../../_shared/models/article';
 @Component({
     selector: 'app-prices',
     templateUrl: './prices.component.html',
@@ -18,16 +22,16 @@ export class PricesComponent implements OnInit, OnDestroy {
 
     access: any = {}
     paging!: boolean
-    articles: any = []
-    articlesFiltered: any = []
-    articlesView: any = []
+    articles: PriceRow[] = []
+    articlesFiltered: PriceRow[] = []
+    articlesView: PriceRow[] = []
     page = 1
     pages = 1
     maxitems = 20
-    filters: any = []
-    dialogs: any = []
-    form: any = {}
-    suscription: any;
+    filters: Filter[] = []
+    dialogs: Dialog[] = []
+    form: Partial<DialogForm> = {}
+    suscription!: Subscription;
 
     constructor(
         private ActivatedRoute: ActivatedRoute,
@@ -128,7 +132,7 @@ export class PricesComponent implements OnInit, OnDestroy {
             this.articlesFiltered = []
             this.articlesView = []
             this.page = page
-            this.ArticleService.getAllPrices({ filter: this.filters }).then((res: any) => {
+            this.ArticleService.getAllPrices({ filter: this.filters }).then((res) => {
                 if (res.status == "success") {
                     this.articles = res.data
                     this.articlesFiltered = res.data
@@ -153,7 +157,7 @@ export class PricesComponent implements OnInit, OnDestroy {
         }
     }
 
-    changePage(value: any) {
+    changePage(value: number) {
         try {
             this.paging = true
             this.articlesView = []
@@ -221,7 +225,7 @@ export class PricesComponent implements OnInit, OnDestroy {
         }
     }
 
-    updatePriceDialogForm(data: any) {
+    updatePriceDialogForm(data: PriceRow) {
         try {
             this.dialogs.push({
                 type: "form",
@@ -298,11 +302,11 @@ export class PricesComponent implements OnInit, OnDestroy {
     }
 
     // Define response dialog events
-    responseDialog(data: any) {
+    responseDialog(data?: DialogResponse) {
         try {
             if (data) {
                 if (data.event == "getAll") {
-                    this.filters.map((i: any) => {
+                    this.filters.map((i) => {
                         if (i.type == "select" && i.id) {
                             i.value = {}
                             i.value[i.nameValue] = data.values[i.id]
@@ -338,7 +342,7 @@ export class PricesComponent implements OnInit, OnDestroy {
         try {
             data.price_list = data.price_list ? parseFloat(data.price_list) : false
             data.price_offer = data.price_offer ? parseFloat(data.price_offer) : false
-            this.ArticleService.updatePrices({ price: data }).then((res: any) => {
+            this.ArticleService.updatePrices({ price: data }).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.getAll(this.page)
@@ -370,7 +374,7 @@ export class PricesComponent implements OnInit, OnDestroy {
             this.suscription = this.ArticleService.progressPrices.subscribe({
                 next: (data: any) => {
                     if (data.body && data.status == 200 && data.type == HttpEventType.Response) {
-                        const blob: any = new Blob([data.body], { type: 'application/pdf' });
+                        const blob = new Blob([data.body], { type: 'application/pdf' });
                         const objectUrl = URL.createObjectURL(blob);
                         window.open(objectUrl, '_blank');
                         this.suscription.unsubscribe();
@@ -381,7 +385,7 @@ export class PricesComponent implements OnInit, OnDestroy {
                         this.dialogs.pop()
                     }
                 },
-                error: (e: any) => {
+                error: (e: unknown) => {
                     console.error("Error", e)
                     this.HeaderService.showError("Error en la conectividad")
                     this.dialogs.pop()

@@ -1,5 +1,8 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
 import { ApiService } from '../api/api.service';
+import { ApiResponse } from '../models/api';
+import { ArticleDetail, ArticleRow, ArticleUpdate, ArticleWrite, MeasureAdd, MeasureDelete, MeasureUpdate, PriceListRow, PriceRow, PriceUpdate, StockAdjustment } from '../models/article';
+import { ApiFilter } from '../models/filter';
 
 import { lastValueFrom } from 'rxjs';
 @Injectable({
@@ -18,9 +21,9 @@ export class ArticleService {
     /**
      * getAll
      */
-    public async getAll(data: any) {
+    public async getAll(data: { filter?: ApiFilter[] }): Promise<ApiResponse<ArticleRow[]>> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("article/getAll/", data)).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse<ArticleRow[]>>("article/getAll/", data)).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -31,9 +34,9 @@ export class ArticleService {
     /**
      * getPrices
      */
-    public async getPrices() {
+    public async getPrices(): Promise<ApiResponse<PriceListRow[]>> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("article/getPrices/")).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse<PriceListRow[]>>("article/getPrices/")).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -44,9 +47,9 @@ export class ArticleService {
     /**
      * getAllPrices
      */
-    public async getAllPrices(data: any) {
+    public async getAllPrices(data: { filter?: ApiFilter[] }): Promise<ApiResponse<PriceRow[]>> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("article/getAllPrices/", data)).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse<PriceRow[]>>("article/getAllPrices/", data)).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -57,9 +60,9 @@ export class ArticleService {
     /**
      * find
      */
-    public async find(data: any) {
+    public async find(data: { article: { id: number } }): Promise<ApiResponse<ArticleDetail>> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("article/find/", data)).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse<ArticleDetail>>("article/find/", data)).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -70,9 +73,9 @@ export class ArticleService {
     /**
      * create
      */
-    public async create(data: any) {
+    public async create(data: { article: ArticleWrite }): Promise<ApiResponse<number>> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("article/create/", data)).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse<number>>("article/create/", data)).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -83,9 +86,9 @@ export class ArticleService {
     /**
      * update
      */
-    public async update(data: any) {
+    public async update(data: { article: ArticleUpdate }): Promise<ApiResponse> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("article/update/", data)).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse>("article/update/", data)).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -96,9 +99,9 @@ export class ArticleService {
     /**
      * active
      */
-    public async active(data: any) {
+    public async active(data: { article: { id: number } }): Promise<ApiResponse> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("article/active/", data)).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse>("article/active/", data)).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -109,9 +112,9 @@ export class ArticleService {
     /**
      * addMeasure
      */
-    public async addMeasure(data: any) {
+    public async addMeasure(data: { price: MeasureAdd }): Promise<ApiResponse> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("article/addMeasure/", data)).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse>("article/addMeasure/", data)).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -122,9 +125,9 @@ export class ArticleService {
     /**
      * updateMeasure
      */
-    public async updateMeasure(data: any) {
+    public async updateMeasure(data: { price: MeasureUpdate }): Promise<ApiResponse> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("article/updateMeasure/", data)).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse>("article/updateMeasure/", data)).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -135,9 +138,9 @@ export class ArticleService {
     /**
      * deleteMeasure
      */
-    public async deleteMeasure(data: any) {
+    public async deleteMeasure(data: { price: MeasureDelete }): Promise<ApiResponse> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("article/deleteMeasure/", data)).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse>("article/deleteMeasure/", data)).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -148,9 +151,9 @@ export class ArticleService {
     /**
      * updatePrices
      */
-    public async updatePrices(data: any) {
+    public async updatePrices(data: { price: PriceUpdate }): Promise<ApiResponse> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("article/updatePrices/", data)).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse>("article/updatePrices/", data)).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -161,9 +164,9 @@ export class ArticleService {
     /**
      * updateStock
      */
-    public async updateStock(data: any) {
+    public async updateStock(data: { article: StockAdjustment }): Promise<ApiResponse> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("article/updateStock/", data)).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse>("article/updateStock/", data)).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -202,7 +205,7 @@ export class ArticleService {
     /**
      * exportSales
      */
-    public async exportSales(data: any) {
+    public async exportSales(data: { article: { id: number } }) {
         return this.api.download("article/exportSales/", data).subscribe({
             next: data => {
                 this.progressSales.emit(data)

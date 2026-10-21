@@ -7,6 +7,9 @@ import { HeaderService } from '../../../_shared/service/header.service';
 import { LoadService } from '../../../_shared/service/load.service';
 import { Location } from '@angular/common';
 
+import { Filter } from '../../../_shared/models/filter';
+import { Dialog, DialogResponse } from '../../../_shared/models/dialog';
+import { ArticleRow } from '../../../_shared/models/article';
 @Component({
     selector: 'app-list',
     templateUrl: './list.component.html',
@@ -17,14 +20,14 @@ export class ListComponent implements OnInit {
 
     access: any = {}
     paging!: boolean
-    articles: any = []
-    articlesFiltered: any = []
-    articlesView: any = []
+    articles: ArticleRow[] = []
+    articlesFiltered: ArticleRow[] = []
+    articlesView: ArticleRow[] = []
     page = 1
     pages = 1
     maxitems = 20
-    filters: any = []
-    dialogs: any = []
+    filters: Filter[] = []
+    dialogs: Dialog[] = []
 
     constructor(
         private ActivatedRoute: ActivatedRoute,
@@ -129,7 +132,7 @@ export class ListComponent implements OnInit {
             this.articlesFiltered = []
             this.articlesView = []
             this.page = page
-            this.ArticleService.getAll({ filter: this.filters }).then((res: any) => {
+            this.ArticleService.getAll({ filter: this.filters }).then((res) => {
                 if (res.status == "success") {
                     this.articles = res.data
                     this.articlesFiltered = res.data
@@ -154,7 +157,7 @@ export class ListComponent implements OnInit {
         }
     }
 
-    changePage(value: any) {
+    changePage(value: number) {
         try {
             this.paging = true
             this.articlesView = []
@@ -210,7 +213,7 @@ export class ListComponent implements OnInit {
 
     }
 
-    activeArticleDialogConfirm(data: any) {
+    activeArticleDialogConfirm(data: ArticleRow) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -225,11 +228,11 @@ export class ListComponent implements OnInit {
     }
 
     // Define response dialog events
-    responseDialog(data: any) {
+    responseDialog(data?: DialogResponse) {
         try {
             if (data) {
                 if (data.event == "getAll") {
-                    this.filters.map((i: any) => {
+                    this.filters.map((i) => {
                         if (i.type == "select" && i.id) {
                             i.value = {}
                             i.value[i.nameValue] = data.values[i.id]
@@ -251,9 +254,9 @@ export class ListComponent implements OnInit {
         }
     }
 
-    activeArticle(data: any) {
+    activeArticle(data: ArticleRow) {
         try {
-            this.ArticleService.active({ article: data }).then((res: any) => {
+            this.ArticleService.active({ article: data }).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.getAll(1)

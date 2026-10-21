@@ -8,6 +8,10 @@ import { LoadService } from '../../../_shared/service/load.service';
 import { Location } from '@angular/common';
 import { HttpEventType } from '@angular/common/http';
 
+import { Subscription } from 'rxjs';
+import { ApiFilter, Filter } from '../../../_shared/models/filter';
+import { Dialog, DialogForm, DialogResponse } from '../../../_shared/models/dialog';
+import { ArticleRow } from '../../../_shared/models/article';
 @Component({
     selector: 'app-stock',
     templateUrl: './stock.component.html',
@@ -18,16 +22,16 @@ export class StockComponent implements OnInit, OnDestroy {
 
     access: any = {}
     paging!: boolean
-    articles: any = []
-    articlesFiltered: any = []
-    articlesView: any = []
+    articles: ArticleRow[] = []
+    articlesFiltered: ArticleRow[] = []
+    articlesView: ArticleRow[] = []
     page = 1
     pages = 1
     maxitems = 20
-    filters: any = []
-    dialogs: any = []
-    form: any = {}
-    suscription: any
+    filters: Filter[] = []
+    dialogs: Dialog[] = []
+    form: Partial<DialogForm> = {}
+    suscription!: Subscription
 
     constructor(
         private ActivatedRoute: ActivatedRoute,
@@ -122,10 +126,10 @@ export class StockComponent implements OnInit, OnDestroy {
             this.articlesFiltered = []
             this.articlesView = []
             this.page = page
-            const filter = [...this.filters]
+            const filter: ApiFilter[] = [...this.filters]
             filter.push({ name: "active", parent:"a", value: 1 })
             filter.push({ name: "active", parent:"p", value: 1 })
-            this.ArticleService.getAll({ filter: filter }).then((res: any) => {
+            this.ArticleService.getAll({ filter: filter }).then((res) => {
                 if (res.status == "success") {
                     this.articles = res.data
                     this.articlesFiltered = res.data
@@ -150,7 +154,7 @@ export class StockComponent implements OnInit, OnDestroy {
         }
     }
 
-    changePage(value: any) {
+    changePage(value: number) {
         try {
             this.paging = true
             this.articlesView = []
@@ -218,7 +222,7 @@ export class StockComponent implements OnInit, OnDestroy {
         }
     }
 
-    editStockDialogForm(data: any) {
+    editStockDialogForm(data: ArticleRow) {
         try {
             this.dialogs.push({
                 type: "form",
@@ -287,11 +291,11 @@ export class StockComponent implements OnInit, OnDestroy {
     }
 
     // Define response dialog events
-    responseDialog(data: any) {
+    responseDialog(data?: DialogResponse) {
         try {
             if (data) {
                 if (data.event == "getAll") {
-                    this.filters.map((i: any) => {
+                    this.filters.map((i) => {
                         if (i.type == "select" && i.id) {
                             i.value = {}
                             i.value[i.nameValue] = data.values[i.id]
@@ -326,7 +330,7 @@ export class StockComponent implements OnInit, OnDestroy {
     updateStock(data: any) {
         try {
             data.units = parseFloat(data.units)
-            this.ArticleService.updateStock({ article: data }).then((res: any) => {
+            this.ArticleService.updateStock({ article: data }).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.getAll(this.page)
@@ -358,7 +362,7 @@ export class StockComponent implements OnInit, OnDestroy {
             this.suscription = this.ArticleService.progressStock.subscribe({
                 next: (data: any) => {
                     if (data.body && data.status == 200 && data.type == HttpEventType.Response) {
-                        const blob: any = new Blob([data.body], { type: 'application/pdf' });
+                        const blob = new Blob([data.body], { type: 'application/pdf' });
                         const objectUrl = URL.createObjectURL(blob);
                         window.open(objectUrl, '_blank');
                         this.suscription.unsubscribe();
@@ -369,7 +373,7 @@ export class StockComponent implements OnInit, OnDestroy {
                         this.dialogs.pop()
                     }
                 },
-                error: (e: any) => {
+                error: (e: unknown) => {
                     console.error("Error", e)
                     this.HeaderService.showError("Error en la conectividad")
                     this.dialogs.pop()
