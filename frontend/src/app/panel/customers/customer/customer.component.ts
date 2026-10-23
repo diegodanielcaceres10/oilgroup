@@ -9,6 +9,10 @@ import { LoadService } from '../../../_shared/service/load.service';
 import { Location } from '@angular/common';
 import { HttpEventType } from '@angular/common/http';
 
+import { Subscription } from 'rxjs';
+import { Dialog, DialogForm, DialogResponse } from '../../../_shared/models/dialog';
+import { CustomerMovement, CustomerUpdate, CustomerWrite } from '../../../_shared/models/customer';
+import { User } from '../../../_shared/models/user';
 @Component({
     selector: 'app-customer',
     templateUrl: './customer.component.html',
@@ -25,16 +29,16 @@ export class CustomerComponent implements OnInit, OnDestroy {
         user: {},
         sales: [],
     }
-    salesFiltered: any = []
-    salesView: any = []
+    salesFiltered: CustomerMovement[] = []
+    salesView: CustomerMovement[] = []
     page = 1
     pages = 1
     maxitems = 20
-    users: any = []
-    conditions: any = ["IVA Responsable Inscripto", "IVA Responsable no Inscripto", "IVA no Responsable", "IVA Sujeto Exento", "Consumidor Final", "Responsable Monotributo", "Otro"]
-    dialogs: any = []
-    form: any = {}
-    suscription: any
+    users: User[] = []
+    conditions: string[] = ["IVA Responsable Inscripto", "IVA Responsable no Inscripto", "IVA no Responsable", "IVA Sujeto Exento", "Consumidor Final", "Responsable Monotributo", "Otro"]
+    dialogs: Dialog[] = []
+    form: Partial<DialogForm> = {}
+    suscription!: Subscription
 
     constructor(
         private ActivatedRoute: ActivatedRoute,
@@ -81,10 +85,10 @@ export class CustomerComponent implements OnInit, OnDestroy {
         }
     }
 
-    find(id: any) {
+    find(id: number) {
         try {
             this.LoadService.change(true)
-            this.CustomerService.find({ customer: { id: id }, }).then((res: any) => {
+            this.CustomerService.find({ customer: { id: id }, }).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.customer = res.data
@@ -140,7 +144,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
                                 name: "username",
                                 id: "user",
                                 type: "select",
-                                options: this.users.filter((i: any) => i.active),
+                                options: this.users.filter((i) => i.active),
                                 nameValue: "username",
                                 namesLabel: ["lastname", "firstname"],
                                 symbol: "fas fa-user-tie",
@@ -225,7 +229,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
         }
     }
 
-    changePage(value: any) {
+    changePage(value: number) {
         try {
             this.paging = true
             this.salesView = []
@@ -307,7 +311,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
     }
 
     // Define response dialog events
-    responseDialog(data: any) {
+    responseDialog(data?: DialogResponse) {
         try {
             if (data) {
                 if (data.event == "createCustomer") {
@@ -331,9 +335,9 @@ export class CustomerComponent implements OnInit, OnDestroy {
     }
 
     // Define events
-    createCustomer(data: any) {
+    createCustomer(data: CustomerWrite) {
         try {
-            this.CustomerService.create({ customer: data, }).then((res: any) => {
+            this.CustomerService.create({ customer: data, }).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.createMode = false
@@ -362,9 +366,9 @@ export class CustomerComponent implements OnInit, OnDestroy {
         }
     }
 
-    updateCustomer(data: any) {
+    updateCustomer(data: CustomerUpdate) {
         try {
-            this.CustomerService.update({ customer: data, }).then((res: any) => {
+            this.CustomerService.update({ customer: data, }).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.editMode = false
@@ -403,7 +407,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
             this.suscription = this.CustomerService.progress.subscribe({
                 next: (data: any) => {
                     if (data.body && data.status == 200 && data.type == HttpEventType.Response) {
-                        const blob: any = new Blob([data.body], { type: 'application/pdf' });
+                        const blob = new Blob([data.body], { type: 'application/pdf' });
                         const objectUrl = URL.createObjectURL(blob);
                         window.open(objectUrl, '_blank');
                         this.suscription.unsubscribe();
@@ -414,7 +418,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
                         this.dialogs.pop()
                     }
                 },
-                error: (e: any) => {
+                error: (e: unknown) => {
                     console.error("Error", e)
                     this.HeaderService.showError("Error en la conectividad")
                     this.dialogs.pop()

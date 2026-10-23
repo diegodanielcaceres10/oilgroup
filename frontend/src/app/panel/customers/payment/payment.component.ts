@@ -8,6 +8,8 @@ import { HeaderService } from '../../../_shared/service/header.service';
 import { LoadService } from '../../../_shared/service/load.service';
 import { Location } from '@angular/common';
 
+import { Dialog, DialogForm, DialogResponse } from '../../../_shared/models/dialog';
+import { CustomerRow } from '../../../_shared/models/customer';
 @Component({
     selector: 'app-payment',
     templateUrl: './payment.component.html',
@@ -21,10 +23,10 @@ export class PaymentComponent implements OnInit {
     payment: any = {
         customer: {},
     }
-    customers: any = []
-    methods: any = ["Efectivo", "Transferencia", "Deposito", "Tarjeta de cŕedito", "Tarjeta de débito", "Cheque", "Otro"]
-    dialogs: any = []
-    form: any = {}
+    customers: CustomerRow[] = []
+    methods: string[] = ["Efectivo", "Transferencia", "Deposito", "Tarjeta de cŕedito", "Tarjeta de débito", "Cheque", "Otro"]
+    dialogs: Dialog[] = []
+    form: Partial<DialogForm> = {}
 
     constructor(
         private ActivatedRoute: ActivatedRoute,
@@ -47,11 +49,11 @@ export class PaymentComponent implements OnInit {
             const id = this.ActivatedRoute.snapshot.params["id"]
             if (id == "nuevo") {
                 this.payment.customer.id = this.ActivatedRoute.snapshot.queryParams["cliente"] || 0
-                this.CustomerService.getAll({}).then((res: any) => {
+                this.CustomerService.getAll({}).then((res) => {
                     if (res.status == "success") {
                         this.customers = res.data
                         if (this.payment.customer.id > 0) {
-                            this.payment.customer = this.customers.find((i: any) => i.id == this.payment.customer.id)
+                            this.payment.customer = this.customers.find((i) => i.id == this.payment.customer.id)
                         }
                         setTimeout(() => {
                             this.createMode = true
@@ -65,7 +67,7 @@ export class PaymentComponent implements OnInit {
                                                 name: "fantasy_name",
                                                 id: "customer",
                                                 type: "select",
-                                                options: this.customers.filter((i: any) => i.active),
+                                                options: this.customers.filter((i) => i.active),
                                                 nameValue: "id",
                                                 nameLabel: "fantasy_name",
                                                 label: "Cliente",
@@ -204,10 +206,10 @@ export class PaymentComponent implements OnInit {
         }
     }
 
-    find(id: any) {
+    find(id: number) {
         try {
             this.LoadService.change(true)
-            this.CustomerPaymentService.find({ payment: { id: id } }).then((res: any) => {
+            this.CustomerPaymentService.find({ payment: { id: id } }).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.payment = res.data
@@ -269,7 +271,7 @@ export class PaymentComponent implements OnInit {
     }
 
     // Define response dialog events
-    responseDialog(data: any) {
+    responseDialog(data?: DialogResponse) {
         try {
             if (data) {
                 if (data.event == "createPayment") {
@@ -294,7 +296,7 @@ export class PaymentComponent implements OnInit {
     createPayment(data: any) {
         try {
             data.import = parseFloat(data.import)
-            this.CustomerPaymentService.create({ payment: data }).then((res: any) => {
+            this.CustomerPaymentService.create({ payment: data }).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.createMode = false
@@ -321,7 +323,7 @@ export class PaymentComponent implements OnInit {
     cancelPayment() {
         try {
             const payment = { ...this.payment }
-            this.CustomerPaymentService.cancel({ payment: payment }).then((res: any) => {
+            this.CustomerPaymentService.cancel({ payment: payment }).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.payment.status = "Cancelado"

@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
+import { ApiResponse } from '../models/api';
+import { CustomerPaymentDetail, CustomerPaymentWrite } from '../models/customer_payment';
 
 import { lastValueFrom } from 'rxjs';
 @Injectable({
@@ -14,9 +16,9 @@ export class CustomerPaymentService {
     /**
      * find
      */
-    public async find(data: any) {
+    public async find(data: { payment: { id: number } }): Promise<ApiResponse<CustomerPaymentDetail>> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("customer_payment/find/", data)).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse<CustomerPaymentDetail>>("customer_payment/find/", data)).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -27,9 +29,9 @@ export class CustomerPaymentService {
     /**
      * create
      */
-    public async create(data: any) {
+    public async create(data: { payment: CustomerPaymentWrite }): Promise<ApiResponse<number>> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("customer_payment/create/", data)).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse<number>>("customer_payment/create/", data)).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -40,9 +42,9 @@ export class CustomerPaymentService {
     /**
      * cancel
      */
-    public async cancel(data: any) {
+    public async cancel(data: { payment: { id: number } }): Promise<ApiResponse> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("customer_payment/cancel/", data)).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse>("customer_payment/cancel/", data)).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)

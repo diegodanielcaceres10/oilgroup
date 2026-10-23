@@ -26,7 +26,7 @@
                 }
               </div>
             }
-            @if (filter.id && filter.type != 'hidden' && filter.value && filter.value[filter.nameLabel]) {
+            @if (filter.type != 'hidden' && filter.id && filter.value && filter.value[filter.nameLabel]) {
               <div class="list__filter">
                 <span>{{ filter.label }}:</span>
                 <strong>{{ filter.value[filter.nameLabel] }}</strong>

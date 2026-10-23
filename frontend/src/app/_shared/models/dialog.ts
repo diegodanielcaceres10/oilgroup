@@ -2,7 +2,7 @@
 export interface FormField {
     name: string
     type: string
-    label?: string
+    label?: string | null
     value?: any
     required?: boolean
     disabled?: boolean
@@ -12,6 +12,7 @@ export interface FormField {
     options?: any[]
     nameValue?: string
     nameLabel?: string
+    namesLabel?: string[]
 }
 
 export interface DialogButton {
@@ -25,12 +26,21 @@ export interface DialogGroup {
     fields: FormField[]
 }
 
+/** Rule of a form: when field `name` has one of `values`, the `names` fields become required (`type` is the kind of requirement). */
+export interface FormRule {
+    name: string
+    values: string[]
+    type: string
+    names: string[]
+}
+
 export interface DialogForm {
     full: boolean
     title?: string
     event: string
     groups: DialogGroup[]
     buttons: DialogButton[]
+    rules?: FormRule[]
 }
 
 export interface Dialog {

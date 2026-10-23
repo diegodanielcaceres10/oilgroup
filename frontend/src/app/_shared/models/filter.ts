@@ -3,7 +3,7 @@ import { FormField } from './dialog';
 /** Filter as the backend reads it: name, parent, type, value, id, nameValue and searchFields. */
 export interface ApiFilter {
     name: string
-    parent?: string
+    parent?: string | null
     type?: string
     value?: any
     id?: string
@@ -11,15 +11,25 @@ export interface ApiFilter {
     searchFields?: string[]
 }
 
-/** Filter shown in the UI: it is also rendered as a form field, so it needs a label. */
+/** Filter shown in the UI: it is also rendered as a form field. */
 interface FilterBase extends FormField {
-    label: string
     parent?: string
     searchFields?: string[]
 }
 
-/** Filter whose value is typed in by the user. */
+/** Filter that is sent to the backend but not shown, so it may have no label. */
+export interface HiddenFilter extends FilterBase {
+    type: 'hidden'
+    label: string | null
+    id?: undefined
+    nameValue?: undefined
+    nameLabel?: undefined
+}
+
+/** Visible filter whose value is typed in by the user or chosen from fixed options. */
 export interface PlainFilter extends FilterBase {
+    type: 'text' | 'date' | 'select'
+    label: string
     id?: undefined
     nameValue?: undefined
     nameLabel?: undefined
@@ -30,9 +40,11 @@ export interface PlainFilter extends FilterBase {
  * through `nameValue` and `nameLabel`.
  */
 export interface LookupFilter extends FilterBase {
+    type: 'select'
+    label: string
     id: string
     nameValue: string
     nameLabel: string
 }
 
-export type Filter = PlainFilter | LookupFilter
+export type Filter = HiddenFilter | PlainFilter | LookupFilter

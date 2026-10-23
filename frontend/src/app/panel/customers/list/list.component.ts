@@ -7,6 +7,9 @@ import { HeaderService } from '../../../_shared/service/header.service';
 import { LoadService } from '../../../_shared/service/load.service';
 import { Location } from '@angular/common';
 
+import { ApiFilter, Filter } from '../../../_shared/models/filter';
+import { Dialog, DialogResponse } from '../../../_shared/models/dialog';
+import { CustomerRow } from '../../../_shared/models/customer';
 @Component({
     selector: 'app-list',
     templateUrl: './list.component.html',
@@ -17,15 +20,15 @@ export class ListComponent implements OnInit {
 
     access: any = {}
     paging!: boolean
-    customers: any = []
-    customersFiltered: any = []
-    customersView: any = []
+    customers: CustomerRow[] = []
+    customersFiltered: CustomerRow[] = []
+    customersView: CustomerRow[] = []
     page = 1
     pages = 1
     maxitems = 20
-    conditions: any = ["IVA Responsable Inscripto", "IVA Responsable no Inscripto", "IVA no Responsable", "IVA Sujeto Exento", "Consumidor Final", "Responsable Monotributo", "Otro"]
-    filters: any = []
-    dialogs: any = []
+    conditions: string[] = ["IVA Responsable Inscripto", "IVA Responsable no Inscripto", "IVA no Responsable", "IVA Sujeto Exento", "Consumidor Final", "Responsable Monotributo", "Otro"]
+    filters: Filter[] = []
+    dialogs: Dialog[] = []
 
     constructor(
         private ActivatedRoute: ActivatedRoute,
@@ -53,7 +56,7 @@ export class ListComponent implements OnInit {
                     label: ["Super Administrador", "Administrador"].indexOf(this.access.role) > -1 ? "Vendedor" : null,
                     searchFields: ["lastname", "firstname"],
                     value: params["vendedor"] || "",
-                },
+                } as Filter,
                 {
                     name: "fantasy_name",
                     type: "text",
@@ -137,11 +140,11 @@ export class ListComponent implements OnInit {
             this.customersFiltered = []
             this.customersView = []
             this.page = page
-            const filter = this.filters
+            const filter: ApiFilter[] = this.filters
             if (["Super Administrador", "Administrador"].indexOf(this.access.role) == -1) {
                 filter.push({ name: "user", type: "hidden", value: this.access.username })
             }
-            this.CustomerService.getAll({ filter: filter }).then((res: any) => {
+            this.CustomerService.getAll({ filter: filter }).then((res) => {
                 if (res.status == "success") {
                     this.customers = res.data
                     this.customersFiltered = res.data
@@ -166,7 +169,7 @@ export class ListComponent implements OnInit {
         }
     }
 
-    changePage(value: any) {
+    changePage(value: number) {
         try {
             this.paging = true
             this.customersView = []
@@ -222,7 +225,7 @@ export class ListComponent implements OnInit {
 
     }
 
-    activeCustomerDialogConfirm(data: any) {
+    activeCustomerDialogConfirm(data: CustomerRow) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -237,11 +240,11 @@ export class ListComponent implements OnInit {
     }
 
     // Define response dialog events
-    responseDialog(data: any) {
+    responseDialog(data?: DialogResponse) {
         try {
             if (data) {
                 if (data.event == "getAll") {
-                    this.filters.map((i: any) => {
+                    this.filters.map((i) => {
                         if (i.type == "select" && i.id) {
                             i.value = {}
                             i.value[i.nameValue] = data.values[i.id]
@@ -263,9 +266,9 @@ export class ListComponent implements OnInit {
         }
     }
 
-    activeCustomer(data: any) {
+    activeCustomer(data: CustomerRow) {
         try {
-            this.CustomerService.active({ customer: data }).then((res: any) => {
+            this.CustomerService.active({ customer: data }).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.getAll(1)

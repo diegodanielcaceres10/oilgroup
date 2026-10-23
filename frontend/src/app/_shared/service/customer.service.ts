@@ -1,5 +1,8 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { ApiService } from '../api/api.service';
+import { ApiResponse } from '../models/api';
+import { CustomerDetail, CustomerRow, CustomerUpdate, CustomerWrite } from '../models/customer';
+import { ApiFilter } from '../models/filter';
 
 import { lastValueFrom } from 'rxjs';
 @Injectable({
@@ -16,9 +19,9 @@ export class CustomerService {
     /**
      * getAll
      */
-    public async getAll(data: any) {
+    public async getAll(data: { filter?: ApiFilter[] }): Promise<ApiResponse<CustomerRow[]>> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("customer/getAll/", data)).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse<CustomerRow[]>>("customer/getAll/", data)).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -29,9 +32,9 @@ export class CustomerService {
     /**
      * find
      */
-    public async find(data: any) {
+    public async find(data: { customer: { id: number } }): Promise<ApiResponse<CustomerDetail>> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("customer/find/", data)).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse<CustomerDetail>>("customer/find/", data)).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -42,9 +45,9 @@ export class CustomerService {
     /**
      * create
      */
-    public async create(data: any) {
+    public async create(data: { customer: CustomerWrite }): Promise<ApiResponse<number>> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("customer/create/", data)).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse<number>>("customer/create/", data)).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -55,9 +58,9 @@ export class CustomerService {
     /**
      * update
      */
-    public async update(data: any) {
+    public async update(data: { customer: CustomerUpdate }): Promise<ApiResponse> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("customer/update/", data)).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse>("customer/update/", data)).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -68,9 +71,9 @@ export class CustomerService {
     /**
      * active
      */
-    public async active(data: any) {
+    public async active(data: { customer: { id: number } }): Promise<ApiResponse> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("customer/active/", data)).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse>("customer/active/", data)).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -81,7 +84,7 @@ export class CustomerService {
     /**
      * summary
      */
-    public async summary(data: any) {
+    public async summary(data: { customer: { id: number } }) {
         return this.api.download("customer/summary/", data).subscribe({
             next: data => {
                 this.progress.emit(data)
