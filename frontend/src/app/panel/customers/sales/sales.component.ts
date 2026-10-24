@@ -7,6 +7,7 @@ import { HeaderService } from '../../../_shared/service/header.service';
 import { LoadService } from '../../../_shared/service/load.service';
 import { Location } from '@angular/common';
 
+import { Session } from '../../../_shared/models/session';
 @Component({
     selector: 'app-sales',
     templateUrl: './sales.component.html',
@@ -15,7 +16,7 @@ import { Location } from '@angular/common';
 })
 export class SalesComponent implements OnInit {
 
-    access: any = {}
+    access = {} as Session
     paging!: boolean
     path = ""
     filter: any = {

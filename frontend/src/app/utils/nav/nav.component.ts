@@ -4,6 +4,7 @@ import { AuthService } from '../../_shared/service/auth.service';
 import { NavService } from 'src/app/_shared/service/nav.service';
 import { LoadService } from '../../_shared/service/load.service';
 
+import { Session } from '../../_shared/models/session';
 @Component({
     selector: 'app-nav',
     templateUrl: './nav.component.html',
@@ -13,7 +14,7 @@ import { LoadService } from '../../_shared/service/load.service';
 export class NavComponent implements OnInit {
 
     @ViewChild("logo") logo!: ElementRef;
-    access: any = {}
+    access = {} as Session
     items: any = [
         {
             name: "home",

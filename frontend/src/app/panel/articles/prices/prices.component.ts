@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs';
 import { Filter } from '../../../_shared/models/filter';
 import { Dialog, DialogForm, DialogResponse } from '../../../_shared/models/dialog';
 import { PriceRow } from '../../../_shared/models/article';
+import { Session } from '../../../_shared/models/session';
 @Component({
     selector: 'app-prices',
     templateUrl: './prices.component.html',
@@ -20,7 +21,7 @@ import { PriceRow } from '../../../_shared/models/article';
 })
 export class PricesComponent implements OnInit, OnDestroy {
 
-    access: any = {}
+    access = {} as Session
     paging!: boolean
     articles: PriceRow[] = []
     articlesFiltered: PriceRow[] = []

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
@@ -8,7 +8,7 @@ import { environment } from '../../../environments/environment';
 })
 export class ApiService {
 
-    headers: any;
+    headers?: HttpHeaders;
 
     /**
      * Base URL for all requests made through this
@@ -23,7 +23,7 @@ export class ApiService {
         public httpClient: HttpClient,
     ) { }
 
-    public setToken(token: any, username: any) {
+    public setToken(token: string, username: string) {
         this.headers = new HttpHeaders({ "Authorization": token, "username": username });
     }
 
@@ -46,7 +46,7 @@ export class ApiService {
      * @return An `Observable` of the response, with the response body as a JSON object.
      */
     public post<T = object>(path: string, values?: any, raw?: string): Observable<T> {
-        let body: any;
+        let body: unknown;
         if (raw == "form-data") {
             const formData = new FormData();
             Object.keys(values).forEach(key => {
@@ -70,7 +70,7 @@ export class ApiService {
      *
      * @return An `Observable` of the response, with the response body as a JSON object.
      */
-    public download(path: string, body?: any): Observable<object> {
+    public download(path: string, body?: unknown): Observable<HttpEvent<Blob>> {
         return this.httpClient.post(this.apiUrl + path, body, { responseType: "blob", reportProgress: true, observe: "events", headers: this.headers });
     }
 }

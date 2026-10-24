@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
 import { Dialog, DialogForm, DialogResponse } from '../../../_shared/models/dialog';
 import { CustomerMovement, CustomerUpdate, CustomerWrite } from '../../../_shared/models/customer';
 import { User } from '../../../_shared/models/user';
+import { Session } from '../../../_shared/models/session';
 @Component({
     selector: 'app-customer',
     templateUrl: './customer.component.html',
@@ -21,7 +22,7 @@ import { User } from '../../../_shared/models/user';
 })
 export class CustomerComponent implements OnInit, OnDestroy {
 
-    access: any = {}
+    access = {} as Session
     paging!: boolean
     editMode!: boolean
     createMode!: boolean

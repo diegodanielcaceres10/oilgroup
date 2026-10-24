@@ -9,6 +9,7 @@ import { Location } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import moment from 'moment';
 
+import { Session } from '../../../_shared/models/session';
 @Component({
     selector: 'app-list',
     templateUrl: './list.component.html',
@@ -17,7 +18,7 @@ import moment from 'moment';
 })
 export class ListComponent implements OnInit {
 
-    access: any = {}
+    access = {} as Session
     paging!: boolean
     licenses: any = []
     licensesFiltered: any = []

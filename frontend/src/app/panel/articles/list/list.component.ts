@@ -10,6 +10,7 @@ import { Location } from '@angular/common';
 import { Filter } from '../../../_shared/models/filter';
 import { Dialog, DialogResponse } from '../../../_shared/models/dialog';
 import { ArticleRow } from '../../../_shared/models/article';
+import { Session } from '../../../_shared/models/session';
 @Component({
     selector: 'app-list',
     templateUrl: './list.component.html',
@@ -18,7 +19,7 @@ import { ArticleRow } from '../../../_shared/models/article';
 })
 export class ListComponent implements OnInit {
 
-    access: any = {}
+    access = {} as Session
     paging!: boolean
     articles: ArticleRow[] = []
     articlesFiltered: ArticleRow[] = []

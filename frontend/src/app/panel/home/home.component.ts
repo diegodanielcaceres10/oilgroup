@@ -11,6 +11,7 @@ import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import am4themes_dataviz from "@amcharts/amcharts4/themes/dataviz";
 
+import { Session } from '../../_shared/models/session';
 @Component({
     selector: 'app-home',
     templateUrl: './home.component.html',
@@ -21,7 +22,7 @@ export class HomeComponent implements OnInit {
 
     charts: any = {}
     metrics: any = {}
-    access: any = {}
+    access = {} as Session
 
     constructor(
         private AuthService: AuthService,

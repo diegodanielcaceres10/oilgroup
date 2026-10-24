@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs';
 import { ApiFilter, Filter } from '../../../_shared/models/filter';
 import { Dialog, DialogForm, DialogResponse } from '../../../_shared/models/dialog';
 import { ArticleRow } from '../../../_shared/models/article';
+import { Session } from '../../../_shared/models/session';
 @Component({
     selector: 'app-stock',
     templateUrl: './stock.component.html',
@@ -20,7 +21,7 @@ import { ArticleRow } from '../../../_shared/models/article';
 })
 export class StockComponent implements OnInit, OnDestroy {
 
-    access: any = {}
+    access = {} as Session
     paging!: boolean
     articles: ArticleRow[] = []
     articlesFiltered: ArticleRow[] = []

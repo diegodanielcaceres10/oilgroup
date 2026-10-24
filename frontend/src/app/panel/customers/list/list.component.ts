@@ -10,6 +10,7 @@ import { Location } from '@angular/common';
 import { ApiFilter, Filter } from '../../../_shared/models/filter';
 import { Dialog, DialogResponse } from '../../../_shared/models/dialog';
 import { CustomerRow } from '../../../_shared/models/customer';
+import { Session } from '../../../_shared/models/session';
 @Component({
     selector: 'app-list',
     templateUrl: './list.component.html',
@@ -18,7 +19,7 @@ import { CustomerRow } from '../../../_shared/models/customer';
 })
 export class ListComponent implements OnInit {
 
-    access: any = {}
+    access = {} as Session
     paging!: boolean
     customers: CustomerRow[] = []
     customersFiltered: CustomerRow[] = []

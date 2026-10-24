@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../_shared/service/auth.service';
 import { LoadService } from '../_shared/service/load.service';
+import { DialogForm, DialogResponse } from '../_shared/models/dialog';
 
 @Component({
     selector: 'app-login',
@@ -14,7 +15,7 @@ export class LoginComponent implements OnInit {
     loading = true
     saving!: boolean
     error!: string
-    form: any = {}
+    form: Partial<DialogForm> = {}
 
     constructor(
         private Router: Router,
@@ -74,10 +75,10 @@ export class LoginComponent implements OnInit {
         }
     }
 
-    login(data: any) {
+    login(data: DialogResponse) {
         try {
             this.saving = true
-            this.AuthService.logIn(data.values).then((res: any) => {
+            this.AuthService.logIn(data.values).then((res) => {
                 setTimeout(() => {
                     if (res == "success") {
                         this.Router.navigateByUrl("panel");

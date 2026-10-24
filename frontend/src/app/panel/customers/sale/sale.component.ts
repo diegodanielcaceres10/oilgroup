@@ -9,6 +9,7 @@ import { HeaderService } from '../../../_shared/service/header.service';
 import { LoadService } from '../../../_shared/service/load.service';
 import { Location } from '@angular/common';
 
+import { Session } from '../../../_shared/models/session';
 @Component({
     selector: 'app-sale',
     templateUrl: './sale.component.html',
@@ -17,7 +18,7 @@ import { Location } from '@angular/common';
 })
 export class SaleComponent implements OnInit, OnDestroy {
 
-    access: any = {}
+    access = {} as Session
     paging!: boolean
     error!: string
     editMode!: boolean

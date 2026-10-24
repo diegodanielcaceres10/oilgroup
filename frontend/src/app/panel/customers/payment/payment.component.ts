@@ -10,6 +10,7 @@ import { Location } from '@angular/common';
 
 import { Dialog, DialogForm, DialogResponse } from '../../../_shared/models/dialog';
 import { CustomerRow } from '../../../_shared/models/customer';
+import { Session } from '../../../_shared/models/session';
 @Component({
     selector: 'app-payment',
     templateUrl: './payment.component.html',
@@ -18,7 +19,7 @@ import { CustomerRow } from '../../../_shared/models/customer';
 })
 export class PaymentComponent implements OnInit {
 
-    access: any = {}
+    access = {} as Session
     createMode!: boolean
     payment: any = {
         customer: {},

@@ -20,6 +20,7 @@ export interface DialogButton {
     text: string
     type: string
     primary?: boolean
+    saving?: boolean
 }
 
 export interface DialogGroup {
