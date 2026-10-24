@@ -1,6 +1,9 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../api/api.service';
+import { ApiResponse } from '../models/api';
+import { ApiFilter } from '../models/filter';
+import { UserDetail, UserKey, UserRow, UserUpdate, UserWrite } from '../models/user';
 
 import { lastValueFrom } from 'rxjs';
 @Injectable({
@@ -10,7 +13,7 @@ export class UserService {
 
     progress = new EventEmitter<any>()
 
-    public user: any = null
+    public user: UserRow | null = null
 
     constructor(
         private Router: Router,
@@ -20,9 +23,9 @@ export class UserService {
     /**
      * getAll
      */
-    public async getAll(data: any) {
+    public async getAll(data: { filter?: ApiFilter[] }): Promise<ApiResponse<UserRow[]>> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("user/getAll/", data)).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse<UserRow[]>>("user/getAll/", data)).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -33,9 +36,9 @@ export class UserService {
     /**
      * find
      */
-    public async find(data: any) {
+    public async find(data: { user: UserKey }): Promise<ApiResponse<UserDetail>> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("user/find/", data)).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse<UserDetail>>("user/find/", data)).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -46,9 +49,9 @@ export class UserService {
     /**
      * create
      */
-    public async create(data: any) {
+    public async create(data: { user: UserWrite }): Promise<ApiResponse<string>> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("user/create/", data)).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse<string>>("user/create/", data)).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -59,9 +62,9 @@ export class UserService {
     /**
      * update
      */
-    public async update(data: any) {
+    public async update(data: { user: UserUpdate }): Promise<ApiResponse> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("user/update/", data)).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse>("user/update/", data)).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -72,9 +75,9 @@ export class UserService {
     /**
      * reset
      */
-    public async reset(data: any) {
+    public async reset(data: { user: UserKey }): Promise<ApiResponse<string>> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("user/reset/", data)).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse<string>>("user/reset/", data)).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -85,9 +88,9 @@ export class UserService {
     /**
      * active
      */
-    public async active(data: any) {
+    public async active(data: { user: UserKey }): Promise<ApiResponse> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("user/active/", data)).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse>("user/active/", data)).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -98,7 +101,7 @@ export class UserService {
     /**
      * summary
      */
-    public async summary(data: any) {
+    public async summary(data: { user: UserKey }) {
         return this.api.download("user/summary/", data).subscribe({
             next: data => {
                 this.progress.emit(data)
@@ -112,7 +115,7 @@ export class UserService {
     /**
      * pending
      */
-    public async pending(data: any) {
+    public async pending(data: { user: UserKey }) {
         return this.api.download("user/pending/", data).subscribe({
             next: data => {
                 this.progress.emit(data)
