@@ -9,6 +9,9 @@ import { Location } from '@angular/common';
 
 
 import { Session } from '../../../_shared/models/session';
+import { Dialog, DialogResponse } from '../../../_shared/models/dialog';
+import { Filter } from '../../../_shared/models/filter';
+import { UserRow } from '../../../_shared/models/user';
 @Component({
     selector: 'app-list',
     templateUrl: './list.component.html',
@@ -19,15 +22,15 @@ export class ListComponent implements OnInit {
 
     access = {} as Session
     paging!: boolean
-    users: any = []
-    usersFiltered: any = []
-    usersView: any = []
+    users: UserRow[] = []
+    usersFiltered: UserRow[] = []
+    usersView: UserRow[] = []
     page = 1
     pages = 1
-    roles: any = ["Administrador", "Vendedor"]
+    roles: string[] = ["Administrador", "Vendedor"]
     maxitems = 20
-    filters: any = []
-    dialogs: any = []
+    filters: Filter[] = []
+    dialogs: Dialog[] = []
 
     constructor(
         private ActivatedRoute: ActivatedRoute,
@@ -119,7 +122,7 @@ export class ListComponent implements OnInit {
             this.usersFiltered = []
             this.usersView = []
             this.page = page
-            this.UserService.getAll({ filter: this.filters }).then((res: any) => {
+            this.UserService.getAll({ filter: this.filters }).then((res) => {
                 if (res.status == "success") {
                     this.users = res.data;
                     this.usersFiltered = res.data;
@@ -144,7 +147,7 @@ export class ListComponent implements OnInit {
         }
     }
 
-    changePage(value: any) {
+    changePage(value: number) {
         try {
             this.paging = true
             this.usersView = []
@@ -200,7 +203,7 @@ export class ListComponent implements OnInit {
 
     }
 
-    activeUserDialogConfirm(data: any) {
+    activeUserDialogConfirm(data: UserRow) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -215,11 +218,11 @@ export class ListComponent implements OnInit {
     }
 
     // Define response dialog events
-    responseDialog(data: any) {
+    responseDialog(data?: DialogResponse) {
         try {
             if (data) {
                 if (data.event == "getAll") {
-                    this.filters.map((i: any) => {
+                    this.filters.map((i) => {
                         if (i.type == "select" && i.id) {
                             i.value = {}
                             i.value[i.nameValue] = data.values[i.id]
@@ -245,9 +248,9 @@ export class ListComponent implements OnInit {
         }
     }
 
-    activeUser(data: any) {
+    activeUser(data: UserRow) {
         try {
-            this.UserService.active({ user: data }).then((res: any) => {
+            this.UserService.active({ user: data }).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.getAll(1)
