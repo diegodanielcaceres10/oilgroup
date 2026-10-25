@@ -6,6 +6,9 @@ import { HeaderService } from '../../../_shared/service/header.service';
 import { LoadService } from '../../../_shared/service/load.service';
 import { Location } from '@angular/common';
 
+import { Subscription } from 'rxjs';
+import { Dialog, DialogForm, DialogResponse } from '../../../_shared/models/dialog';
+import { UserSale } from '../../../_shared/models/user';
 @Component({
     selector: 'app-user',
     templateUrl: './user.component.html',
@@ -20,15 +23,15 @@ export class UserComponent implements OnInit, OnDestroy {
     user: any = {
         sales: [],
     }
-    salesFiltered: any = []
-    salesView: any = []
+    salesFiltered: UserSale[] = []
+    salesView: UserSale[] = []
     page = 1
     pages = 1
     maxitems = 20
-    roles: any = ["Administrador", "Vendedor"]
-    dialogs: any = []
-    form: any = {}
-    suscription: any
+    roles: string[] = ["Administrador", "Vendedor"]
+    dialogs: Dialog[] = []
+    form: Partial<DialogForm> = {}
+    suscription!: Subscription
 
     constructor(
         private ActivatedRoute: ActivatedRoute,
@@ -72,10 +75,10 @@ export class UserComponent implements OnInit, OnDestroy {
         }
     }
 
-    find(username: any) {
+    find(username: string) {
         try {
             this.LoadService.change(true)
-            this.UserService.find({ user: { username: username } }).then((res: any) => {
+            this.UserService.find({ user: { username: username } }).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.user = res.data
@@ -173,7 +176,7 @@ export class UserComponent implements OnInit, OnDestroy {
         }
     }
 
-    changePage(value: any) {
+    changePage(value: number) {
         try {
             this.paging = true
             this.salesView = []
@@ -281,7 +284,7 @@ export class UserComponent implements OnInit, OnDestroy {
     }
 
     // Define response dialog events
-    responseDialog(data: any) {
+    responseDialog(data?: DialogResponse) {
         try {
             if (data) {
                 if (data.event == "createUser") {
@@ -311,7 +314,7 @@ export class UserComponent implements OnInit, OnDestroy {
     // Define events
     createUser(data: any) {
         try {
-            this.UserService.create({ user: data }).then((res: any) => {
+            this.UserService.create({ user: data }).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.createMode = false
@@ -343,7 +346,7 @@ export class UserComponent implements OnInit, OnDestroy {
 
     updateUser(data: any) {
         try {
-            this.UserService.update({ user: data }).then((res: any) => {
+            this.UserService.update({ user: data }).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.editMode = false
@@ -374,7 +377,7 @@ export class UserComponent implements OnInit, OnDestroy {
     resetUser() {
         try {
             const user = { ...this.user }
-            this.UserService.reset({ user: user }).then((res: any) => {
+            this.UserService.reset({ user: user }).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.find(user.username)

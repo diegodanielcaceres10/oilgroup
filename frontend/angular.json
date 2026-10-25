@@ -110,7 +110,7 @@
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"],
-            "maxWarnings": 1336
+            "maxWarnings": 1323
           }
         }
       }
