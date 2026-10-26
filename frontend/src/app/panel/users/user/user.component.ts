@@ -8,7 +8,7 @@ import { Location } from '@angular/common';
 
 import { Subscription } from 'rxjs';
 import { Dialog, DialogForm, DialogResponse } from '../../../_shared/models/dialog';
-import { UserSale } from '../../../_shared/models/user';
+import { UserSale, UserUpdate, UserWrite } from '../../../_shared/models/user';
 @Component({
     selector: 'app-user',
     templateUrl: './user.component.html',
@@ -194,7 +194,7 @@ export class UserComponent implements OnInit, OnDestroy {
         }
     }
 
-    sendForm(data: any) {
+    sendForm(data?: DialogResponse) {
         try {
             if (data) {
                 if (data.event == "createUserDialogConfirm") {
@@ -216,7 +216,7 @@ export class UserComponent implements OnInit, OnDestroy {
     }
 
     // Define dialogs
-    createUserDialogConfirm(data: any) {
+    createUserDialogConfirm(data: UserWrite) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -230,7 +230,7 @@ export class UserComponent implements OnInit, OnDestroy {
         }
     }
 
-    updateUserDialogConfirm(data: any) {
+    updateUserDialogConfirm(data: UserUpdate) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -312,7 +312,7 @@ export class UserComponent implements OnInit, OnDestroy {
     }
 
     // Define events
-    createUser(data: any) {
+    createUser(data: UserWrite) {
         try {
             this.UserService.create({ user: data }).then((res) => {
                 if (res.status == "success") {
@@ -344,7 +344,7 @@ export class UserComponent implements OnInit, OnDestroy {
         }
     }
 
-    updateUser(data: any) {
+    updateUser(data: UserUpdate) {
         try {
             this.UserService.update({ user: data }).then((res) => {
                 if (res.status == "success") {
@@ -410,7 +410,7 @@ export class UserComponent implements OnInit, OnDestroy {
             this.suscription = this.UserService.progress.subscribe({
                 next: (data: any) => {
                     if (data.body && data.status) {
-                        const blob: any = new Blob([data.body], { type: 'application/pdf' });
+                        const blob = new Blob([data.body], { type: 'application/pdf' });
                         const objectUrl = URL.createObjectURL(blob);
                         window.open(objectUrl, '_blank');
                         this.dialogs = []
@@ -421,7 +421,7 @@ export class UserComponent implements OnInit, OnDestroy {
                         this.dialogs.pop()
                     }
                 },
-                error: (e: any) => {
+                error: (e: unknown) => {
                     console.error("Error", e)
                     this.HeaderService.showError("Error en la conectividad")
                     this.dialogs.pop()
@@ -443,7 +443,7 @@ export class UserComponent implements OnInit, OnDestroy {
             this.suscription = this.UserService.progress.subscribe({
                 next: (data: any) => {
                     if (data.body && data.status) {
-                        const blob: any = new Blob([data.body], { type: 'application/pdf' });
+                        const blob = new Blob([data.body], { type: 'application/pdf' });
                         const objectUrl = URL.createObjectURL(blob);
                         window.open(objectUrl, '_blank');
                         this.dialogs = []
@@ -454,7 +454,7 @@ export class UserComponent implements OnInit, OnDestroy {
                         this.dialogs.pop()
                     }
                 },
-                error: (e: any) => {
+                error: (e: unknown) => {
                     console.error("Error", e)
                     this.HeaderService.showError("Error en la conectividad")
                     this.dialogs.pop()
