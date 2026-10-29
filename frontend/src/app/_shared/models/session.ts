@@ -1,5 +1,5 @@
 /** License state computed by the backend when the session is created. */
-export interface License {
+export interface SessionLicense {
     month: string
     status: string
     active: number
@@ -16,7 +16,7 @@ export interface Session {
     email: string
     role: string
     type: string
-    license: License
+    license: SessionLicense
 }
 
 /** Body of auth/login. */

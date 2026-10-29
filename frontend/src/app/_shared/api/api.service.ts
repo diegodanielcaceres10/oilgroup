@@ -34,8 +34,8 @@ export class ApiService {
      *
      * @return An `Observable` of the response, with the response body as a JSON object.
      */
-    public get(url: string): Observable<object> {
-        return this.httpClient.get(url);
+    public get<T = object>(url: string): Observable<T> {
+        return this.httpClient.get<T>(url);
     }
 
     /**

@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
+import { ApiResponse } from '../models/api';
+import { ApiFilter } from '../models/filter';
+import { DollarQuote, LicenseDetail, LicensePaymentApproval, LicensePriceUpdate, LicenseRemoveResponse, LicenseRow, LicenseUpload } from '../models/license';
 
 import { lastValueFrom } from 'rxjs';
 @Injectable({
@@ -14,9 +17,9 @@ export class LicenseService {
     /**
      * getAll
      */
-    public async getAll(data: any) {
+    public async getAll(data: { filter?: ApiFilter[] }): Promise<ApiResponse<LicenseRow[]>> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("license/getAll/", data)).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse<LicenseRow[]>>("license/getAll/", data)).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -27,9 +30,9 @@ export class LicenseService {
     /**
      * find
      */
-    public async find(data: any) {
+    public async find(data: { license: { id: number } }): Promise<ApiResponse<LicenseDetail>> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("license/find/", data)).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse<LicenseDetail>>("license/find/", data)).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -40,9 +43,9 @@ export class LicenseService {
     /**
      * price
      */
-    public async price(data: any) {
+    public async price(data: { license: LicensePriceUpdate }): Promise<ApiResponse> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("license/price/", data)).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse>("license/price/", data)).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -53,9 +56,9 @@ export class LicenseService {
     /**
      * remove
      */
-    public async remove(data: any) {
+    public async remove(data: { license: { id: number } }): Promise<LicenseRemoveResponse> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("license/remove/", data)).then((data: any) => {
+            lastValueFrom(this.api.post<LicenseRemoveResponse>("license/remove/", data)).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -66,9 +69,9 @@ export class LicenseService {
     /**
      * upload
      */
-    public async upload(data: any) {
+    public async upload(data: LicenseUpload): Promise<ApiResponse> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("license/upload/", data, "form-data")).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse>("license/upload/", data, "form-data")).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -79,9 +82,9 @@ export class LicenseService {
     /**
      * payment
      */
-    public async payment(data: any) {
+    public async payment(data: { payment: LicensePaymentApproval }): Promise<ApiResponse> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("license/payment/", data)).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse>("license/payment/", data)).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -92,9 +95,9 @@ export class LicenseService {
     /**
      * cancel
      */
-    public async cancel(data: any) {
+    public async cancel(data: { payment: { id: number } }): Promise<ApiResponse> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.post("license/cancel/", data)).then((data: any) => {
+            lastValueFrom(this.api.post<ApiResponse>("license/cancel/", data)).then((data) => {
                 resolve(data)
             }).catch((error) => {
                 reject(error)
@@ -105,9 +108,9 @@ export class LicenseService {
     /**
      * getDollar
      */
-    public async getDollar() {
+    public async getDollar(): Promise<number | undefined> {
         return new Promise((resolve, reject) => {
-            lastValueFrom(this.api.get("https://api.bluelytics.com.ar/v2/latest")).then((data: any) => {
+            lastValueFrom(this.api.get<DollarQuote>("https://api.bluelytics.com.ar/v2/latest")).then((data) => {
                 const dollar = data && data.blue && data.blue.value_sell;
                 resolve(dollar);
             }).catch((error) => {
