@@ -10,6 +10,8 @@ import { environment } from 'src/environments/environment';
 import moment from 'moment';
 
 import { Session } from '../../../_shared/models/session';
+import { Dialog, DialogResponse } from '../../../_shared/models/dialog';
+import { LicenseRow, LicenseUpload } from '../../../_shared/models/license';
 @Component({
     selector: 'app-list',
     templateUrl: './list.component.html',
@@ -26,7 +28,7 @@ export class ListComponent implements OnInit {
     page = 1
     pages = 1
     maxitems = 20
-    dialogs: any = []
+    dialogs: Dialog[] = []
     priceCoefficientValidate: number = environment.priceCoefficientValidate;
 
     constructor(
@@ -60,7 +62,7 @@ export class ListComponent implements OnInit {
             this.licensesFiltered = []
             this.licensesView = []
             this.page = page
-            this.LicenseService.getAll({}).then((res: any) => {
+            this.LicenseService.getAll({}).then((res) => {
                 if (res.status == "success") {
                     this.licenses = res.data
                     this.licensesFiltered = res.data
@@ -100,7 +102,7 @@ export class ListComponent implements OnInit {
         }
     }
 
-    changePage(value: any) {
+    changePage(value: number) {
         try {
             this.paging = true
             this.licensesView = []
@@ -134,7 +136,7 @@ export class ListComponent implements OnInit {
         }
     }
 
-    uploadTicketDialogForm(data: any) {
+    uploadTicketDialogForm(data: LicenseRow) {
         try {
             this.dialogs.push({
                 type: "form",
@@ -174,7 +176,7 @@ export class ListComponent implements OnInit {
         }
     }
 
-    uploadTicketDialogConfirm(data: any) {
+    uploadTicketDialogConfirm(data: LicenseUpload) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -189,7 +191,7 @@ export class ListComponent implements OnInit {
     }
 
     // Define response dialog events
-    responseDialog(data: any) {
+    responseDialog(data?: DialogResponse) {
         try {
             if (data) {
                 if (data.event == "getAll") {
@@ -217,7 +219,7 @@ export class ListComponent implements OnInit {
     calcDollar(data: any) {
         try {
             data.loading = true;
-            this.LicenseService.getDollar().then((res: any) => {
+            this.LicenseService.getDollar().then((res) => {
                 data.coefficient = res;
                 data.coefficient_date = moment();
                 data.coefficient_validate = moment().add(this.priceCoefficientValidate, "hours");
@@ -240,7 +242,7 @@ export class ListComponent implements OnInit {
 
     setPrice(data: any) {
         try {
-            this.LicenseService.price({ license: data }).then((res: any) => {
+            this.LicenseService.price({ license: data }).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.HeaderService.showSuccess("Cotización reservada con exito. Deberá adjuntar el comprobante durante las proximas " + this.priceCoefficientValidate + " horas");
@@ -265,10 +267,10 @@ export class ListComponent implements OnInit {
         }
     }
 
-    removePrice(data: any, timeout: any) {
+    removePrice(data: any, timeout: number) {
         try {
             setTimeout(() => {
-                this.LicenseService.remove({ license: data }).then((res: any) => {
+                this.LicenseService.remove({ license: data }).then((res) => {
                     if (res.status == "success") {
                         if (res.remove) {
                             data.coefficient = undefined;
@@ -287,9 +289,9 @@ export class ListComponent implements OnInit {
         }
     }
 
-    uploadTicket(data: any) {
+    uploadTicket(data: LicenseUpload) {
         try {
-            this.LicenseService.upload(data).then((res: any) => {
+            this.LicenseService.upload(data).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.HeaderService.showSuccess("Comprobante adjunto con exito.");
