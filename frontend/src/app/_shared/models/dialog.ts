@@ -7,6 +7,7 @@ export interface FormField {
     required?: boolean
     disabled?: boolean
     creatable?: boolean
+    max?: string | number
     symbol?: string
     id?: string
     options?: any[]

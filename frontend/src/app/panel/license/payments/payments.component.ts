@@ -7,6 +7,8 @@ import { LoadService } from '../../../_shared/service/load.service';
 import { Location } from '@angular/common';
 import moment from 'moment';
 
+import { Dialog, DialogResponse } from '../../../_shared/models/dialog';
+import { LicensePayment } from '../../../_shared/models/license';
 @Component({
     selector: 'app-payments',
     templateUrl: './payments.component.html',
@@ -17,12 +19,12 @@ export class PaymentsComponent implements OnInit {
 
     paging!: boolean
     license: any = {}
-    filtered: any = []
-    view: any = []
+    filtered: LicensePayment[] = []
+    view: LicensePayment[] = []
     page = 1
     pages = 1
     maxitems = 20
-    dialogs: any = []
+    dialogs: Dialog[] = []
 
     constructor(
         private ActivatedRoute: ActivatedRoute,
@@ -48,10 +50,10 @@ export class PaymentsComponent implements OnInit {
         }
     }
 
-    find(id: any) {
+    find(id: number) {
         try {
             this.LoadService.change(true)
-            this.LicenseService.find({ license: { id: id } }).then((res: any) => {
+            this.LicenseService.find({ license: { id: id } }).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.license = res.data
@@ -75,7 +77,7 @@ export class PaymentsComponent implements OnInit {
         }
     }
 
-    changePage(value: any) {
+    changePage(value: number) {
         try {
             this.paging = true
             this.view = []
@@ -94,7 +96,7 @@ export class PaymentsComponent implements OnInit {
         }
     }
 
-    setPaymentDialogForm(data: any) {
+    setPaymentDialogForm(data: LicensePayment) {
         try {
             this.dialogs.push({
                 type: "form",
@@ -173,7 +175,7 @@ export class PaymentsComponent implements OnInit {
         }
     }
 
-    cancelPaymentDialogConfirm(data: any) {
+    cancelPaymentDialogConfirm(data: LicensePayment) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -188,7 +190,7 @@ export class PaymentsComponent implements OnInit {
     }
 
     // Define response dialog events
-    responseDialog(data: any) {
+    responseDialog(data?: DialogResponse) {
         try {
             if (data) {
                 if (data.event == "setPaymentDialogConfirm") {
@@ -213,7 +215,7 @@ export class PaymentsComponent implements OnInit {
     setPayment(data: any) {
         try {
             data.total = data.total ? parseFloat(data.total) : false
-            this.LicenseService.payment({ payment: data }).then((res: any) => {
+            this.LicenseService.payment({ payment: data }).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.HeaderService.showSuccess("Pago registrado con exito.");
@@ -235,9 +237,9 @@ export class PaymentsComponent implements OnInit {
         }
     }
 
-    cancelPayment(data: any) {
+    cancelPayment(data: LicensePayment) {
         try {
-            this.LicenseService.cancel({ payment: data }).then((res: any) => {
+            this.LicenseService.cancel({ payment: data }).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.HeaderService.showSuccess("Pago cancelado con exito.");
