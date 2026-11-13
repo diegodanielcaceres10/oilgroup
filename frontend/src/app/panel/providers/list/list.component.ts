@@ -6,6 +6,9 @@ import { HeaderService } from '../../../_shared/service/header.service';
 import { LoadService } from '../../../_shared/service/load.service';
 import { Location } from '@angular/common';
 
+import { Dialog, DialogResponse } from '../../../_shared/models/dialog';
+import { Filter } from '../../../_shared/models/filter';
+import { ProviderRow } from '../../../_shared/models/provider';
 @Component({
     selector: 'app-list',
     templateUrl: './list.component.html',
@@ -15,15 +18,15 @@ import { Location } from '@angular/common';
 export class ListComponent implements OnInit {
 
     paging!: boolean
-    providers: any = []
-    providersFiltered: any = []
-    providersView: any = []
+    providers: ProviderRow[] = []
+    providersFiltered: ProviderRow[] = []
+    providersView: ProviderRow[] = []
     page = 1
     pages = 1
     maxitems = 20
-    conditions: any = ["IVA Responsable Inscripto", "IVA Responsable no Inscripto", "IVA no Responsable", "IVA Sujeto Exento", "Consumidor Final", "Responsable Monotributo", "Otro"]
-    filters: any = []
-    dialogs: any = []
+    conditions: string[] = ["IVA Responsable Inscripto", "IVA Responsable no Inscripto", "IVA no Responsable", "IVA Sujeto Exento", "Consumidor Final", "Responsable Monotributo", "Otro"]
+    filters: Filter[] = []
+    dialogs: Dialog[] = []
 
     constructor(
         private ActivatedRoute: ActivatedRoute,
@@ -107,7 +110,7 @@ export class ListComponent implements OnInit {
             this.providersFiltered = []
             this.providersView = []
             this.page = page
-            this.ProviderService.getAll({ filter: this.filters }).then((res: any) => {
+            this.ProviderService.getAll({ filter: this.filters }).then((res) => {
                 if (res.status == "success") {
                     this.providers = res.data
                     this.providersFiltered = res.data
@@ -132,7 +135,7 @@ export class ListComponent implements OnInit {
         }
     }
 
-    changePage(value: any) {
+    changePage(value: number) {
         try {
             this.paging = true
             this.providersView = []
@@ -188,7 +191,7 @@ export class ListComponent implements OnInit {
 
     }
 
-    activeProviderDialogConfirm(data: any) {
+    activeProviderDialogConfirm(data: ProviderRow) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -203,11 +206,11 @@ export class ListComponent implements OnInit {
     }
 
     // Define response dialog events
-    responseDialog(data: any) {
+    responseDialog(data?: DialogResponse) {
         try {
             if (data) {
                 if (data.event == "getAll") {
-                    this.filters.map((i: any) => {
+                    this.filters.map((i) => {
                         if (i.type == "select" && i.id) {
                             i.value = {}
                             i.value[i.nameValue] = data.values[i.id]
@@ -229,9 +232,9 @@ export class ListComponent implements OnInit {
         }
     }
 
-    activeProvider(data: any) {
+    activeProvider(data: ProviderRow) {
         try {
-            this.ProviderService.active({ provider: data }).then((res: any) => {
+            this.ProviderService.active({ provider: data }).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.getAll(1)
