@@ -6,6 +6,8 @@ import { HeaderService } from '../../../_shared/service/header.service';
 import { LoadService } from '../../../_shared/service/load.service';
 import { Location } from '@angular/common';
 
+import { Dialog, DialogForm, DialogResponse } from '../../../_shared/models/dialog';
+import { ProviderUpdate, ProviderWrite } from '../../../_shared/models/provider';
 @Component({
     selector: 'app-provider',
     templateUrl: './provider.component.html',
@@ -26,10 +28,10 @@ export class ProviderComponent implements OnInit {
     page = 1
     pages = 1
     maxitems = 20
-    conditions: any = ["IVA Responsable Inscripto", "IVA Responsable no Inscripto", "IVA no Responsable", "IVA Sujeto Exento", "Consumidor Final", "Responsable Monotributo", "Otro"]
+    conditions: string[] = ["IVA Responsable Inscripto", "IVA Responsable no Inscripto", "IVA no Responsable", "IVA Sujeto Exento", "Consumidor Final", "Responsable Monotributo", "Otro"]
     tab = "compras"
-    dialogs: any = []
-    form: any = {}
+    dialogs: Dialog[] = []
+    form: Partial<DialogForm> = {}
 
     constructor(
         private ActivatedRoute: ActivatedRoute,
@@ -64,10 +66,10 @@ export class ProviderComponent implements OnInit {
         }
     }
 
-    find(id: any) {
+    find(id: number) {
         try {
             this.LoadService.change(true)
-            this.ProviderService.find({ provider: { id: id } }).then((res: any) => {
+            this.ProviderService.find({ provider: { id: id } }).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.provider = res.data
@@ -157,7 +159,7 @@ export class ProviderComponent implements OnInit {
         }
     }
 
-    setList(value: any) {
+    setList(value: string) {
         try {
             this.tab = value
             this.filtered = value == "compras" ? this.provider.buys : this.provider.articles
@@ -168,7 +170,7 @@ export class ProviderComponent implements OnInit {
         }
     }
 
-    changePage(value: any) {
+    changePage(value: number) {
         try {
             this.paging = true
             this.view = []
@@ -186,7 +188,7 @@ export class ProviderComponent implements OnInit {
         }
     }
 
-    sendForm(data: any) {
+    sendForm(data?: DialogResponse) {
         try {
             if (data) {
                 if (data.event == "createProviderDialogConfirm") {
@@ -208,7 +210,7 @@ export class ProviderComponent implements OnInit {
     }
 
     // Define dialogs
-    createProviderDialogConfirm(data: any) {
+    createProviderDialogConfirm(data: ProviderWrite) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -222,7 +224,7 @@ export class ProviderComponent implements OnInit {
         }
     }
 
-    updateProviderDialogConfirm(data: any) {
+    updateProviderDialogConfirm(data: ProviderUpdate) {
         try {
             this.dialogs.push({
                 type: "confirm",
@@ -237,7 +239,7 @@ export class ProviderComponent implements OnInit {
     }
 
     // Define response dialog events
-    responseDialog(data: any) {
+    responseDialog(data?: DialogResponse) {
         try {
             if (data) {
                 if (data.event == "createProvider") {
@@ -259,9 +261,9 @@ export class ProviderComponent implements OnInit {
     }
 
     // Define events
-    createProvider(data: any) {
+    createProvider(data: ProviderWrite) {
         try {
-            this.ProviderService.create({ provider: data }).then((res: any) => {
+            this.ProviderService.create({ provider: data }).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.createMode = false
@@ -291,9 +293,9 @@ export class ProviderComponent implements OnInit {
         }
     }
 
-    updateProvider(data: any) {
+    updateProvider(data: ProviderUpdate) {
         try {
-            this.ProviderService.update({ provider: data }).then((res: any) => {
+            this.ProviderService.update({ provider: data }).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.editMode = false
