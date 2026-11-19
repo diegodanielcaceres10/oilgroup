@@ -45,6 +45,26 @@ export interface DialogForm {
     rules?: FormRule[]
 }
 
+/** Text shown in a column of a list dialog: the values of the row fields in `names`, joined by `divisor`. */
+export interface DialogListValue {
+    style?: string
+    names?: string[]
+    divisor?: string
+    bold?: boolean
+    span?: string
+}
+
+export interface DialogListColumn {
+    type: string
+    values: DialogListValue[]
+}
+
+/** Rows (`data`) shown by a list dialog and how each column renders them. */
+export interface DialogList {
+    data: object[]
+    columns: DialogListColumn[]
+}
+
 export interface Dialog {
     type: 'confirm' | 'form' | 'list'
     title: string
@@ -52,6 +72,7 @@ export interface Dialog {
     event?: string
     values?: any
     span?: string
+    list?: DialogList
     form?: DialogForm
 }
 

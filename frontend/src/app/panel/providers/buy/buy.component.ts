@@ -8,6 +8,9 @@ import { HeaderService } from '../../../_shared/service/header.service';
 import { LoadService } from '../../../_shared/service/load.service';
 import { Location } from '@angular/common';
 
+import { ArticleRow } from '../../../_shared/models/article';
+import { Dialog, DialogForm, DialogResponse } from '../../../_shared/models/dialog';
+import { ProviderRow } from '../../../_shared/models/provider';
 @Component({
     selector: 'app-buy',
     templateUrl: './buy.component.html',
@@ -29,14 +32,14 @@ export class BuyComponent implements OnInit {
         total: 0,
         payment: {},
     }
-    providers: any = []
-    providersView: any = []
-    articles: any = []
-    articlesFiltered: any = []
-    methods: any = ["Efectivo", "Transferencia", "Deposito", "Tarjeta de cŕedito", "Tarjeta de débito", "Cheque", "Otro"]
+    providers: ProviderRow[] = []
+    providersView: ProviderRow[] = []
+    articles: ArticleRow[] = []
+    articlesFiltered: ArticleRow[] = []
+    methods: string[] = ["Efectivo", "Transferencia", "Deposito", "Tarjeta de cŕedito", "Tarjeta de débito", "Cheque", "Otro"]
     path = 0
-    dialogs: any = []
-    form: any = {}
+    dialogs: Dialog[] = []
+    form: Partial<DialogForm> = {}
     steps: any = []
 
     constructor(
@@ -68,10 +71,10 @@ export class BuyComponent implements OnInit {
         }
     }
 
-    find(id: any) {
+    find(id: number) {
         try {
             this.LoadService.change(true)
-            this.BuyService.find({ buy: { id: id } }).then((res: any) => {
+            this.BuyService.find({ buy: { id: id } }).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.buy = res.data
@@ -106,11 +109,11 @@ export class BuyComponent implements OnInit {
                     this.buy = buy
                 }
             }
-            await this.ProviderService.getAll({}).then((res: any) => {
+            await this.ProviderService.getAll({}).then((res) => {
                 if (res.status == "success") {
                     this.providers = res.data
                     if (this.buy.provider && this.buy.provider.id > 0) {
-                        this.buy.provider = this.providers.find((i: any) => i.id == this.buy.provider.id)
+                        this.buy.provider = this.providers.find((i) => i.id == this.buy.provider.id)
                     }
                 } else {
                     console.error("Response:", res.status)
@@ -131,7 +134,7 @@ export class BuyComponent implements OnInit {
                                     name: "fantasy_name",
                                     id: "provider",
                                     type: "select",
-                                    options: this.providers.filter((i: any) => i.active),
+                                    options: this.providers.filter((i) => i.active),
                                     nameValue: "id",
                                     nameLabel: "fantasy_name",
                                     label: "Proveedor",
@@ -280,12 +283,12 @@ export class BuyComponent implements OnInit {
         }
     }
 
-    async getArticles(id: any) {
+    async getArticles(id: number) {
         const filter = [
             { name: "provider", value: id },
             { name: "active", parent: "a", value: "1" },
         ]
-        await this.ArticleService.getAll({ filter: filter }).then((res: any) => {
+        await this.ArticleService.getAll({ filter: filter }).then((res) => {
             if (res.status == "success") {
                 this.articles = res.data
                 this.articlesFiltered = this.articles
@@ -299,7 +302,7 @@ export class BuyComponent implements OnInit {
         })
     }
 
-    sendForm(data: any) {
+    sendForm(data?: DialogResponse) {
         try {
             if (data) {
                 if (data.event == "back" && this.path > 0) {
@@ -330,7 +333,7 @@ export class BuyComponent implements OnInit {
         try {
             const item = data
             const buy = JSON.parse(sessionStorage.getItem("oilgroup-buy") ?? "null")
-            this.steps[0].groups[0].fields[0].value = this.providers.find((i: any) => i.id == item.provider)
+            this.steps[0].groups[0].fields[0].value = this.providers.find((i) => i.id == item.provider)
             this.steps[0].groups[0].fields[1].value = item.ticket
             this.steps[0].groups[0].fields[2].value = item.description
             await this.getArticles(item.provider)
@@ -575,7 +578,7 @@ export class BuyComponent implements OnInit {
     }
 
     // Define response dialog events
-    responseDialog(data: any) {
+    responseDialog(data?: DialogResponse) {
         try {
             if (data) {
                 if (data.event == "addArticleDialogForm") {
@@ -662,7 +665,7 @@ export class BuyComponent implements OnInit {
         try {
             const buy = { ...this.buy }
             buy.payment.import = buy.payment.import ? parseFloat(buy.payment.import) : false
-            this.BuyService.create({ buy: buy }).then((res: any) => {
+            this.BuyService.create({ buy: buy }).then((res) => {
                 if (res.status == "success") {
                     this.path = 5
                     setTimeout(() => {
@@ -691,7 +694,7 @@ export class BuyComponent implements OnInit {
     cancelBuy() {
         try {
             const buy = { ...this.buy }
-            this.BuyService.cancel({ buy: buy }).then((res: any) => {
+            this.BuyService.cancel({ buy: buy }).then((res) => {
                 if (res.status == "success") {
                     setTimeout(() => {
                         this.buy.status = "Cancelada"
